@@ -1,0 +1,40 @@
+name: release
+
+on:
+  push:
+    branches:
+      - "main"
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Generate changelog and version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Generate a changelog
+        id: git-cliff
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: --bump --unreleased
+        env:
+          OUTPUT: CHANGELOG.md
+          GITHUB_REPO: ${{ github.repository }}
+      - name: Create GitHub Release
+        run: |
+          gh release create "${{ steps.git-cliff.outputs.version }}" \
+          --latest \
+          --title "${{ steps.git-cliff.outputs.version }}" \
+          --notes "${{ steps.git-cliff.outputs.content }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
