@@ -31,10 +31,11 @@ Als *Anforderer* möchte ich *Wert* um *Begründung*.
 - [ ] 1
 - [ ] 2
 
-## Definition of Done (DoD) v1
+## Definition of Done (DoD) v3
 
 - [ ] Es existiert mindestens ein automatisierter Akzeptanztest pro Akzeptanzkriterium
 - [ ] Der Autor hat den Code selbst überprüft
 - [ ] Der Autor hat die Commits gesquasht, um die Historie sauber zu halten
 - [ ] Das Aussehen der App entspricht den besprochenen Design-Entwürfen (z. B. aus Figma)
-- [ ] Die App sieht auf verschiedenen Bildschirmgrößen gut aus (z. B. Smartphone, Tablet).
+- [ ] Alle Entscheidungen wurden mit Kontext im Issue vermerkt.
+- [ ] Das Design wurde mit einem Gerät jeder Geräteklasse (in der README) geprüft.
