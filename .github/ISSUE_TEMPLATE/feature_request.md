@@ -35,7 +35,6 @@ Als *Anforderer* möchte ich *Wert* um *Begründung*.
 
 - [ ] Es existiert mindestens ein automatisierter Akzeptanztest pro Akzeptanzkriterium
 - [ ] Der Autor hat den Code selbst überprüft
-- [ ] Der Autor hat die Commits gesquasht, um die Historie sauber zu halten
 - [ ] Das Aussehen der App entspricht den besprochenen Design-Entwürfen (z. B. aus Figma)
 - [ ] Alle Entscheidungen wurden mit Kontext im Issue vermerkt.
 - [ ] Das Design wurde mit einem Gerät jeder Geräteklasse (in der README) geprüft.
