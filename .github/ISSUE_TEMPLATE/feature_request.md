@@ -31,7 +31,7 @@ Als *Anforderer* möchte ich *Wert* um *Begründung*.
 - [ ] 1
 - [ ] 2
 
-## Definition of Done (DoD) v3
+## Definition of Done (DoD) v2
 
 - [ ] Es existiert mindestens ein automatisierter Akzeptanztest pro Akzeptanzkriterium
 - [ ] Der Autor hat den Code selbst überprüft
