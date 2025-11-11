@@ -11,10 +11,10 @@ assignees: ''
 # Definition of Ready (DoR) v1
 
 - [ ] Story mit Stakeholdern abstimmen
-- [ ] Notwendige Designs für die Devs ausreichend definieren
 - [ ] *Wert* (Nutz-, Kunden- und Wissens-Wert) mit *Stakeholder* abstimmen 
-- [ ] *Größe* (Aufwand, Komplexität) mit *DEVs* abstimmen
+- [ ] Notwendige Designs für die Devs ausreichend definieren
 - [ ] Quality Attribute Scenarios (QAS) abstimmen
+- [ ] *Größe* (Aufwand, Komplexität) mit *DEVs* abstimmen
 
 </details>
 
