@@ -93,7 +93,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-
-# Custom configuration for EIKE
-eike:
-  content_version: 0.1.8 # renovate: datasource=github-releases depName=EikeApp/eike-content
