@@ -17,3 +17,38 @@ Es werden automatisiert Releases erstellt, wenn der main-Branch aktualisiert wir
 
 Damit [breaking changes als SemVer](https://semver.org/) korrekt erkannt werden, sollten
 [conventional commits](https://www.conventionalcommits.org) verwendet werden.
+
+## Entwicklung
+
+Dieses Projekt verwendet ein `Makefile`, um den Entwicklungsprozess zu vereinfachen und externe Content-Assets zu verwalten.
+
+### Voraussetzungen
+
+*   Flutter SDK
+*   Dart SDK
+*   Make (auf macOS/Linux meist vorinstalliert. Unter Windows kann es z.B. via [Chocolatey](https://chocolatey.org/) mit `choco install make` installiert werden.)
+
+### Befehle
+
+| Befehl | Beschreibung |
+| :--- | :--- |
+| `make run` | Lädt Content-Assets und startet die App im Debug-Modus. |
+| `make fetch-content` | Lädt nur die Content-Assets herunter (basierend auf `pubspec.yaml`). |
+| `make build-apk` | Baut die Android APK (inkl. Content-Assets). |
+| `make build-ios` | Baut die iOS App (inkl. Content-Assets). |
+| `make clean` | Bereinigt Build-Artefakte und den Content-Cache. |
+
+### Content-Versionierung
+
+Die Version der Content-Assets wird in der `pubspec.yaml` unter `eike: content_version` definiert.
+
+**Temporäres Überschreiben der Version:**
+Für Tests (z.B. Pull Requests oder spezifische Versionen) kann die Version beim Aufruf überschrieben werden:
+
+```bash
+# Teste einen spezifischen Pull Request (z.B. PR #8)
+make run VERSION=pr-8
+
+# Teste eine spezifische Version/Tag
+make run VERSION=v1.0.0
+```
