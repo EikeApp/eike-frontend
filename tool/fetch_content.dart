@@ -27,7 +27,7 @@ void main(List<String> args) async {
     print('🧹 Cleaning content cache and assets...');
     final cache = Directory(cacheDir);
     final assets = Directory(targetDir);
-    
+
     if (await cache.exists()) {
       await cache.delete(recursive: true);
       print('   Deleted $cacheDir');
@@ -41,28 +41,11 @@ void main(List<String> args) async {
   }
 
   // 1. Determine Version
-  String version = '';
-  
-  if (args.isNotEmpty && args[0].isNotEmpty) {
-    version = args[0];
-  } else {
-    final pubspecFile = File('pubspec.yaml');
-    if (await pubspecFile.exists()) {
-      try {
-        final content = await pubspecFile.readAsString();
-        final yaml = loadYaml(content);
-        version = yaml['eike']?['content_version']?.toString() ?? '';
-      } catch (e) {
-        print('❌ Error parsing pubspec.yaml: $e');
-        exit(1);
-      }
-    }
-
-    if (version.isEmpty) {
-      print('❌ Error: No version specified.');
-      exit(1);
-    }
+  if (args.isEmpty && args[0].isEmpty) {
+    print('❌ Error: No version specified.');
+    exit(1);
   }
+  String version = args[0];
 
   print('📦 Managing content for version: $version');
 
@@ -127,7 +110,7 @@ void main(List<String> args) async {
       if (parts.length > 1) {
         final relativePath = parts.sublist(1).join('/');
         if (relativePath.isEmpty) continue;
-        
+
         final outFile = File('${targetDirectory.path}/$relativePath');
         await outFile.create(recursive: true);
         await outFile.writeAsBytes(file.content as List<int>);
@@ -142,10 +125,10 @@ void main(List<String> args) async {
     try {
       final yamlString = await yamlFile.readAsString();
       final yamlMap = loadYaml(yamlString);
-      
+
       // Convert YamlMap/YamlList to standard Dart Map/List for JSON encoding
-      final jsonMap = jsonDecode(jsonEncode(yamlMap)); 
-      
+      final jsonMap = jsonDecode(jsonEncode(yamlMap));
+
       final jsonFile = File('$targetDir/data.json');
       await jsonFile.writeAsString(jsonEncode(jsonMap));
       print('   Converted data.yaml -> data.json');
@@ -168,7 +151,7 @@ void main(List<String> args) async {
 
 Future<void> _cleanupDirectory(Directory dir) async {
   final entities = dir.listSync(recursive: false);
-  
+
   for (final entity in entities) {
     if (entity is File) {
       final ext = path.extension(entity.path).toLowerCase();
