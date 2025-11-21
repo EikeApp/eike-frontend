@@ -50,5 +50,5 @@ Für Tests (z.B. Pull Requests oder spezifische Versionen) kann die Version beim
 make run VERSION=pr-8
 
 # Teste eine spezifische Version/Tag
-make run VERSION=v1.0.0
+make run VERSION=1.0.0
 ```
