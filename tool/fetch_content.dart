@@ -1,13 +1,25 @@
+// ignore_for_file: avoid_print
+
+import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:archive/archive.dart';
 import 'package:archive/archive_io.dart';
 import 'package:yaml/yaml.dart';
+import 'package:path/path.dart' as path;
 
 const String repoOwner = 'EikeApp';
 const String repoName = 'eike-content';
 const String cacheDir = '.eike_cache';
 const String targetDir = 'assets/content';
+
+// Allowed extensions for media files to keep
+const Set<String> allowedExtensions = {
+  '.jpg', '.jpeg', '.png', '.gif', '.webp', // Images
+  '.mp3', '.wav', '.m4a',                   // Audio
+  '.mp4', '.mov',                           // Video
+  '.json'                                   // JSON data
+};
 
 void main(List<String> args) async {
   // Handle clean command
@@ -31,17 +43,14 @@ void main(List<String> args) async {
   // 1. Determine Version
   String version = '';
   
-  // Priority 1: Command line argument (make run VERSION=x)
   if (args.isNotEmpty && args[0].isNotEmpty) {
     version = args[0];
   } else {
-    // Priority 2: pubspec.yaml
     final pubspecFile = File('pubspec.yaml');
     if (await pubspecFile.exists()) {
       try {
         final content = await pubspecFile.readAsString();
         final yaml = loadYaml(content);
-        // Access eike -> content_version
         version = yaml['eike']?['content_version']?.toString() ?? '';
       } catch (e) {
         print('❌ Error parsing pubspec.yaml: $e');
@@ -51,8 +60,6 @@ void main(List<String> args) async {
 
     if (version.isEmpty) {
       print('❌ Error: No version specified.');
-      print('   Please provide a version via argument: make run VERSION=v1.0.0');
-      print('   OR define it in pubspec.yaml under eike: content_version: ...');
       exit(1);
     }
   }
@@ -60,7 +67,6 @@ void main(List<String> args) async {
   print('📦 Managing content for version: $version');
 
   // 2. Check if content is already up-to-date
-  // We check a marker file in the target directory to see if it matches the requested version
   final currentVersionMarker = File('$targetDir/.version');
   if (await currentVersionMarker.exists()) {
     final currentVersion = (await currentVersionMarker.readAsString()).trim();
@@ -83,11 +89,9 @@ void main(List<String> args) async {
   if (!await zipFile.exists()) {
     String url;
     if (version.startsWith('pr-')) {
-      // Pull Request Logic: pr-8 -> Pull Request #8
       final prNumber = version.split('-')[1];
       url = 'https://api.github.com/repos/$repoOwner/$repoName/zipball/pull/$prNumber/head';
     } else {
-      // Tag/Release Logic: v1.0.0 or 0.1.0
       url = 'https://github.com/$repoOwner/$repoName/archive/refs/tags/$version.zip';
     }
 
@@ -99,7 +103,6 @@ void main(List<String> args) async {
       print('✅ Download complete.');
     } else {
       print('❌ Failed to download content. Status code: ${response.statusCode}');
-      print('   URL: $url');
       exit(1);
     }
   } else {
@@ -119,8 +122,6 @@ void main(List<String> args) async {
 
   for (final file in archive) {
     if (file.isFile) {
-      // The zip usually contains a root folder (e.g. eike-content-0.1.0/file.txt)
-      // We want to strip that root folder.
       final filename = file.name;
       final parts = filename.split('/');
       if (parts.length > 1) {
@@ -134,7 +135,55 @@ void main(List<String> args) async {
     }
   }
 
-  // 6. Write version marker
+  // 6. Convert YAML to JSON
+  print('🔄 Converting data.yaml to data.json...');
+  final yamlFile = File('$targetDir/data.yaml');
+  if (await yamlFile.exists()) {
+    try {
+      final yamlString = await yamlFile.readAsString();
+      final yamlMap = loadYaml(yamlString);
+      
+      // Convert YamlMap/YamlList to standard Dart Map/List for JSON encoding
+      final jsonMap = jsonDecode(jsonEncode(yamlMap)); 
+      
+      final jsonFile = File('$targetDir/data.json');
+      await jsonFile.writeAsString(jsonEncode(jsonMap));
+      print('   Converted data.yaml -> data.json');
+    } catch (e) {
+      print('❌ Error converting YAML to JSON: $e');
+      // We don't exit here, maybe the rest of the assets are still useful
+    }
+  } else {
+    print('⚠️  Warning: data.yaml not found in extracted content.');
+  }
+
+  // 7. Cleanup (Tree Shaking)
+  print('🧹 Cleaning up unused files...');
+  await _cleanupDirectory(targetDirectory);
+
+  // 8. Write version marker
   await currentVersionMarker.writeAsString(version);
   print('✅ Content ready for version $version');
+}
+
+Future<void> _cleanupDirectory(Directory dir) async {
+  final entities = dir.listSync(recursive: false);
+  
+  for (final entity in entities) {
+    if (entity is File) {
+      final ext = path.extension(entity.path).toLowerCase();
+      // Keep .version file and allowed extensions
+      if (path.basename(entity.path) != '.version' && !allowedExtensions.contains(ext)) {
+        await entity.delete();
+        // print('   Deleted: ${path.basename(entity.path)}');
+      }
+    } else if (entity is Directory) {
+      await _cleanupDirectory(entity);
+      // If directory is empty after cleanup, delete it
+      if (entity.listSync().isEmpty) {
+        await entity.delete();
+        // print('   Deleted empty dir: ${path.basename(entity.path)}');
+      }
+    }
+  }
 }
