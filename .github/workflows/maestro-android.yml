@@ -1,0 +1,164 @@
+name: E2E (Maestro Android)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  build-apk:
+    name: Build APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Cache Pub
+        uses: actions/cache@v4
+        with:
+          path: ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('android/**/build.gradle*', 'android/**/settings.gradle*', 'android/gradle/wrapper/gradle-wrapper.properties') }}
+
+      - name: Flutter dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: |
+          make build-apk
+          ls -lah build/app/outputs/flutter-apk || true
+          test -f build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  maestro-android:
+    name: Emulator + Maestro
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs: build-apk
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          ls -lah /dev/kvm || true
+
+      - name: Install deps (curl, unzip)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl unzip
+
+      - name: Download APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app-release-apk
+          path: build/app/outputs/flutter-apk
+
+      - name: Cache Maestro
+        uses: actions/cache@v4
+        with:
+          path: ~/.maestro
+          key: ${{ runner.os }}-maestro-2.0.10
+
+      - name: Install Maestro CLI (retry + fallback) + PATH fix
+        env:
+          MAESTRO_VERSION: "2.0.10"
+        run: |
+          set -euo pipefail
+
+          if [ -x "$HOME/.maestro/bin/maestro" ]; then
+            echo "Maestro already cached."
+          else
+            echo "Trying official install script..."
+            if ! curl -fsSL --retry 6 --retry-all-errors --retry-delay 5 "https://get.maestro.mobile.dev" | bash; then
+              echo "Install script failed (possible 502). Fallback to GitHub release zip..."
+              mkdir -p "$HOME/.maestro"
+              curl -fsSL -o /tmp/maestro.zip \
+                "https://github.com/mobile-dev-inc/maestro/releases/download/cli-${MAESTRO_VERSION}/maestro.zip"
+              unzip -q /tmp/maestro.zip -d "$HOME/.maestro"
+            fi
+          fi
+
+          export PATH="$PATH:$HOME/.maestro/bin"
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+          which maestro
+          maestro --version
+
+      # This action can fail during teardown even if tests passed.
+      # We ignore its exit code and decide PASS/FAIL in the next step based on JUnit.
+      - name: Boot emulator + install APK + run Maestro
+        id: emulator_maestro
+        continue-on-error: true
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          arch: x86_64
+          target: google_apis
+          ram-size: 2048M
+          disk-size: 2048M
+          emulator-boot-timeout: 180
+          emulator-options: >
+            -no-window
+            -gpu swiftshader_indirect
+            -noaudio
+            -no-boot-anim
+            -no-snapshot
+            -camera-back none
+            -no-metrics
+          disable-animations: true
+          script: bash -l ci/start-and-wait-for-emulator.sh
+
+      # FAIL only if report is missing or contains failures/errors.
+      - name: Decide pass/fail from Maestro JUnit
+        if: always()
+        run: bash ci/parse-junit.sh
+
+      - name: Publish test report
+        if: always() && hashFiles('maestro/report.xml') != ''
+        uses: dorny/test-reporter@v1
+        with:
+          name: Maestro Android
+          path: maestro/report.xml
+          reporter: java-junit
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-android
+          path: |
+            maestro/report.xml
+            maestro/maestro_exit_code.txt
+            maestro/logcat.txt
+            .maestro/**
