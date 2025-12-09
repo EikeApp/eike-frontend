@@ -65,7 +65,7 @@ Maestro ist ein Open-Source-Framework für UI- und End-to-End-Tests, bei dem Tes
 make run
 ```
 
-- Maestro ist lokal [installiert](https://docs.maestro.dev/getting-started/installing-maestro) und im `PATH` verfügbar  
+- Maestro ist lokal [installiert](https://docs.maestro.dev/getting-started/installing-maestro) und im `PATH` verfügbar.
 
 #### Flows ausführen
 

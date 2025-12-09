@@ -3,4 +3,4 @@ flows:
   - "flows/*/*.yaml"   # alle Flows in Feature-Unterordnern, z.B. flows/home/home_smoke.yaml
 
 # Pfad für Artefakte (Screenshots, Logs, AI-Reports)
-testOutputDir: ".maestro/tests/" # default
+testOutputDir: ".maestro/tests" # default
