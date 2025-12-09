@@ -1,0 +1,14 @@
+appId: com.example.eike_frontend
+name: Home – Smoke Test
+tags:
+  - smoke
+---
+- launchApp:
+    clearState: true
+    stopApp: true
+
+# Prüfe, dass der Home Screen wirklich da ist
+- assertVisible: "Meine 7 Sachen"         # AppBar-Titel
+- assertVisible: "Willkommen bei EIKE"    # Überschrift
+- assertVisible: "Hier ist deine Homepage"
+- takeScreenshot: "home/home_screen"
