@@ -9,7 +9,7 @@ all: run
 # Fetch content using the dart script
 fetch-content:
 	@echo "Fetching content..."
-	@flutter pub get > /dev/null
+	@flutter pub get > $(if $(OS),NUL,/dev/null) 2>&1
 	@dart run tool/fetch_content.dart $(VERSION)
 
 # Run the app (fetches content first)
