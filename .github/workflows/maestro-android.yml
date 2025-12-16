@@ -25,6 +25,11 @@ jobs:
           sudo usermod -aG kvm $USER
           sudo chown -R $USER /dev/kvm
 
+      - name: Install deps (curl, unzip)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl unzip
+
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
@@ -46,10 +51,34 @@ jobs:
           ls -lah build/app/outputs/flutter-apk || true
           test -f build/app/outputs/flutter-apk/app-release.apk
 
-      - name: Install Maestro CLI
-        uses: dniHze/maestro-test-action@v1
+      # Cache Maestro install (saves time + avoids flaky downloads)
+      - name: Cache Maestro
+        uses: actions/cache@v4
         with:
-          version: latest
+          path: ~/.maestro
+          key: ${{ runner.os }}-maestro-2.0.10
+
+      - name: Install Maestro CLI (retry + fallback)
+        env:
+          MAESTRO_VERSION: "2.0.10"
+        run: |
+          set -euo pipefail
+
+          if [ -x "$HOME/.maestro/bin/maestro" ]; then
+            echo "Maestro already cached."
+          else
+            echo "Trying official install script..."
+            if ! curl -fsSL --retry 6 --retry-all-errors --retry-delay 5 "https://get.maestro.mobile.dev" | bash; then
+              echo "Install script failed (possible 502). Fallback to GitHub release zip..."
+              mkdir -p "$HOME/.maestro"
+              curl -fsSL -o /tmp/maestro.zip \
+                "https://github.com/mobile-dev-inc/maestro/releases/download/cli-${MAESTRO_VERSION}/maestro.zip"
+              unzip -q /tmp/maestro.zip -d "$HOME/.maestro"
+            fi
+          fi
+
+          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+          maestro --version
 
       - name: Boot emulator + install APK + run Maestro
         uses: reactivecircus/android-emulator-runner@v2
@@ -72,7 +101,7 @@ jobs:
             maestro test --format=junit --output=maestro/report.xml --no-ansi .maestro
 
       - name: Publish test report
-        if: always()
+        if: always() && hashFiles('maestro/report.xml') != ''
         uses: dorny/test-reporter@v1
         with:
           name: Maestro Android
