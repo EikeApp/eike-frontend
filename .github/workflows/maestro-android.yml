@@ -132,37 +132,8 @@ jobs:
           emulator-boot-timeout: 180
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot -camera-back none -no-metrics
           disable-animations: true
-
-          # IMPORTANT: wrap everything in ONE bash process (variables persist)
-          script: >
-            bash -lc '
-              set -eu
-
-              df -h
-
-              adb kill-server || true
-              adb start-server || true
-              adb devices || true
-
-              APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
-              test -f "$APK_PATH"
-              echo "Installing APK: $APK_PATH"
-              adb install -r "$APK_PATH"
-
-              adb shell input keyevent 82 || true
-
-              mkdir -p maestro
-
-              set +e
-              maestro test --format=junit --output=maestro/report.xml --no-ansi .maestro
-              EXIT_CODE=$?
-              set -e
-
-              adb devices || true
-              adb logcat -d -t 5000 > maestro/logcat.txt || true
-
-              exit $EXIT_CODE
-            '
+          script: |
+            bash -lc "set -eu; df -h; adb kill-server || true; adb start-server || true; adb devices || true; APK_PATH=build/app/outputs/flutter-apk/app-release.apk; test -f \$APK_PATH; echo Installing APK: \$APK_PATH; adb install -r \$APK_PATH; adb shell input keyevent 82 || true; mkdir -p maestro; set +e; maestro test --format=junit --output=maestro/report.xml --no-ansi .maestro; EXIT_CODE=\$?; set -e; adb devices || true; adb logcat -d -t 5000 > maestro/logcat.txt || true; exit \$EXIT_CODE"
 
       - name: Publish test report
         if: always() && hashFiles('maestro/report.xml') != ''
