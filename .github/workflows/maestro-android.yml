@@ -11,24 +11,13 @@ permissions:
   checks: write
 
 jobs:
-  maestro-android:
+  build-apk:
+    name: Build APK
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Enable KVM (faster emulator)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y qemu-kvm
-          sudo usermod -aG kvm $USER
-          sudo chown -R $USER /dev/kvm
-
-      - name: Install deps (curl, unzip)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y curl unzip
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -42,6 +31,20 @@ jobs:
           channel: stable
           cache: true
 
+      - name: Cache Pub
+        uses: actions/cache@v4
+        with:
+          path: ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('android/**/build.gradle*', 'android/**/settings.gradle*', 'android/gradle/wrapper/gradle-wrapper.properties') }}
+
       - name: Flutter dependencies
         run: flutter pub get
 
@@ -51,7 +54,54 @@ jobs:
           ls -lah build/app/outputs/flutter-apk || true
           test -f build/app/outputs/flutter-apk/app-release.apk
 
-      # Cache Maestro install (saves time + avoids flaky downloads)
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  maestro-android:
+    name: Emulator + Maestro
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs: build-apk
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Optional, aber sehr hilfreich gegen "not enough space"
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
+      - name: Show disk space (debug)
+        run: df -h
+
+      # Empfohlen vom android-emulator-runner
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Install deps (curl, unzip)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl unzip
+
+      - name: Download APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app-release-apk
+          path: build/app/outputs/flutter-apk
+
       - name: Cache Maestro
         uses: actions/cache@v4
         with:
@@ -77,9 +127,7 @@ jobs:
             fi
           fi
 
-          # Make maestro available in THIS step (non-interactive shell won't reload .bashrc)
           export PATH="$PATH:$HOME/.maestro/bin"
-          # And in NEXT steps
           echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
 
           which maestro
@@ -92,18 +140,39 @@ jobs:
           arch: x86_64
           target: google_apis
           ram-size: 2048M
+
+          # ✅ Wichtig: verhindert euren "userdata partition needs 7.3GB" Crash
+          disk-size: 2048M
+
+          # ✅ Stoppt den "adb device not found" Polling-Loop deutlich schneller
+          emulator-boot-timeout: 180
+
+          # optional: schlanker starten
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot -camera-back none
+          disable-animations: true
+
           script: |
-            set -e
-            adb devices
+            set -euo pipefail
+            df -h
 
             APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
+            test -f "$APK_PATH"
             echo "Installing APK: $APK_PATH"
             adb install -r "$APK_PATH"
 
             adb shell input keyevent 82 || true
 
             mkdir -p maestro
+            set +e
             maestro test --format=junit --output=maestro/report.xml --no-ansi .maestro
+            EXIT_CODE=$?
+            set -e
+
+            # Wenn Tests fehlschlagen: logs einsammeln, aber Exit-Code beibehalten
+            adb devices || true
+            adb logcat -d -t 5000 > maestro/logcat.txt || true
+
+            exit $EXIT_CODE
 
       - name: Publish test report
         if: always() && hashFiles('maestro/report.xml') != ''
@@ -120,4 +189,5 @@ jobs:
           name: maestro-android
           path: |
             maestro/report.xml
+            maestro/logcat.txt
             .maestro/**
