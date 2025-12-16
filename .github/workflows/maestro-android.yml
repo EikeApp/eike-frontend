@@ -69,35 +69,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Wichtig: NICHT android:true, sonst fliegt das Android SDK weg
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@v1.3.1
-        with:
-          tool-cache: false
-          android: false
-          dotnet: true
-          haskell: true
-          large-packages: true
-          docker-images: true
-          swap-storage: true
-
       - name: Show disk space (debug)
         run: df -h
 
-      # Empfehlung vom android-emulator-runner README
+      # Empfehlung vom android-emulator-runner: /dev/kvm Permissions setzen
       - name: Enable KVM group perms
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
           ls -lah /dev/kvm || true
-
-      # Safety: falls /usr/local/lib/android doch weg ist (oder Rechte kaputt sind)
-      - name: Ensure Android SDK base dir is writable
-        run: |
-          sudo mkdir -p /usr/local/lib/android
-          sudo chown -R $USER:$USER /usr/local/lib/android
-          ls -lah /usr/local/lib/android || true
 
       - name: Install deps (curl, unzip)
         run: |
@@ -154,7 +135,6 @@ jobs:
           disable-animations: true
           script: |
             set -euo pipefail
-            df -h
 
             APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
             test -f "$APK_PATH"
