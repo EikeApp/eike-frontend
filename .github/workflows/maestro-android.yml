@@ -58,7 +58,7 @@ jobs:
           path: ~/.maestro
           key: ${{ runner.os }}-maestro-2.0.10
 
-      - name: Install Maestro CLI (retry + fallback)
+      - name: Install Maestro CLI (retry + fallback) + PATH fix
         env:
           MAESTRO_VERSION: "2.0.10"
         run: |
@@ -77,7 +77,12 @@ jobs:
             fi
           fi
 
-          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+          # Make maestro available in THIS step (non-interactive shell won't reload .bashrc)
+          export PATH="$PATH:$HOME/.maestro/bin"
+          # And in NEXT steps
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+          which maestro
           maestro --version
 
       - name: Boot emulator + install APK + run Maestro
