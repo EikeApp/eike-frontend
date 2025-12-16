@@ -69,12 +69,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Optional, aber sehr hilfreich gegen "not enough space"
+      # Wichtig: NICHT android:true, sonst fliegt das Android SDK weg
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@v1.3.1
         with:
           tool-cache: false
-          android: true
+          android: false
           dotnet: true
           haskell: true
           large-packages: true
@@ -84,12 +84,20 @@ jobs:
       - name: Show disk space (debug)
         run: df -h
 
-      # Empfohlen vom android-emulator-runner
+      # Empfehlung vom android-emulator-runner README
       - name: Enable KVM group perms
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
+          ls -lah /dev/kvm || true
+
+      # Safety: falls /usr/local/lib/android doch weg ist (oder Rechte kaputt sind)
+      - name: Ensure Android SDK base dir is writable
+        run: |
+          sudo mkdir -p /usr/local/lib/android
+          sudo chown -R $USER:$USER /usr/local/lib/android
+          ls -lah /usr/local/lib/android || true
 
       - name: Install deps (curl, unzip)
         run: |
@@ -140,17 +148,10 @@ jobs:
           arch: x86_64
           target: google_apis
           ram-size: 2048M
-
-          # ✅ Wichtig: verhindert euren "userdata partition needs 7.3GB" Crash
           disk-size: 2048M
-
-          # ✅ Stoppt den "adb device not found" Polling-Loop deutlich schneller
           emulator-boot-timeout: 180
-
-          # optional: schlanker starten
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot -camera-back none
           disable-animations: true
-
           script: |
             set -euo pipefail
             df -h
@@ -168,7 +169,6 @@ jobs:
             EXIT_CODE=$?
             set -e
 
-            # Wenn Tests fehlschlagen: logs einsammeln, aber Exit-Code beibehalten
             adb devices || true
             adb logcat -d -t 5000 > maestro/logcat.txt || true
 
