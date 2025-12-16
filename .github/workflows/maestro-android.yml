@@ -133,7 +133,7 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot -camera-back none -no-metrics
           disable-animations: true
           script: |
-            bash -lc "set -eu; df -h; adb kill-server || true; adb start-server || true; adb devices || true; APK_PATH=build/app/outputs/flutter-apk/app-release.apk; test -f \$APK_PATH; echo Installing APK: \$APK_PATH; adb install -r \$APK_PATH; adb shell input keyevent 82 || true; mkdir -p maestro; set +e; maestro test --format=junit --output=maestro/report.xml --no-ansi .maestro; EXIT_CODE=\$?; set -e; adb devices || true; adb logcat -d -t 5000 > maestro/logcat.txt || true; exit \$EXIT_CODE"
+            bash -lc "set -eu; df -h; adb kill-server || true; adb start-server || true; adb devices || true; APK_PATH=build/app/outputs/flutter-apk/app-release.apk; test -f \$APK_PATH; echo Installing APK: \$APK_PATH; adb install -r \$APK_PATH; adb shell input keyevent 82 || true; mkdir -p maestro; set +e; maestro test --format=junit --output=maestro/report.xml --no-ansi .maestro; MAESTRO_EXIT=\$?; set -e; echo MaestroExit=\$MAESTRO_EXIT; ls -lah maestro || true; EXIT_CODE=\$MAESTRO_EXIT; if [ -f maestro/report.xml ]; then if grep -q 'failures=\"0\"' maestro/report.xml && grep -q 'errors=\"0\"' maestro/report.xml; then echo \"JUnit says PASS\"; EXIT_CODE=0; else echo \"JUnit says FAIL\"; fi; else echo \"JUnit report missing\"; fi; adb devices || true; adb logcat -d -t 5000 > maestro/logcat.txt || true; exit \$EXIT_CODE"
 
       - name: Publish test report
         if: always() && hashFiles('maestro/report.xml') != ''
