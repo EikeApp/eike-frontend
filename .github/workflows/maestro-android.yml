@@ -1,0 +1,89 @@
+name: E2E (Maestro Android)
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  maestro-android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable KVM (faster emulator)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-kvm
+          sudo usermod -aG kvm $USER
+          sudo chown -R $USER /dev/kvm
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Flutter dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: |
+          make build-apk
+          ls -lah build/app/outputs/flutter-apk || true
+          test -f build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Install Maestro CLI
+        uses: dniHze/maestro-test-action@v1
+        with:
+          version: latest
+
+      - name: Boot emulator + install APK + run Maestro
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          arch: x86_64
+          target: google_apis
+          ram-size: 2048M
+          script: |
+            set -e
+            adb devices
+
+            APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
+            echo "Installing APK: $APK_PATH"
+            adb install -r "$APK_PATH"
+
+            adb shell input keyevent 82 || true
+
+            mkdir -p maestro
+            maestro test --format=junit --output=maestro/report.xml --no-ansi .maestro
+
+      - name: Publish test report
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Maestro Android
+          path: maestro/report.xml
+          reporter: java-junit
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-android
+          path: |
+            maestro/report.xml
+            .maestro/**

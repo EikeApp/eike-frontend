@@ -1,3 +1,5 @@
+appId: com.example.eike_frontend
+
 # Welche Flows sollen standardmäßig ausgeführt werden?
 flows:
   - "flows/*/*.yaml"   # alle Flows in Feature-Unterordnern, z.B. flows/home/home_smoke.yaml
