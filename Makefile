@@ -9,7 +9,7 @@ all: run
 # Fetch content using the dart script
 fetch-content:
 	@echo "Fetching content..."
-	@flutter pub get > /dev/null
+	@flutter pub get > $(if $(OS),NUL,/dev/null) 2>&1
 	@dart run tool/fetch_content.dart $(VERSION)
 
 # Run the app (fetches content first)
@@ -22,10 +22,23 @@ build-apk: fetch-content
 	@echo "Building APK..."
 	@flutter build apk
 
+# Run specifically on iOS Simulator (fetches content first)
+ios-run: fetch-content
+	@echo "Running on iOS Simulator..."
+	@open -a Simulator
+	@flutter run -d $$(xcrun simctl list devices booted | grep "iPhone" | head -n 1 | grep -E -o "[0-9A-F-]{36}")
+
 # Build iOS (fetches content first)
-build-ios: fetch-content
+ios-build: fetch-content
 	@echo "Building iOS..."
 	@flutter build ios
+
+# Run Maestro E2E tests on iOS (fetches content first)
+ios-test: fetch-content
+	@echo "Running Maestro tests on iOS..."
+	@open -a Simulator
+	@flutter install -d $$(xcrun simctl list devices booted | grep "iPhone" | head -n 1 | grep -E -o "[0-9A-F-]{36}")
+	@maestro test .maestro/ --debug-output .
 
 # Clean build artifacts and content cache
 clean:
