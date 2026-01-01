@@ -1,4 +1,4 @@
-appId: com.example.eike_frontend
+appId: de.df-psnv.eike.frontend
 
 # Welche Flows sollen standardmäßig ausgeführt werden?
 flows:

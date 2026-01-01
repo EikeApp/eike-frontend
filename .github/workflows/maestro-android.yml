@@ -114,6 +114,7 @@ jobs:
           fi
 
           echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+          export PATH="$PATH":"$HOME/.maestro/bin"
           maestro --version
 
       # IMPORTANT:

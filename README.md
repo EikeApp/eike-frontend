@@ -117,7 +117,7 @@ maestro test .maestro
 Flows können mit Tags gruppiert werden:
 
 ```yaml
-appId: com.example.eike_frontend
+appId: de.df-psnv.eike.frontend
 name: Home – Smoke Test
 tags:
   - smoke
