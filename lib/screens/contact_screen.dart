@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/app_header.dart';
-import '../widgets/pill.dart';
+import '../widgets/button.dart';
 import '../widgets/section_title.dart';
 
 class ContactScreen extends StatelessWidget {
@@ -26,21 +26,30 @@ class ContactScreen extends StatelessWidget {
               _ContactCard(
                 title: 'Telefonseelsorge',
                 subtitle: '24/7 kostenlos und vertraulich',
-                actions: const [
-                  Pill(icon: Icons.phone, label: '0800 111 0 111'),
-                  Pill(icon: Icons.phone, label: '0800 111 0 222'),
+                actions: [
+                  Button(
+                    icon: Icons.phone,
+                    label: '0800 111 0 111',
+                    onPressed: () {},
+                  ),
+                  Button(
+                    icon: Icons.phone,
+                    label: '0800 111 0 222',
+                    onPressed: () {},
+                  ),
                 ],
               ),
               const SizedBox(height: 16),
               _ContactCard(
                 title: 'Notruf',
                 subtitle: 'Bei akuter Gefahr',
-                actions: const [
-                  Pill(
+                actions: [
+                  Button(
                     icon: Icons.phone_outlined,
                     label: '112',
-                    alert: true,
+                    variant: ButtonVariant.alert,
                     fullWidth: true,
+                    onPressed: () {},
                   ),
                 ],
               ),
@@ -49,17 +58,9 @@ class ContactScreen extends StatelessWidget {
                 title: 'Dein Einsatznachsorgeteam',
                 subtitle:
                     'Die Kontaktdaten können in den Einstellungen hinterlegt werden.',
-                actions: const [
-                  Pill(
-                    icon: Icons.phone,
-                    label: 'Nicht hinterlegt',
-                    disabled: true,
-                  ),
-                  Pill(
-                    icon: Icons.mail_outline,
-                    label: 'Nicht hinterlegt',
-                    disabled: true,
-                  ),
+                actions: [
+                  Button(icon: Icons.phone, label: 'Nicht hinterlegt'),
+                  Button(icon: Icons.mail_outline, label: 'Nicht hinterlegt'),
                 ],
               ),
             ],

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../widgets/app_header.dart';
 import '../widgets/section_title.dart';
-import '../widgets/pill.dart';
+import '../widgets/button.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -79,12 +79,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     const SizedBox(height: 20),
                     Align(
                       alignment: Alignment.centerRight,
-                      child: Pill(
-                        icon: Icons.save_outlined,
+                      child: Button(
                         label: 'speichern',
+                        variant: ButtonVariant.secondary,
                         onPressed: _persistContacts,
-                        backgroundColor: theme.colorScheme.secondaryContainer,
-                        foregroundColor: theme.colorScheme.onSecondaryContainer,
                         textStyle: theme.textTheme.labelLarge?.copyWith(
                           fontWeight: FontWeight.w700,
                         ),
@@ -162,13 +160,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     const SizedBox(height: 20),
                     Align(
                       alignment: Alignment.centerRight,
-                      child: Pill(
+                      child: Button(
                         icon: Icons.delete_outline,
                         label: 'alle Daten löschen',
-                        alert: true,
+                        variant: ButtonVariant.alert,
                         onPressed: _resetData,
-                        backgroundColor: theme.colorScheme.errorContainer,
-                        foregroundColor: theme.colorScheme.onErrorContainer,
                         textStyle: theme.textTheme.labelLarge?.copyWith(
                           fontWeight: FontWeight.w700,
                         ),
