@@ -69,6 +69,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Show disk space (debug)
+        run: df -h
+
       - name: Enable KVM group perms
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -87,7 +90,6 @@ jobs:
           name: app-release-apk
           path: build/app/outputs/flutter-apk
 
-      # Cache Maestro install (saves time + avoids flaky downloads)
       - name: Cache Maestro
         uses: actions/cache@v4
         with:
@@ -98,7 +100,7 @@ jobs:
         env:
           MAESTRO_VERSION: "2.0.10"
         run: |
-          set -eu
+          set -euo pipefail
 
           if [ -x "$HOME/.maestro/bin/maestro" ]; then
             echo "Maestro already cached."
@@ -113,12 +115,15 @@ jobs:
             fi
           fi
 
+          # IMPORTANT: make maestro available in THIS step immediately
+          export PATH="$HOME/.maestro/bin:$PATH"
           echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+          which maestro
           maestro --version
 
-      # IMPORTANT:
-      # android-emulator-runner can exit with 1 during teardown even if your script passed.
-      # So we continue-on-error here and decide pass/fail ourselves afterwards.
+      # android-emulator-runner can fail on teardown even if tests passed.
+      # We therefore continue-on-error and decide pass/fail ourselves afterwards.
       - name: Boot emulator + install APK + run Maestro
         id: emulator_maestro
         continue-on-error: true
@@ -133,60 +138,33 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot -camera-back none -no-metrics
           disable-animations: true
           script: |
-            set -eu
-
-            APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
-            ls -lah build/app/outputs/flutter-apk || true
-            test -f "$APK_PATH"
-
-            echo "Installing APK: $APK_PATH"
-            adb install -r "$APK_PATH"
-
-            adb shell input keyevent 82 || true
-
-            mkdir -p maestro
-
-            set +e
-            maestro test --format=junit --output=maestro/report.xml --no-ansi .maestro
-            MAESTRO_EXIT=$?
-            set -e
-
-            echo "$MAESTRO_EXIT" > maestro/maestro_exit_code.txt
-
-            # Optional debug output
-            adb devices || true
-            adb logcat -d -t 5000 > maestro/logcat.txt || true
-
-            exit $MAESTRO_EXIT
+            bash -lc "set -eu; \
+              export PATH=\"$HOME/.maestro/bin:\$PATH\"; \
+              APK_PATH=build/app/outputs/flutter-apk/app-release.apk; \
+              test -f \$APK_PATH; \
+              echo Installing APK: \$APK_PATH; \
+              adb install -r \$APK_PATH; \
+              adb shell input keyevent 82 || true; \
+              mkdir -p maestro; \
+              set +e; \
+              maestro test --format=junit --output=maestro/report.xml --no-ansi .maestro; \
+              MAESTRO_EXIT=\$?; \
+              set -e; \
+              echo \$MAESTRO_EXIT > maestro/maestro_exit_code.txt; \
+              adb devices || true; \
+              adb logcat -d -t 5000 > maestro/logcat.txt || true; \
+              exit \$MAESTRO_EXIT"
 
       - name: Decide pass/fail from JUnit report
         if: always()
         run: |
           set -eu
-
           if [ ! -f maestro/report.xml ]; then
             echo "JUnit report missing -> FAIL"
             exit 1
           fi
 
-          python3 - <<'PY'
-          import xml.etree.ElementTree as ET
-          p = "maestro/report.xml"
-          root = ET.parse(p).getroot()
-          suites = root.findall(".//testsuite") if root.tag != "testsuite" else [root]
-
-          failures = 0
-          errors = 0
-          for s in suites:
-            failures += int(s.attrib.get("failures","0") or "0")
-            errors   += int(s.attrib.get("errors","0") or "0")
-
-          print(f"JUnit parsed: failures={failures} errors={errors}")
-
-          if failures == 0 and errors == 0:
-            raise SystemExit(0)
-          raise SystemExit(1)
-          PY
+          python3 -c "import xml.etree.ElementTree as ET, sys; p='maestro/report.xml'; root=ET.parse(p).getroot(); suites=(root.findall('.//testsuite') if root.tag!='testsuite' else [root]); failures=sum(int(s.attrib.get('failures','0') or '0') for s in suites); errors=sum(int(s.attrib.get('errors','0') or '0') for s in suites); print(f'JUnit parsed: failures={failures} errors={errors}'); sys.exit(0 if (failures==0 and errors==0) else 1)"
 
       - name: Publish test report
         if: always() && hashFiles('maestro/report.xml') != ''
