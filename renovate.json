@@ -1,7 +1,12 @@
 {
-  "packageRules": [
+  "extends": ["mergeConfidence:all-badges"],
+  "customManagers": [
     {
-      "fileMatch": ["^Makefile$"]
+      "customType": "regex",
+      "managerFilePatterns": ["/^Makefile$/"],
+      "matchStrings": [
+        "datasource=(?<datasource>.*?) depName=(?<depName>.*?)\nVERSION=(?<currentValue>.*)"
+      ]
     }
   ]
 }
