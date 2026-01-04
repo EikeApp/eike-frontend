@@ -115,18 +115,13 @@ jobs:
             fi
           fi
 
-          # IMPORTANT: make maestro available in THIS step immediately
-          export PATH="$HOME/.maestro/bin:$PATH"
+          export PATH="$PATH:$HOME/.maestro/bin"
           echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
 
           which maestro
           maestro --version
 
-      # android-emulator-runner can fail on teardown even if tests passed.
-      # We therefore continue-on-error and decide pass/fail ourselves afterwards.
       - name: Boot emulator + install APK + run Maestro
-        id: emulator_maestro
-        continue-on-error: true
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 33
@@ -134,37 +129,11 @@ jobs:
           target: google_apis
           ram-size: 2048M
           disk-size: 2048M
-          emulator-boot-timeout: 300
+          emulator-boot-timeout: 180
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot -camera-back none -no-metrics
           disable-animations: true
           script: |
-            bash -lc "set -eu; \
-              export PATH=\"$HOME/.maestro/bin:\$PATH\"; \
-              APK_PATH=build/app/outputs/flutter-apk/app-release.apk; \
-              test -f \$APK_PATH; \
-              echo Installing APK: \$APK_PATH; \
-              adb install -r \$APK_PATH; \
-              adb shell input keyevent 82 || true; \
-              mkdir -p maestro; \
-              set +e; \
-              maestro test --format=junit --output=maestro/report.xml --no-ansi .maestro; \
-              MAESTRO_EXIT=\$?; \
-              set -e; \
-              echo \$MAESTRO_EXIT > maestro/maestro_exit_code.txt; \
-              adb devices || true; \
-              adb logcat -d -t 5000 > maestro/logcat.txt || true; \
-              exit \$MAESTRO_EXIT"
-
-      - name: Decide pass/fail from JUnit report
-        if: always()
-        run: |
-          set -eu
-          if [ ! -f maestro/report.xml ]; then
-            echo "JUnit report missing -> FAIL"
-            exit 1
-          fi
-
-          python3 -c "import xml.etree.ElementTree as ET, sys; p='maestro/report.xml'; root=ET.parse(p).getroot(); suites=(root.findall('.//testsuite') if root.tag!='testsuite' else [root]); failures=sum(int(s.attrib.get('failures','0') or '0') for s in suites); errors=sum(int(s.attrib.get('errors','0') or '0') for s in suites); print(f'JUnit parsed: failures={failures} errors={errors}'); sys.exit(0 if (failures==0 and errors==0) else 1)"
+            bash -lc "set -eu; df -h; adb kill-server || true; adb start-server || true; adb devices || true; APK_PATH=build/app/outputs/flutter-apk/app-release.apk; test -f \$APK_PATH; echo Installing APK: \$APK_PATH; adb install -r \$APK_PATH; adb shell input keyevent 82 || true; mkdir -p maestro; set +e; maestro test --format=junit --output=maestro/report.xml --no-ansi .maestro; MAESTRO_EXIT=\$?; set -e; echo MaestroExit=\$MAESTRO_EXIT; ls -lah maestro || true; EXIT_CODE=\$MAESTRO_EXIT; if [ -f maestro/report.xml ]; then python3 -c \"import xml.etree.ElementTree as ET, sys; p='maestro/report.xml'; root=ET.parse(p).getroot(); suites=(root.findall('.//testsuite') if root.tag!='testsuite' else [root]); failures=sum(int(s.attrib.get('failures','0') or '0') for s in suites); errors=sum(int(s.attrib.get('errors','0') or '0') for s in suites); print(f'JUnit parsed: failures={failures} errors={errors}'); sys.exit(0 if (failures==0 and errors==0) else 1)\"; JUNIT_EXIT=\$?; if [ \"\$JUNIT_EXIT\" -eq 0 ]; then echo 'JUnit says PASS'; EXIT_CODE=0; else echo 'JUnit says FAIL'; EXIT_CODE=1; fi; else echo 'JUnit report missing'; fi; adb devices || true; adb logcat -d -t 5000 > maestro/logcat.txt || true; exit \$EXIT_CODE"
 
       - name: Publish test report
         if: always() && hashFiles('maestro/report.xml') != ''
@@ -181,6 +150,5 @@ jobs:
           name: maestro-android
           path: |
             maestro/report.xml
-            maestro/maestro_exit_code.txt
             maestro/logcat.txt
             .maestro/**
