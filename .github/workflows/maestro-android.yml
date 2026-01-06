@@ -1,9 +1,6 @@
 name: E2E (Maestro Android)
 
 on:
-  pull_request:
-  push:
-    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -118,7 +115,6 @@ jobs:
           which maestro
           maestro --version
 
-      # KEY CHANGE:
       # This action can fail during teardown even if tests passed.
       # We ignore its exit code and decide PASS/FAIL in the next step based on JUnit.
       - name: Boot emulator + install APK + run Maestro
@@ -132,23 +128,21 @@ jobs:
           ram-size: 2048M
           disk-size: 2048M
           emulator-boot-timeout: 180
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot -camera-back none -no-metrics
+          emulator-options: >
+            -no-window
+            -gpu swiftshader_indirect
+            -noaudio
+            -no-boot-anim
+            -no-snapshot
+            -camera-back none
+            -no-metrics
           disable-animations: true
-          script: |
-            bash -lc "set -eu; df -h; adb kill-server || true; adb start-server || true; adb devices || true; echo 'Waiting for emulator to be online...'; for i in \$(seq 1 60); do STATE=\$(adb devices | awk 'NR>1 && \$1 ~ /emulator-5554/ {print \$2}' | head -n1); echo \"adb state: \${STATE:-none}\"; if [ \"\$STATE\" = \"device\" ]; then break; fi; if [ \"\$STATE\" = \"offline\" ]; then adb kill-server || true; adb start-server || true; fi; sleep 2; done; adb devices; adb -s emulator-5554 wait-for-device; APK_PATH=build/app/outputs/flutter-apk/app-release.apk; test -f \$APK_PATH; echo Installing APK: \$APK_PATH; adb -s emulator-5554 install -r \$APK_PATH; adb -s emulator-5554 shell input keyevent 82 || true; mkdir -p maestro; set +e; maestro test --format=junit --output=maestro/report.xml --no-ansi .maestro; MAESTRO_EXIT=\$?; set -e; echo \$MAESTRO_EXIT > maestro/maestro_exit_code.txt; adb devices || true; adb -s emulator-5554 logcat -d -t 5000 > maestro/logcat.txt || true; exit \$MAESTRO_EXIT"
+          script: bash -l ci/start-and-wait-for-emulator.sh
 
       # FAIL only if report is missing or contains failures/errors.
       - name: Decide pass/fail from Maestro JUnit
         if: always()
-        run: |
-          set -eu
-
-          if [ ! -f maestro/report.xml ]; then
-            echo "JUnit report missing -> FAIL"
-            exit 1
-          fi
-
-          python3 -c "import xml.etree.ElementTree as ET, sys; p='maestro/report.xml'; root=ET.parse(p).getroot(); suites=(root.findall('.//testsuite') if root.tag!='testsuite' else [root]); failures=sum(int(s.attrib.get('failures','0') or '0') for s in suites); errors=sum(int(s.attrib.get('errors','0') or '0') for s in suites); print(f'JUnit parsed: failures={failures} errors={errors}'); sys.exit(0 if (failures==0 and errors==0) else 1)"
+        run: python3 ci/parse_junit.py
 
       - name: Publish test report
         if: always() && hashFiles('maestro/report.xml') != ''
