@@ -142,7 +142,7 @@ jobs:
       # FAIL only if report is missing or contains failures/errors.
       - name: Decide pass/fail from Maestro JUnit
         if: always()
-        run: bash ci/parse_junit.sh
+        run: bash ci/parse-junit.sh
 
       - name: Publish test report
         if: always() && hashFiles('maestro/report.xml') != ''
