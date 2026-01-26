@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _TipCard extends StatelessWidget {
-  const _TipCard({required this.tip, required this.position, super.key});
+  const _TipCard({required this.tip, required this.position});
 
   final Tip tip;
   final int position;
