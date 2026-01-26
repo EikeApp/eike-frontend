@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../db/app_database.dart';
 
 import '../widgets/app_header.dart';
 import '../widgets/section_title.dart';
@@ -17,12 +20,74 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late final TextEditingController _mailController;
   bool _appLockEnabled = false;
 
-  void _persistContacts() {
-    // TODO: persist contact data
+  bool _loading = true;
+
+  Future<void> _loadContacts() async {
+    final db = context.read<AppDatabase>();
+    final row = await db.getTeamContact();
+
+    if (!mounted) return;
+
+    _teamController.text = row?.teamName ?? '';
+    _phoneController.text = row?.phone ?? '';
+    _mailController.text = row?.email ?? '';
+
+    setState(() => _loading = false);
   }
 
-  void _resetData() {
-    // TODO: implement data reset
+  Future<void> _persistContacts() async {
+    final db = context.read<AppDatabase>();
+
+    await db.upsertTeamContact(
+      teamName: _teamController.text,
+      phone: _phoneController.text,
+      email: _mailController.text,
+    );
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Gespeichert.')));
+  }
+
+  Future<void> _resetData() async {
+    final db = context.read<AppDatabase>();
+
+    // Safety-Abfrage
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Alle Daten löschen?'),
+        content: const Text(
+          'Möchtest du alle Daten endgültig vom Gerät entfernen? Diese Aktion ist unwiderruflich.',
+        ),
+        actions: [
+          TextButton(
+            child: const Text('Abbrechen'),
+            onPressed: () => Navigator.pop(context, false),
+          ),
+          Button(
+            label: 'Daten Löschen',
+            variant: ButtonVariant.alert,
+            onPressed: () => Navigator.pop(context, true),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    await db.deleteAllData();
+
+    if (!mounted) return;
+
+    _teamController.clear();
+    _phoneController.clear();
+    _mailController.clear();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Alle Daten wurden gelöscht.')),
+    );
   }
 
   @override
@@ -31,6 +96,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _teamController = TextEditingController();
     _phoneController = TextEditingController();
     _mailController = TextEditingController();
+
+    // initState kann context.read nutzen, aber erst nach dem ersten Frame ist es
+    // am robustesten (falls Provider später umgebaut wird).
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadContacts());
   }
 
   @override
@@ -44,6 +113,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    // Ladeanzeige, bis Daten geladen sind
+    if (_loading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
 
     return Scaffold(
       appBar: const AppHeader(title: 'Einstellungen'),
@@ -82,7 +156,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       child: Button(
                         label: 'speichern',
                         variant: ButtonVariant.secondary,
-                        onPressed: _persistContacts,
+                        onPressed: () => _persistContacts(),
                         textStyle: theme.textTheme.labelLarge?.copyWith(
                           fontWeight: FontWeight.w700,
                         ),
@@ -164,7 +238,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         icon: Icons.delete_outline,
                         label: 'alle Daten löschen',
                         variant: ButtonVariant.alert,
-                        onPressed: _resetData,
+                        onPressed: () => _resetData(),
                         textStyle: theme.textTheme.labelLarge?.copyWith(
                           fontWeight: FontWeight.w700,
                         ),
