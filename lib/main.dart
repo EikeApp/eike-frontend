@@ -9,9 +9,18 @@ import 'screens/settings_screen.dart';
 
 import 'db/app_database.dart';
 import 'db/db_key_manager.dart';
+import 'security/app_lock_storage.dart';
+import 'security/app_lock_gate.dart';
+import 'security/first_run_reset.dart';
+import 'db/sqlcipher_setup.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await setupSqlCipher();
+
+  // First Run Reset
+  await FirstRunReset.run();
 
   // Secure Storage + Key Manager
   final storage = const FlutterSecureStorage();
@@ -20,7 +29,14 @@ void main() {
   // Drift DB (öffnet verschlüsselt; LazyDatabase kümmert sich um async open)
   final db = AppDatabase(keyManager);
 
-  runApp(Provider<AppDatabase>.value(value: db, child: const MyApp()));
+  final lockStorage = AppLockStorage(storage);
+
+  runApp(
+    Provider<AppDatabase>.value(
+      value: db,
+      child: MyApp(lockStorage: lockStorage),
+    ),
+  );
 }
 
 // GoRouter Config
@@ -62,7 +78,8 @@ final GoRouter _router = GoRouter(
 );
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.lockStorage});
+  final AppLockStorage lockStorage;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -85,6 +102,12 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
       ),
       routerConfig: _router,
+      builder: (context, child) {
+        return AppLockGate(
+          storage: widget.lockStorage,
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
     );
   }
 }

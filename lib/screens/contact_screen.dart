@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../db/app_database.dart';
 
 import '../widgets/app_header.dart';
 import '../widgets/button.dart';
@@ -6,6 +10,41 @@ import '../widgets/section_title.dart';
 
 class ContactScreen extends StatelessWidget {
   const ContactScreen({super.key});
+
+  Future<void> _launchOrSnack(BuildContext context, Uri uri) async {
+    final ok = await canLaunchUrl(uri);
+    if (!ok) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Aktion ist auf diesem Gerät nicht verfügbar.'),
+        ),
+      );
+      return;
+    }
+
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  Future<void> _dialPhone(BuildContext context, String phone) {
+    final uri = Uri(scheme: 'tel', path: phone.trim());
+    return _launchOrSnack(context, uri);
+  }
+
+  Future<void> _sendEmail(
+    BuildContext context,
+    String email, {
+    String subject = 'EIKE – Kontaktaufnahme',
+  }) {
+    final uri = Uri(
+      scheme: 'mailto',
+      path: email.trim(),
+      queryParameters: {'subject': subject},
+    );
+
+    return _launchOrSnack(context, uri);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +69,12 @@ class ContactScreen extends StatelessWidget {
                   Button(
                     icon: Icons.phone,
                     label: '0800 111 0 111',
-                    onPressed: () {},
+                    onPressed: () => _dialPhone(context, '0800 111 0 111'),
                   ),
                   Button(
                     icon: Icons.phone,
                     label: '0800 111 0 222',
-                    onPressed: () {},
+                    onPressed: () => _dialPhone(context, '0800 111 0 222'),
                   ),
                 ],
               ),
@@ -49,19 +88,48 @@ class ContactScreen extends StatelessWidget {
                     label: '112',
                     variant: ButtonVariant.alert,
                     fullWidth: true,
-                    onPressed: () {},
+                    onPressed: () => _dialPhone(context, '112'),
                   ),
                 ],
               ),
               const SectionTitle('PSNV für Einsatzkräfte'),
-              _ContactCard(
-                title: 'Dein Einsatznachsorgeteam',
-                subtitle:
-                    'Die Kontaktdaten können in den Einstellungen hinterlegt werden.',
-                actions: [
-                  Button(icon: Icons.phone, label: 'Nicht hinterlegt'),
-                  Button(icon: Icons.mail_outline, label: 'Nicht hinterlegt'),
-                ],
+              StreamBuilder<TeamContact?>(
+                stream: context.read<AppDatabase>().watchTeamContact(),
+                builder: (context, snapshot) {
+                  final team = snapshot.data;
+
+                  final phone = (team?.phone ?? '').trim();
+                  final email = (team?.email ?? '').trim();
+
+                  final hasPhone = phone.isNotEmpty;
+                  final hasEmail = email.isNotEmpty;
+
+                  return _ContactCard(
+                    title: 'Dein Einsatznachsorgeteam',
+                    subtitle:
+                        'Die Kontaktdaten können in den Einstellungen hinterlegt werden.',
+                    actions: [
+                      Button(
+                        icon: Icons.phone,
+                        label: hasPhone ? phone : 'Nicht hinterlegt',
+                        onPressed: hasPhone
+                            ? () => _dialPhone(context, phone)
+                            : null,
+                      ),
+                      Button(
+                        icon: Icons.mail_outline,
+                        label: hasEmail ? email : 'Nicht hinterlegt',
+                        onPressed: hasEmail
+                            ? () => _sendEmail(
+                                context,
+                                email,
+                                subject: 'EIKE – Einsatznachsorge',
+                              )
+                            : null,
+                      ),
+                    ],
+                  );
+                },
               ),
             ],
           ),

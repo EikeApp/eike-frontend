@@ -4,18 +4,38 @@ import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-import 'tables.dart';
+import 'db_tables.dart';
 import 'sqlcipher_setup.dart';
 import 'db_key_manager.dart';
 
 part 'app_database.g.dart';
 
-@DriftDatabase(tables: [TeamContacts /*, ... deine anderen Tabellen */])
+// NOTE: Wenn du Tabellen/Spalten/Indizes in Drift änderst,
+// musst du den Code-Generator neu laufen lassen:
+// dart run build_runner build --delete-conflicting-outputs
+//
+// (Optional während der Entwicklung)
+// dart run build_runner watch --delete-conflicting-outputs
+
+@DriftDatabase(tables: [UserTipNotes, TeamContacts])
 class AppDatabase extends _$AppDatabase {
   AppDatabase(DbKeyManager keyManager) : super(_openConnection(keyManager));
 
   @override
   int get schemaVersion => 1;
+
+  // ---- UserTipNotes API ----
+  Stream<String> watchUserTipNote(int position) {
+    return (select(userTipNotes)..where((t) => t.position.equals(position)))
+        .watchSingleOrNull()
+        .map((row) => row?.note ?? '');
+  }
+
+  Future<void> upsertUserTipNote(int position, String note) async {
+    await into(userTipNotes).insertOnConflictUpdate(
+      UserTipNotesCompanion(position: Value(position), note: Value(note)),
+    );
+  }
 
   // ---- TeamContacts API ----
 
@@ -54,13 +74,11 @@ class AppDatabase extends _$AppDatabase {
     )..where((t) => t.id.equals(_teamContactRowId))).go();
   }
 
-  /// Für euren "alle Daten löschen" Button:
-  /// Falls ihr später weitere Tabellen habt, einfach ergänzen.
+  // Für "alle Daten löschen" Button:
   Future<void> deleteAllData() async {
     await transaction(() async {
+      await delete(userTipNotes).go();
       await delete(teamContacts).go();
-      // z.B. später:
-      // await delete(otherTable).go();
     });
   }
 }

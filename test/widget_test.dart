@@ -6,14 +6,18 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:eike_frontend/main.dart';
+import 'package:eike_frontend/security/app_lock_storage.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    final storage = const FlutterSecureStorage();
+    final lockStorage = AppLockStorage(storage);
+    await tester.pumpWidget(MyApp(lockStorage: lockStorage));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

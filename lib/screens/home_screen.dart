@@ -1,7 +1,11 @@
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:provider/provider.dart';
+
+import '../db/app_database.dart';
 
 import '../models/tip.dart';
 import '../widgets/app_header.dart';
@@ -84,11 +88,69 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class _TipCard extends StatelessWidget {
+class _TipCard extends StatefulWidget {
   const _TipCard({required this.tip, required this.position});
 
   final Tip tip;
   final int position;
+
+  @override
+  State<_TipCard> createState() => _TipCardState();
+}
+
+class _TipCardState extends State<_TipCard> {
+  late final TextEditingController _controller;
+  StreamSubscription<String>? _sub;
+  Timer? _debounce;
+  bool _updatingFromDb = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+
+    // DB-Stream abonnieren und Controller initial (und bei Änderungen) setzen
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final db = context.read<AppDatabase>();
+      _sub = db.watchUserTipNote(widget.position).listen((note) {
+        // Wenn der User gerade tippt und gespeichert wird,
+        // nicht mit DB-Update "dazwischenfunken".
+        if (_updatingFromDb) return;
+
+        if (_controller.text != note) {
+          _controller.text = note;
+        }
+      });
+    });
+
+    _controller.addListener(_onChanged);
+  }
+
+  void _onChanged() {
+    // debounce, damit nicht bei jedem Keypress in DB geschrieben wird
+    _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 1000), () async {
+      final db = context.read<AppDatabase>();
+      final text = _controller.text;
+
+      // Markieren, dass das nächste Stream-Update kommen kann
+      _updatingFromDb = true;
+      try {
+        await db.upsertUserTipNote(widget.position, text);
+      } finally {
+        _updatingFromDb = false;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    _sub?.cancel();
+    _controller.removeListener(_onChanged);
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,11 +178,11 @@ class _TipCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _NumberBadge(position: position),
+                _NumberBadge(position: widget.position),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    tip.title,
+                    widget.tip.title,
                     style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
@@ -135,7 +197,7 @@ class _TipCard extends StatelessWidget {
                 child: AspectRatio(
                   aspectRatio: 1,
                   child: Image.asset(
-                    tip.imagePath,
+                    widget.tip.imagePath,
                     fit: BoxFit.contain,
                     alignment: Alignment.center,
                     errorBuilder: (context, error, stackTrace) => Container(
@@ -147,14 +209,14 @@ class _TipCard extends StatelessWidget {
                         size: 32,
                       ),
                     ),
-                    semanticLabel: tip.alt,
+                    semanticLabel: widget.tip.alt,
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 16),
             Text(
-              tip.description,
+              widget.tip.description,
               style: textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
                 height: 1.35,
@@ -168,8 +230,10 @@ class _TipCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
+
+            // ✅ Persistentes Feld
             TextFormField(
-              initialValue: '',
+              controller: _controller,
               maxLines: 2,
               decoration: InputDecoration(
                 hintText: 'Schreib deine Idee hier auf...',

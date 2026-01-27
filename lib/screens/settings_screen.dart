@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:local_auth/local_auth.dart';
 
 import '../db/app_database.dart';
+import '../security/app_lock_storage.dart';
+import '../security/local_auth_messages.dart';
 
 import '../widgets/app_header.dart';
 import '../widgets/section_title.dart';
@@ -18,6 +22,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late final TextEditingController _teamController;
   late final TextEditingController _phoneController;
   late final TextEditingController _mailController;
+
+  final _auth = LocalAuthentication();
+  late final AppLockStorage _lockStorage;
+  bool _lockLoading = true;
   bool _appLockEnabled = false;
 
   bool _loading = true;
@@ -45,9 +53,58 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
 
     if (!mounted) return;
+    ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(const SnackBar(content: Text('Gespeichert.')));
+  }
+
+  Future<void> onToggleAppLock(bool value) async {
+    if (!value) {
+      await _lockStorage.writeEnabled(false);
+      if (!mounted) return;
+      setState(() => _appLockEnabled = false);
+      return;
+    }
+
+    final supported = await _auth.isDeviceSupported();
+    final canBio = await _auth.canCheckBiometrics;
+
+    if (!supported && !canBio) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Auf diesem Gerät ist keine sichere Entsperrung eingerichtet.',
+          ),
+        ),
+      );
+      return;
+    }
+
+    try {
+      final ok = await _auth.authenticate(
+        localizedReason: 'App-Sperre aktivieren – bitte bestätigen.',
+        biometricOnly: false,
+        persistAcrossBackgrounding: true,
+      );
+
+      if (!ok) return;
+
+      await _lockStorage.writeEnabled(true);
+      if (!mounted) return;
+      setState(() => _appLockEnabled = true);
+    } on LocalAuthException catch (e) {
+      if (!mounted) return;
+
+      final msg = localAuthMessage(e.code);
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+
+      await _lockStorage.writeEnabled(false);
+      setState(() => _appLockEnabled = false);
+    }
   }
 
   Future<void> _resetData() async {
@@ -85,6 +142,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _phoneController.clear();
     _mailController.clear();
 
+    ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Alle Daten wurden gelöscht.')),
     );
@@ -97,9 +155,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _phoneController = TextEditingController();
     _mailController = TextEditingController();
 
+    _lockStorage = AppLockStorage(const FlutterSecureStorage());
+
     // initState kann context.read nutzen, aber erst nach dem ersten Frame ist es
     // am robustesten (falls Provider später umgebaut wird).
-    WidgetsBinding.instance.addPostFrameCallback((_) => _loadContacts());
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final enabled = await _lockStorage.readEnabled();
+      if (!mounted) return;
+      setState(() {
+        _appLockEnabled = enabled;
+        _lockLoading = false;
+      });
+      _loadContacts();
+    });
   }
 
   @override
@@ -201,16 +269,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                         Switch(
                           value: _appLockEnabled,
-                          onChanged: (value) {
-                            setState(() => _appLockEnabled = value);
-                            // TODO: persist app lock preference
-                          },
+                          onChanged: _lockLoading
+                              ? null
+                              : (v) => onToggleAppLock(v),
                         ),
                       ],
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'Alle Daten werden lokal auf deinem Gerät gespeichert und verlassen die Smartphone nicht.',
+                      'Alle Daten werden lokal auf deinem Gerät gespeichert und verlassen das Smartphone nicht.',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                         height: 1.35,
