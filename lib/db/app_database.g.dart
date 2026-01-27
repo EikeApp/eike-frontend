@@ -3,6 +3,198 @@
 part of 'app_database.dart';
 
 // ignore_for_file: type=lint
+class $UserTipNotesTable extends UserTipNotes
+    with TableInfo<$UserTipNotesTable, UserTipNote> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UserTipNotesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _positionMeta = const VerificationMeta(
+    'position',
+  );
+  @override
+  late final GeneratedColumn<int> position = GeneratedColumn<int>(
+    'position',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [position, note];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'user_tip_notes';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<UserTipNote> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('position')) {
+      context.handle(
+        _positionMeta,
+        position.isAcceptableOrUnknown(data['position']!, _positionMeta),
+      );
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {position};
+  @override
+  UserTipNote map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UserTipNote(
+      position: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}position'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      )!,
+    );
+  }
+
+  @override
+  $UserTipNotesTable createAlias(String alias) {
+    return $UserTipNotesTable(attachedDatabase, alias);
+  }
+}
+
+class UserTipNote extends DataClass implements Insertable<UserTipNote> {
+  final int position;
+  final String note;
+  const UserTipNote({required this.position, required this.note});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['position'] = Variable<int>(position);
+    map['note'] = Variable<String>(note);
+    return map;
+  }
+
+  UserTipNotesCompanion toCompanion(bool nullToAbsent) {
+    return UserTipNotesCompanion(position: Value(position), note: Value(note));
+  }
+
+  factory UserTipNote.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UserTipNote(
+      position: serializer.fromJson<int>(json['position']),
+      note: serializer.fromJson<String>(json['note']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'position': serializer.toJson<int>(position),
+      'note': serializer.toJson<String>(note),
+    };
+  }
+
+  UserTipNote copyWith({int? position, String? note}) =>
+      UserTipNote(position: position ?? this.position, note: note ?? this.note);
+  UserTipNote copyWithCompanion(UserTipNotesCompanion data) {
+    return UserTipNote(
+      position: data.position.present ? data.position.value : this.position,
+      note: data.note.present ? data.note.value : this.note,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserTipNote(')
+          ..write('position: $position, ')
+          ..write('note: $note')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(position, note);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserTipNote &&
+          other.position == this.position &&
+          other.note == this.note);
+}
+
+class UserTipNotesCompanion extends UpdateCompanion<UserTipNote> {
+  final Value<int> position;
+  final Value<String> note;
+  const UserTipNotesCompanion({
+    this.position = const Value.absent(),
+    this.note = const Value.absent(),
+  });
+  UserTipNotesCompanion.insert({
+    this.position = const Value.absent(),
+    this.note = const Value.absent(),
+  });
+  static Insertable<UserTipNote> custom({
+    Expression<int>? position,
+    Expression<String>? note,
+  }) {
+    return RawValuesInsertable({
+      if (position != null) 'position': position,
+      if (note != null) 'note': note,
+    });
+  }
+
+  UserTipNotesCompanion copyWith({Value<int>? position, Value<String>? note}) {
+    return UserTipNotesCompanion(
+      position: position ?? this.position,
+      note: note ?? this.note,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (position.present) {
+      map['position'] = Variable<int>(position.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserTipNotesCompanion(')
+          ..write('position: $position, ')
+          ..write('note: $note')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $TeamContactsTable extends TeamContacts
     with TableInfo<$TeamContactsTable, TeamContact> {
   @override
@@ -293,14 +485,144 @@ class TeamContactsCompanion extends UpdateCompanion<TeamContact> {
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
+  late final $UserTipNotesTable userTipNotes = $UserTipNotesTable(this);
   late final $TeamContactsTable teamContacts = $TeamContactsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [teamContacts];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+    userTipNotes,
+    teamContacts,
+  ];
 }
 
+typedef $$UserTipNotesTableCreateCompanionBuilder =
+    UserTipNotesCompanion Function({Value<int> position, Value<String> note});
+typedef $$UserTipNotesTableUpdateCompanionBuilder =
+    UserTipNotesCompanion Function({Value<int> position, Value<String> note});
+
+class $$UserTipNotesTableFilterComposer
+    extends Composer<_$AppDatabase, $UserTipNotesTable> {
+  $$UserTipNotesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get position => $composableBuilder(
+    column: $table.position,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$UserTipNotesTableOrderingComposer
+    extends Composer<_$AppDatabase, $UserTipNotesTable> {
+  $$UserTipNotesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get position => $composableBuilder(
+    column: $table.position,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$UserTipNotesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $UserTipNotesTable> {
+  $$UserTipNotesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get position =>
+      $composableBuilder(column: $table.position, builder: (column) => column);
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+}
+
+class $$UserTipNotesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $UserTipNotesTable,
+          UserTipNote,
+          $$UserTipNotesTableFilterComposer,
+          $$UserTipNotesTableOrderingComposer,
+          $$UserTipNotesTableAnnotationComposer,
+          $$UserTipNotesTableCreateCompanionBuilder,
+          $$UserTipNotesTableUpdateCompanionBuilder,
+          (
+            UserTipNote,
+            BaseReferences<_$AppDatabase, $UserTipNotesTable, UserTipNote>,
+          ),
+          UserTipNote,
+          PrefetchHooks Function()
+        > {
+  $$UserTipNotesTableTableManager(_$AppDatabase db, $UserTipNotesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UserTipNotesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$UserTipNotesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$UserTipNotesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> position = const Value.absent(),
+                Value<String> note = const Value.absent(),
+              }) => UserTipNotesCompanion(position: position, note: note),
+          createCompanionCallback:
+              ({
+                Value<int> position = const Value.absent(),
+                Value<String> note = const Value.absent(),
+              }) =>
+                  UserTipNotesCompanion.insert(position: position, note: note),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$UserTipNotesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $UserTipNotesTable,
+      UserTipNote,
+      $$UserTipNotesTableFilterComposer,
+      $$UserTipNotesTableOrderingComposer,
+      $$UserTipNotesTableAnnotationComposer,
+      $$UserTipNotesTableCreateCompanionBuilder,
+      $$UserTipNotesTableUpdateCompanionBuilder,
+      (
+        UserTipNote,
+        BaseReferences<_$AppDatabase, $UserTipNotesTable, UserTipNote>,
+      ),
+      UserTipNote,
+      PrefetchHooks Function()
+    >;
 typedef $$TeamContactsTableCreateCompanionBuilder =
     TeamContactsCompanion Function({
       Value<int> id,
@@ -480,6 +802,8 @@ typedef $$TeamContactsTableProcessedTableManager =
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
+  $$UserTipNotesTableTableManager get userTipNotes =>
+      $$UserTipNotesTableTableManager(_db, _db.userTipNotes);
   $$TeamContactsTableTableManager get teamContacts =>
       $$TeamContactsTableTableManager(_db, _db.teamContacts);
 }
