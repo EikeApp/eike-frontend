@@ -192,26 +192,43 @@ class _TipCardState extends State<_TipCard> {
             ),
             const SizedBox(height: 16),
             Center(
-              child: FractionallySizedBox(
-                widthFactor: 0.7,
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: Image.asset(
-                    widget.tip.imagePath,
-                    fit: BoxFit.contain,
-                    alignment: Alignment.center,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      color: theme.colorScheme.surfaceContainerHighest,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final width = (constraints.maxWidth * 0.7).clamp(0.0, 200.0);
+                  return SizedBox(
+                    width: width,
+                    height: width,
+                    child: Stack(
                       alignment: Alignment.center,
-                      child: Icon(
-                        Icons.image_not_supported_outlined,
-                        color: theme.colorScheme.onSurfaceVariant,
-                        size: 32,
-                      ),
+                      children: [
+                        Image.asset(
+                          'assets/images/tip-icon-bg-x2.png',
+                          fit: BoxFit.contain,
+                        ),
+                        Transform.scale(
+                          scale: 0.8,
+                          child: Image.asset(
+                            widget.tip.imagePath,
+                            fit: BoxFit.contain,
+                            alignment: Alignment.center,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Container(
+                                  color:
+                                      theme.colorScheme.surfaceContainerHighest,
+                                  alignment: Alignment.center,
+                                  child: Icon(
+                                    Icons.image_not_supported_outlined,
+                                    color: theme.colorScheme.onSurfaceVariant,
+                                    size: 32,
+                                  ),
+                                ),
+                            semanticLabel: widget.tip.alt,
+                          ),
+                        ),
+                      ],
                     ),
-                    semanticLabel: widget.tip.alt,
-                  ),
-                ),
+                  );
+                },
               ),
             ),
             const SizedBox(height: 16),

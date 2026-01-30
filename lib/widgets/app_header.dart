@@ -24,10 +24,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
       ),
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Divider(height: 1, color: theme.colorScheme.outlineVariant),
-        ),
+        child: Divider(height: 1, color: theme.colorScheme.outlineVariant),
       ),
     );
   }

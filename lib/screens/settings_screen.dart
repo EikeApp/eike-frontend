@@ -222,7 +222,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: Button(
-                        label: 'speichern',
+                        icon: Icons.save,
+                        label: 'Speichern',
                         variant: ButtonVariant.secondary,
                         onPressed: () => _persistContacts(),
                         textStyle: theme.textTheme.labelLarge?.copyWith(
@@ -303,7 +304,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       alignment: Alignment.centerRight,
                       child: Button(
                         icon: Icons.delete_outline,
-                        label: 'alle Daten löschen',
+                        label: 'Alle Daten löschen',
                         variant: ButtonVariant.alert,
                         onPressed: () => _resetData(),
                         textStyle: theme.textTheme.labelLarge?.copyWith(
