@@ -15,10 +15,22 @@ const String targetDir = 'assets/content';
 
 // Allowed extensions for media files to keep
 const Set<String> allowedExtensions = {
-  '.jpg', '.jpeg', '.png', '.gif', '.webp', // Images
-  '.mp3', '.wav', '.m4a',                   // Audio
-  '.mp4', '.mov',                           // Video
-  '.json'                                   // JSON data
+  // Images
+  '.jpg',
+  '.jpeg',
+  '.png',
+  '.gif',
+  '.webp',
+  '.svg',
+  // Audio
+  '.mp3',
+  '.wav',
+  '.m4a',
+  // Video
+  '.mp4',
+  '.mov',
+  // JSON data
+  '.json',
 };
 
 void main(List<String> args) async {
@@ -73,9 +85,11 @@ void main(List<String> args) async {
     String url;
     if (version.startsWith('pr-')) {
       final prNumber = version.split('-')[1];
-      url = 'https://api.github.com/repos/$repoOwner/$repoName/zipball/pull/$prNumber/head';
+      url =
+          'https://api.github.com/repos/$repoOwner/$repoName/zipball/pull/$prNumber/head';
     } else {
-      url = 'https://github.com/$repoOwner/$repoName/archive/refs/tags/$version.zip';
+      url =
+          'https://github.com/$repoOwner/$repoName/archive/refs/tags/$version.zip';
     }
 
     print('⬇️  Downloading from $url...');
@@ -85,7 +99,9 @@ void main(List<String> args) async {
       await zipFile.writeAsBytes(response.bodyBytes);
       print('✅ Download complete.');
     } else {
-      print('❌ Failed to download content. Status code: ${response.statusCode}');
+      print(
+        '❌ Failed to download content. Status code: ${response.statusCode}',
+      );
       exit(1);
     }
   } else {
@@ -156,7 +172,8 @@ Future<void> _cleanupDirectory(Directory dir) async {
     if (entity is File) {
       final ext = path.extension(entity.path).toLowerCase();
       // Keep .version file and allowed extensions
-      if (path.basename(entity.path) != '.version' && !allowedExtensions.contains(ext)) {
+      if (path.basename(entity.path) != '.version' &&
+          !allowedExtensions.contains(ext)) {
         await entity.delete();
         // print('   Deleted: ${path.basename(entity.path)}');
       }
