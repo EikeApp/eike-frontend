@@ -189,133 +189,137 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       appBar: const AppHeader(title: 'Einstellungen'),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SectionTitle('Einsatznachsorgeteam', topPadding: 16),
-              _CardContainer(
-                child: Column(
-                  children: [
-                    _LabeledField(
-                      label: 'Teamname',
-                      controller: _teamController,
-                      hint: 'z.B. PSNV Kreis Musterhausen',
-                    ),
-                    const SizedBox(height: 20),
-                    _LabeledField(
-                      label: 'Telefonnummer',
-                      controller: _phoneController,
-                      keyboardType: TextInputType.phone,
-                      hint: 'z.B. 0150 11211211',
-                    ),
-                    const SizedBox(height: 20),
-                    _LabeledField(
-                      label: 'E-mail',
-                      controller: _mailController,
-                      keyboardType: TextInputType.emailAddress,
-                      hint: 'z.B. PSNV@musterwehr.de',
-                    ),
-                    const SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Button(
-                        icon: Icons.save,
-                        label: 'Speichern',
-                        variant: ButtonVariant.secondary,
-                        onPressed: () => _persistContacts(),
-                        textStyle: theme.textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SectionTitle('Einsatznachsorgeteam', topPadding: 16),
+                _CardContainer(
+                  child: Column(
+                    children: [
+                      _LabeledField(
+                        label: 'Teamname',
+                        controller: _teamController,
+                        hint: 'z.B. PSNV Kreis Musterhausen',
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              const SectionTitle('Datenschutz & Sicherheit'),
-              _CardContainer(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.lock_outline_rounded,
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'App-Sperre',
-                                style: theme.textTheme.bodyLarge?.copyWith(
-                                  color: theme.colorScheme.onSurfaceVariant,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Text(
-                                'Biometrische Authentifizierung',
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.outline,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
+                      const SizedBox(height: 20),
+                      _LabeledField(
+                        label: 'Telefonnummer',
+                        controller: _phoneController,
+                        keyboardType: TextInputType.phone,
+                        hint: 'z.B. 0150 11211211',
+                      ),
+                      const SizedBox(height: 20),
+                      _LabeledField(
+                        label: 'E-mail',
+                        controller: _mailController,
+                        keyboardType: TextInputType.emailAddress,
+                        hint: 'z.B. PSNV@musterwehr.de',
+                      ),
+                      const SizedBox(height: 20),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Button(
+                          icon: Icons.save,
+                          label: 'Speichern',
+                          variant: ButtonVariant.secondary,
+                          onPressed: () => _persistContacts(),
+                          textStyle: theme.textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
-                        Switch(
-                          value: _appLockEnabled,
-                          onChanged: _lockLoading
-                              ? null
-                              : (v) => onToggleAppLock(v),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Alle Daten werden lokal auf deinem Gerät gespeichert und verlassen das Smartphone nicht.',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                        height: 1.35,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              const SectionTitle('Daten verwalten'),
-              _CardContainer(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Lösche alle gespeicherten Vorsätze und Einstellungen unwiederuflich.',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                        height: 1.35,
+                const SectionTitle('Datenschutz & Sicherheit'),
+                _CardContainer(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.lock_outline_rounded,
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'App-Sperre',
+                                  style: theme.textTheme.bodyLarge?.copyWith(
+                                    color: theme.colorScheme.onSurfaceVariant,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Text(
+                                  'Biometrische Authentifizierung',
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: theme.colorScheme.outline,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Switch(
+                            value: _appLockEnabled,
+                            onChanged: _lockLoading
+                                ? null
+                                : (v) => onToggleAppLock(v),
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Button(
-                        icon: Icons.delete_outline,
-                        label: 'Alle Daten löschen',
-                        variant: ButtonVariant.alert,
-                        onPressed: () => _resetData(),
-                        textStyle: theme.textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
+                      const SizedBox(height: 16),
+                      Text(
+                        'Alle Daten werden lokal auf deinem Gerät gespeichert und verlassen das Smartphone nicht.',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                          height: 1.35,
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                const SectionTitle('Daten verwalten'),
+                _CardContainer(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Lösche alle gespeicherten Vorsätze und Einstellungen unwiederuflich.',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                          height: 1.35,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Button(
+                          icon: Icons.delete_outline,
+                          label: 'Alle Daten löschen',
+                          variant: ButtonVariant.alert,
+                          onPressed: () => _resetData(),
+                          textStyle: theme.textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
