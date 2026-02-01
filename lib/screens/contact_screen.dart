@@ -67,12 +67,12 @@ class ContactScreen extends StatelessWidget {
                 subtitle: '24/7 kostenlos und vertraulich',
                 actions: [
                   Button(
-                    icon: Icons.phone,
+                    icon: Icons.phone_outlined,
                     label: '0800 111 0 111',
                     onPressed: () => _dialPhone(context, '0800 111 0 111'),
                   ),
                   Button(
-                    icon: Icons.phone,
+                    icon: Icons.phone_outlined,
                     label: '0800 111 0 222',
                     onPressed: () => _dialPhone(context, '0800 111 0 222'),
                   ),
@@ -110,7 +110,7 @@ class ContactScreen extends StatelessWidget {
                         'Die Kontaktdaten können in den Einstellungen hinterlegt werden.',
                     actions: [
                       Button(
-                        icon: Icons.phone,
+                        icon: Icons.phone_outlined,
                         label: hasPhone ? phone : 'Nicht hinterlegt',
                         onPressed: hasPhone
                             ? () => _dialPhone(context, phone)
@@ -210,8 +210,9 @@ class _ContactCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest,
+        color: theme.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: theme.colorScheme.outlineVariant, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
