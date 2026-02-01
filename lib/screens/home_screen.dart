@@ -43,45 +43,49 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: const AppHeader(title: 'Meine 7 Sachen'),
-      body: SafeArea(
-        child: FutureBuilder<List<Tip>>(
-          future: _tipsFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SafeArea(
+          child: FutureBuilder<List<Tip>>(
+            future: _tipsFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-            if (snapshot.hasError) {
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Text(
-                    'Die Inhalte konnten nicht geladen werden. Bitte versuche es später erneut.',
-                    style: theme.textTheme.bodyMedium,
-                    textAlign: TextAlign.center,
+              if (snapshot.hasError) {
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Text(
+                      'Die Inhalte konnten nicht geladen werden. Bitte versuche es später erneut.',
+                      style: theme.textTheme.bodyMedium,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ),
-              );
-            }
+                );
+              }
 
-            final tips = snapshot.data ?? <Tip>[];
-            if (tips.isEmpty) {
-              return Center(
-                child: Text(
-                  'Keine Inhalte gefunden.',
-                  style: theme.textTheme.bodyMedium,
-                ),
-              );
-            }
+              final tips = snapshot.data ?? <Tip>[];
+              if (tips.isEmpty) {
+                return Center(
+                  child: Text(
+                    'Keine Inhalte gefunden.',
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                );
+              }
 
-            return ListView.separated(
-              padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
-              itemCount: tips.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 16),
-              itemBuilder: (context, index) =>
-                  _TipCard(tip: tips[index], position: index + 1),
-            );
-          },
+              return ListView.separated(
+                padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+                itemCount: tips.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 16),
+                itemBuilder: (context, index) =>
+                    _TipCard(tip: tips[index], position: index + 1),
+              );
+            },
+          ),
         ),
       ),
     );
