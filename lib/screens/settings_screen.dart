@@ -258,11 +258,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   'App-Sperre',
                                   style: theme.textTheme.bodyLarge?.copyWith(
                                     color: theme.colorScheme.onSurfaceVariant,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                                 Text(
-                                  'Biometrische Authentifizierung',
+                                  'Geräteeigene Authentifizierung',
                                   style: theme.textTheme.bodyMedium?.copyWith(
                                     color: theme.colorScheme.outline,
                                     fontWeight: FontWeight.w500,
@@ -339,7 +339,7 @@ class _CardContainer extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
+        color: theme.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: theme.colorScheme.outlineVariant),
         boxShadow: [
