@@ -3,6 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'theme/util.dart';
+import 'theme/theme.dart';
+
 import 'screens/contact_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/settings_screen.dart';
@@ -95,12 +98,14 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = createTextTheme(context, "Inter", "Inter");
+    final MaterialTheme theme = MaterialTheme(textTheme);
+
     return MaterialApp.router(
       title: 'EIKE',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: theme.light(),
+      darkTheme: theme.dark(),
+      themeMode: ThemeMode.system,
       routerConfig: _router,
       builder: (context, child) {
         return AppLockGate(
@@ -128,6 +133,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
           highlightColor: Colors.transparent,
         ),
         child: */ BottomNavigationBar(
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
         currentIndex: navigationShell.currentIndex,
         onTap: (index) => navigationShell.goBranch(
           index,

@@ -80,7 +80,7 @@ class Button extends StatelessWidget {
     final button = FilledButton.icon(
       onPressed: isDisabled ? null : onPressed,
       style: FilledButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
         side: BorderSide(color: br.withValues(alpha: isDisabled ? 0.5 : 1)),
         backgroundColor: bg,
