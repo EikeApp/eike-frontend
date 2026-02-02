@@ -54,7 +54,7 @@ class PrivacyScreen extends StatelessWidget {
             ),
             _headingSmall('Kontaktdaten eines PSNV-Teams'),
             const Text(
-              'Beschreibung: Nutzende der App können Kontaktdaten zu ihrem zuständigen PSNV-Team eintragen, um die Kontaktdaten im Bedarfsfall angezeigt zu bekommen oder die Kontaktdaten an betriessystemeigene Funktionen (Intents auf Telefon oder E-Mail) weitergeleitet zu bekommen. Die Angabe von Daten sind freiwillig.\n\n'
+              'Beschreibung: Nutzende der App können Kontaktdaten zu ihrem zuständigen PSNV-Team eintragen, um die Kontaktdaten im Bedarfsfall angezeigt zu bekommen oder die Kontaktdaten an betriebssystemeigene Funktionen (Intents auf Telefon oder E-Mail) weitergeleitet zu bekommen. Die Angabe von Daten sind freiwillig.\n\n'
               'Speicherung: Die angegebenen Daten werden ausschließlich auf dem Endgerät in einer verschlüsselten Datenbank gespeichert und nicht an Dritte oder weitere Systeme übertragen.\n\n'
               'Veränderung: Die angebenen Daten können jederzeit durch den Nutzenden oder die Nutzende verändert werden.\n\n'
               'Löschung: Die angegebenen Daten bleiben so lange auf dem Gerät gespeichert, bis:\n'
@@ -64,7 +64,7 @@ class PrivacyScreen extends StatelessWidget {
             ),
             _headingSmall('App-Einstellungen'),
             const Text(
-              'Beschreibung: Nutzende der App können Einstellungen der App verändern, um sie nach ihren wünschen und den gegebenen technischen Einstellungsmöglichkeiten anzupassen. Die Angabe von Daten sind freiwillig.\n\n'
+              'Beschreibung: Nutzende der App können Einstellungen der App verändern, um sie nach ihren Wünschen und den gegebenen technischen Einstellungsmöglichkeiten anzupassen. Die Angabe von Daten sind freiwillig.\n\n'
               'Speicherung: Die angegebenen Daten werden ausschließlich auf dem Endgerät gespeichert und nicht an Dritte oder weitere Systeme übertragen.\n\n'
               'Veränderung: Die angebenen Daten können jederzeit durch den Nutzenden oder die Nutzende verändert werden.\n\n'
               'Löschung: Die angegebenen Daten bleiben so lange auf dem Gerät gespeichert, bis:\n'
