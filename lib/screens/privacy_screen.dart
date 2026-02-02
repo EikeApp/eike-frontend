@@ -29,7 +29,7 @@ class PrivacyScreen extends StatelessWidget {
             ),
             _heading('Allgemeine Beschreibung'),
             const Text(
-              'Die App "Eike" kann Feuerwehr-Einsatzkräften Informationen und Unterstützung bei der Vorbereitung und Verarbeitung von belastenden Einsätzen zu geben.',
+              'Die App "Eike" kann Feuerwehr-Einsatzkräften Informationen und Unterstützung bei der Vorbereitung und Verarbeitung von belastenden Einsätzen geben.',
             ),
             _heading(
               'Verantwortlicher gem. Art. 4 Nr. 7 DSGVO und Behördlicher Datenschutzbeauftragter',
