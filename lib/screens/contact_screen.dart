@@ -61,7 +61,7 @@ class ContactScreen extends StatelessWidget {
                 message:
                     'Wenn du dich in einer akuten Krise befindest oder sofort Hilfe benötigst, wende dich bitte an die Telefonseelsorge oder den Notruf.',
               ),
-              const SectionTitle('Notfall- Kontakte'),
+              const SectionTitle('Notfall-Kontakte'),
               _ContactCard(
                 title: 'Telefonseelsorge',
                 subtitle: '24/7 kostenlos und vertraulich',
