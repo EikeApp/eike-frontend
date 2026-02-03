@@ -7,8 +7,25 @@ tags:
     clearState: true
     stopApp: true
 
-# Prüfe, dass der Home Screen wirklich da ist
-- assertVisible: "Meine 7 Sachen"         # AppBar-Titel
-- assertVisible: "Willkommen bei EIKE"    # Überschrift
-- assertVisible: "Hier ist deine Homepage"
+# Prüfe, dass der Home-Screen vorhanden ist
+# anhand von AppBar-Titel, weil Inhalte dynamisch geladen
+- assertVisible: "Meine 7 Sachen"
 - takeScreenshot: "home/home_screen"
+
+# Prüfe, dass BottomNavBar da ist (über Icon oder Tap-Test)
+- tapOn:
+    point: "50%,95%" # Kontakt-Tab (Mitte unten)
+
+# Prüfe, dass der Kontakt-Screen vorhanden ist
+- assertVisible: "Kontakt" # Sollte jetzt im AppBar stehen
+- assertVisible: "Akute Krise?"
+- assertVisible: "Notfall-Kontakte"
+- takeScreenshot: "contact/contact_screen"
+
+# Prüfe, dass der Einstellungen-Screen vorhanden ist
+- tapOn:
+    point: "85%,95%" # Einstellungen-Tab
+- assertVisible: "Einstellungen"
+- assertVisible: "Einsatznachsorgeteam"
+- assertVisible: "Datenschutz & Sicherheit"
+- takeScreenshot: "settings/settings_screen"
