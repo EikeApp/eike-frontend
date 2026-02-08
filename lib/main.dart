@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -18,6 +20,11 @@ import 'security/first_run_reset.dart';
 import 'db/sqlcipher_setup.dart';
 
 Future<void> main() async {
+  LicenseRegistry.addLicense(() async* {
+    final text = await rootBundle.loadString('assets/fonts/Inter-license.txt');
+    yield LicenseEntryWithLineBreaks(['Inter'], text);
+  });
+
   WidgetsFlutterBinding.ensureInitialized();
 
   await setupSqlCipher();

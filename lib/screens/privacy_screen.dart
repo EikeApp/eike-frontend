@@ -35,13 +35,19 @@ class PrivacyScreen extends StatelessWidget {
               'Verantwortlicher gem. Art. 4 Nr. 7 DSGVO und Behördlicher Datenschutzbeauftragter',
             ),
             const Text(
-              'Die verantwortliche Stelle für die Datenverarbeitung in dieser App ist:\n\n'
               'Deutscher Fachverband für Psychosoziale Notfallversorgung (DF-PSNV) e.V.\n'
-              'Schweetskroog 19\n'
-              '22967 Tremsbüttel',
+              'P.-H.-Eggers-Straße 22\n'
+              '24768 Rendsburg\n'
+              'Deutschland',
             ),
             // const SizedBox(height: 16),
             _heading('Datenverarbeitung in dieser App'),
+            _headingSmall('Grundsatz'),
+            const Text(
+              'Alle Daten werden lokal auf dem Gerät gespeichert.\n'
+              'Es findet in der aktuellen Implementierung keine Übertragung an Server/Cloud statt.'
+              'Biometrie wird nicht von der App gespeichert. Die App nutzt nur die vom Betriebssystem bereitgestellte Authentifizierung.',
+            ),
             _headingSmall('Vorsätze'),
             const Text(
               'Beschreibung: Nutzende der App können eigene Verhaltensvorsätze in Textform in Freitextfelder schreiben. Die Angabe von Daten sind freiwillig.\n\n'
@@ -51,6 +57,64 @@ class PrivacyScreen extends StatelessWidget {
               '• sie durch die Nutzende oder den Nutzenden geändert werden\n'
               '• sie durch die Nutzende oder den Nutzenden alle Daten (Button in Einstellungen) gelöscht werden\n'
               '• die App deinstalliert und hierdurch alle App-Daten gelöscht werden',
+            ),
+            _headingSmall('Welche Speicherorte nutzen wir wofür?'),
+            const Text(
+              'Wir verarbeiten und speichern Ihre Daten ausschließlich lokal auf Ihrem Endgerät. '
+              'Dabei setzen wir je nach Zweck unterschiedliche, geräteinterne Speicherbereiche ein. '
+              'Eine Übertragung an eigene Server oder in eine Cloud findet in der aktuellen Implementierung nicht statt.',
+            ),
+            _headingSmall('1) Verschlüsselte App-Datenbank'),
+            const Text(
+              'Zweck\n'
+              '• Speicherung der von Ihnen eingegebenen Inhalte\n\n'
+              'Welche Daten?\n'
+              '• Kontaktdaten eines Einsatznachsorgeteams (z. B. Teamname, Telefonnummer, E-Mail-Adresse)\n'
+              '• Persönliche Notizen/Freitexte zu den „7 Tipps“\n\n'
+              'Technische Umsetzung (Packages)\n'
+              '• Drift: https://pub.dev/packages/drift\n'
+              '• SQLCipher (Bibliotheken): https://pub.dev/packages/sqlcipher_flutter_libs\n'
+              '• SQLite3 (FFI): https://pub.dev/packages/sqlite3\n\n'
+              'Schutz und Zugriff\n'
+              '• Speicherung erfolgt verschlüsselt in einer lokalen Datenbank (SQLCipher)\n'
+              '• Zugriff ausschließlich innerhalb der App',
+            ),
+            _headingSmall('2) Keychain/Keystore'),
+            const Text(
+              'Zweck\n'
+              '• Ablage von Sicherheits- und Konfigurationsdaten\n\n'
+              'Welche Daten?\n'
+              '• Technischer Schlüssel zur Entschlüsselung der lokalen Datenbank\n'
+              '• Einstellung, ob eine optionale App-Sperre aktiviert ist (ja/nein)\n\n'
+              'Technische Umsetzung (Package)\n'
+              '• flutter_secure_storage: https://pub.dev/packages/flutter_secure_storage\n\n'
+              'Hinweis\n'
+              '• Auf iOS können Keychain-Einträge eine Deinstallation ggf. überdauern; '
+              'die App setzt Konfigurationswerte beim ersten Start nach Neuinstallation auf Standardwerte zurück.',
+            ),
+            _headingSmall('3) Technischer Marker für Initialisierung'),
+            const Text(
+              'Zweck\n'
+              '• Technische Initialisierung (Erkennen des ersten Starts nach Installation)\n\n'
+              'Welche Daten?\n'
+              '• Ein einfacher Marker/Schalter (keine Inhaltsdaten, keine Notizen, keine Kontaktdaten)\n\n'
+              'Technische Umsetzung (Package)\n'
+              '• shared_preferences: https://pub.dev/packages/shared_preferences',
+            ),
+            _headingSmall('4) Biometrische Authentifizierung'),
+            const Text(
+              'Zweck\n'
+              '• Entsperren der App über die vom Betriebssystem bereitgestellte Authentifizierung\n\n'
+              'Technische Umsetzung (Package)\n'
+              '• local_auth: https://pub.dev/packages/local_auth\n\n'
+              'Wichtig\n'
+              '• Die App erhebt oder speichert keine biometrischen Daten (z. B. Face ID/Fingerprint)\n'
+              '• Die biometrische Verarbeitung erfolgt ausschließlich im Betriebssystem innerhalb der jeweiligen Sicherheitsumgebung',
+            ),
+            _heading('Löschkonzept'),
+            const Text(
+              'In der App gibt es “Alle Daten löschen”: entfernt die in Drift gespeicherten Inhalte (Kontaktdaten + Tipps/Notizen).\n\n'
+              'Bei Deinstallation werden DB-Dateien in der App-Sandbox entfernt. Secure-Storage Einträge können auf iOS ggf. bestehen bleiben (wird durch First-run Reset auf Default zurückgeführt).',
             ),
             _headingSmall('Kontaktdaten eines PSNV-Teams'),
             const Text(
