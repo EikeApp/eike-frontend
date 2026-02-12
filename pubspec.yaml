@@ -62,6 +62,7 @@ dev_dependencies:
   yaml: ^3.1.2
   drift_dev: ^2.0.2
   build_runner: ^2.4.0
+  flutter_launcher_icons: ^0.14.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -111,3 +112,19 @@ flutter:
         - asset: assets/fonts/Inter-VariableFont_opsz,wght.ttf
         - asset: assets/fonts/Inter-Italic-VariableFont_opsz,wght.ttf
           style: italic
+
+flutter_launcher_icons:
+  android: true
+  adaptive_icon_background: "#3a78b8"
+  adaptive_icon_foreground: "assets/icon/eike_app_logo_2.png"
+  adaptive_icon_foreground_inset: 16
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icon/eike_app_logo_blue_bg_3.png"
+  # TODO: adjust min_sdk_android and rerun after setting min sdk for build
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/icon/eike_app_logo_blue_bg_3.png"
+    background_color: "#3a78b8"
+    theme_color: "#3a78b8"
