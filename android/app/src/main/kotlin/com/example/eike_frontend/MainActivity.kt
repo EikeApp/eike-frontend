@@ -1,4 +1,4 @@
-package com.example.eike_frontend
+package de.df-psnv.eike
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

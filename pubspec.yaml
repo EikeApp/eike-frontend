@@ -1,5 +1,5 @@
-name: eike_frontend
-description: "A new Flutter project."
+name: eike
+description: "Die EIKE-App bietet Einsatzkräften Informationen und Unterstützung bei der Vorbereitung und Verarbeitung von belastenden Einsätzen."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
@@ -122,8 +122,7 @@ flutter_launcher_icons:
   ios: true
   remove_alpha_ios: true
   image_path: "assets/icon/eike_app_logo_blue_bg_3.png"
-  # TODO: adjust min_sdk_android and rerun after setting min sdk for build
-  min_sdk_android: 21 # android min sdk min:16, default 21
+  min_sdk_android: 24
   web:
     generate: true
     image_path: "assets/icon/eike_app_logo_blue_bg_3.png"
