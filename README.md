@@ -9,11 +9,11 @@ belastenden Einsätzen zu geben.
 
 #### Mission 1
 
-Als Einsatzkraft möchte ich die Informationen aus [dem Flyer](https://df-psnv.de/a7/psnv-fuer-einsatzkraefte/) in 
-barrierearmer Form über eine App abrufen können, um schneller, jederzeit und überall darauf zugreifen zu können - egal 
+Als Einsatzkraft möchte ich die Informationen aus [dem Flyer](https://df-psnv.de/a7/psnv-fuer-einsatzkraefte/) in
+barrierearmer Form über eine App abrufen können, um schneller, jederzeit und überall darauf zugreifen zu können - egal
 ob im Einsatz oder im Urlaub.
 
-Außerdem möchte ich meine eigenen Vorsätze in der App hinterlegen können, um sie im Bedarfsfall schnell und überall 
+Außerdem möchte ich meine eigenen Vorsätze in der App hinterlegen können, um sie im Bedarfsfall schnell und überall
 ansehen zu können.
 
 ### Wert zur Priorisierung im [Projekt](https://github.com/orgs/EikeApp/projects/2) (Customer-Value, Outcome)
@@ -60,14 +60,14 @@ Dieses Projekt verwendet ein `Makefile`, um den Entwicklungsprozess zu vereinfac
 
 ### Voraussetzungen
 
-*   Flutter SDK
-*   Dart SDK
-*   Make (auf macOS/Linux meist vorinstalliert. Unter Windows kann es z.B. via [Chocolatey](https://chocolatey.org/) mit `choco install make` installiert werden.)
+- Flutter SDK
+- Dart SDK
+- Make (auf macOS/Linux meist vorinstalliert. Unter Windows kann es z.B. via [Chocolatey](https://chocolatey.org/) mit `choco install make` installiert werden.)
 
 ### Befehle
 
 | Befehl               | Beschreibung                                                                |
-|:---------------------|:----------------------------------------------------------------------------|
+| :------------------- | :-------------------------------------------------------------------------- |
 | `make run`           | Lädt Content-Assets und startet die App im Debug-Modus.                     |
 | `make fetch-content` | Lädt nur die Content-Assets herunter (basierend auf `VERSION` in Makefile). |
 | `make build-apk`     | Baut die Android APK (inkl. Content-Assets).                                |
@@ -117,7 +117,7 @@ maestro test .maestro
 Flows können mit Tags gruppiert werden:
 
 ```yaml
-appId: com.example.eike_frontend
+appId: de.df-psnv.eike
 name: Home – Smoke Test
 tags:
   - smoke

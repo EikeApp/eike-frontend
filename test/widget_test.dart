@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:eike_frontend/main.dart';
-import 'package:eike_frontend/security/app_lock_storage.dart';
+import 'package:eike/main.dart';
+import 'package:eike/security/app_lock_storage.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
