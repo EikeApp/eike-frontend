@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../widgets/app_header.dart';
+
 class ImprintScreen extends StatelessWidget {
   const ImprintScreen({super.key});
 
@@ -18,20 +20,12 @@ class ImprintScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Impressum'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
+      appBar: const AppHeader(title: 'Impressum'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Impressum',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 16),
             _heading('Anbieter'),
             const Text(
               'Deutscher Fachverband für Psychosoziale Notfallversorgung (DF-PSNV) e.V.\n'
