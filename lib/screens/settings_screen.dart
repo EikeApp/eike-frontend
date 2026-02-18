@@ -10,6 +10,8 @@ import '../security/local_auth_messages.dart';
 import '../widgets/app_header.dart';
 import '../widgets/section_title.dart';
 import '../widgets/button.dart';
+import 'privacy_screen.dart';
+import 'imprint_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -313,6 +315,83 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           textStyle: theme.textTheme.labelLarge?.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SectionTitle('Rechtliches'),
+                _CardContainer(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Informationen zum Umgang mit deinen Daten.',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                          height: 1.35,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextButton.icon(
+                          icon: const Icon(Icons.privacy_tip_outlined),
+                          label: const Text('Datenschutz'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PrivacyScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        'Open-Source-Bibliotheken, die diese App ermöglichen.',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                          height: 1.35,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextButton.icon(
+                          icon: const Icon(Icons.description_outlined),
+                          label: const Text('Lizenzen'),
+                          onPressed: () {
+                            showLicensePage(
+                              context: context,
+                              applicationName: 'EIKE',
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        'Angaben zum Anbieter und Kontaktmöglichkeiten.',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                          height: 1.35,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextButton.icon(
+                          icon: const Icon(Icons.info_outline),
+                          label: const Text('Impressum'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ImprintScreen(),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ],
