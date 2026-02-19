@@ -50,3 +50,9 @@ assets/content/
 
 # Maestro related
 .maestro/tests/
+
+# Android signing
+**/*.jks
+**/*.keystore
+android/keystore/
+android/key.properties
