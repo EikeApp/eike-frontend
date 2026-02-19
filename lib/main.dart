@@ -134,47 +134,47 @@ class ScaffoldWithNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: /* TODO: Decide if ripple effect should stay */ /* Theme(
+      bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           splashFactory: NoSplash.splashFactory,
           highlightColor: Colors.transparent,
         ),
-        child: */ BottomNavigationBar(
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-        currentIndex: navigationShell.currentIndex,
-        onTap: (index) => navigationShell.goBranch(
-          index,
-          initialLocation: index == navigationShell.currentIndex,
+        child: BottomNavigationBar(
+          backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+          currentIndex: navigationShell.currentIndex,
+          onTap: (index) => navigationShell.goBranch(
+            index,
+            initialLocation: index == navigationShell.currentIndex,
+          ),
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Theme.of(context).colorScheme.primary,
+          unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700),
+          unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700),
+          items: [
+            BottomNavigationBarItem(
+              icon: const _NavIcon(icon: Icons.favorite_outline),
+              activeIcon: _ActiveNavIcon(icon: Icons.favorite_outline),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              label: 'Meine 7 Sachen',
+            ),
+            BottomNavigationBarItem(
+              icon: const _NavIcon(icon: Icons.phone),
+              activeIcon: _ActiveNavIcon(icon: Icons.phone),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              label: 'Kontakt',
+            ),
+            BottomNavigationBarItem(
+              icon: const _NavIcon(icon: Icons.settings),
+              activeIcon: _ActiveNavIcon(icon: Icons.settings),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              label: 'Einstellungen',
+            ),
+          ],
         ),
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Theme.of(context).colorScheme.primary,
-        unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
-        selectedFontSize: 12,
-        unselectedFontSize: 12,
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700),
-        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700),
-        items: [
-          BottomNavigationBarItem(
-            icon: const _NavIcon(icon: Icons.favorite_outline),
-            activeIcon: _ActiveNavIcon(icon: Icons.favorite_outline),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            label: 'Meine 7 Sachen',
-          ),
-          BottomNavigationBarItem(
-            icon: const _NavIcon(icon: Icons.phone),
-            activeIcon: _ActiveNavIcon(icon: Icons.phone),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            label: 'Kontakt',
-          ),
-          BottomNavigationBarItem(
-            icon: const _NavIcon(icon: Icons.settings),
-            activeIcon: _ActiveNavIcon(icon: Icons.settings),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            label: 'Einstellungen',
-          ),
-        ],
       ),
-      /* ), */
     );
   }
 }
