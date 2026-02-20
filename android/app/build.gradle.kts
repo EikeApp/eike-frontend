@@ -14,6 +14,10 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
 
+// CI builds release without custom signing unless key.properties is present.
+fun prop(name: String): String? = keystoreProperties.getProperty(name)
+val hasSigning = listOf("keyAlias", "keyPassword", "storeFile", "storePassword").all { prop(it) != null }
+
 android {
     namespace = "de.dfpsnv.eike"
     compileSdk = 36
@@ -40,17 +44,23 @@ android {
     }
 
     signingConfigs {
-        create("release") {
-            keyAlias = keystoreProperties["keyAlias"] as String
-            keyPassword = keystoreProperties["keyPassword"] as String
-            storeFile = keystoreProperties["storeFile"]?.let { file(it) }
-            storePassword = keystoreProperties["storePassword"] as String
+        if (hasSigning) {
+            create("release") {
+                keyAlias = prop("keyAlias")!!
+                keyPassword = prop("keyPassword")!!
+                storeFile = file(prop("storeFile")!!)
+                storePassword = prop("storePassword")!!
+            }
         }
     }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("release")
+           signingConfig = if (hasSigning) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug") // macht die Release-APK installierbar
+            }
         }
     }
 }
