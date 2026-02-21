@@ -38,3 +38,4 @@ Als *Anforderer* möchte ich *Wert* um *Begründung*.
 - [ ] Das Aussehen der App entspricht den besprochenen Design-Entwürfen (z. B. aus Figma)
 - [ ] Alle Entscheidungen wurden mit Kontext im Issue vermerkt.
 - [ ] Das Design wurde mit einem Gerät jeder Geräteklasse (in der README) geprüft.
+- [ ] Es wurde geprüft, ob die Datenschutzerklärung angepasst werden muss.
