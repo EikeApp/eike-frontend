@@ -1,0 +1,75 @@
+name: eike_frontend
+description: The frontend project of Eike written using Flutter+Dart
+publish_to: none
+version: 1.0.0+1
+resolution: workspace
+
+environment:
+  sdk: ^3.11.0
+  flutter: ^3.41.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons:
+  go_router:
+  drift:
+  sqlite3:
+  sqlcipher_flutter_libs:
+  flutter_secure_storage:
+  path:
+  path_provider:
+  provider:
+  flutter_bloc:
+  local_auth:
+  shared_preferences:
+  url_launcher:
+  flutter_svg:
+
+  feat_home:
+  feat_database_provider:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints:
+  http:
+  archive:
+  yaml:
+  drift_dev:
+  build_runner:
+  flutter_launcher_icons:
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/content/
+    - assets/content/7-things/
+    - assets/fonts/Inter-license.txt
+    - assets/images/
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-VariableFont_opsz,wght.ttf
+        - asset: assets/fonts/Inter-Italic-VariableFont_opsz,wght.ttf
+          style: italic
+
+flutter_launcher_icons:
+  android: true
+  adaptive_icon_background: "#3a78b8"
+  adaptive_icon_foreground: "assets/icon/eike_app_logo_2.png"
+  adaptive_icon_foreground_inset: 16
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icon/eike_app_logo_blue_bg_3.png"
+  # TODO: adjust min_sdk_android and rerun after setting min sdk for build
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/icon/eike_app_logo_blue_bg_3.png"
+    background_color: "#3a78b8"
+    theme_color: "#3a78b8"

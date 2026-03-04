@@ -1,0 +1,13 @@
+name: service_design
+description: Provides several components & design specifications for Eike
+publish_to: none
+version: 0.0.1 # Literally does not matter
+resolution: workspace
+
+environment:
+  sdk: ^3.11.0
+  flutter: ^3.41.2
+
+dependencies:
+  flutter:
+    sdk: flutter
