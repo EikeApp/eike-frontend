@@ -1,4 +1,5 @@
 import 'package:data_database/eike_database.dart';
+import 'package:data_entities/tables/tip_table.dart';
 import 'package:feat_home/data/daos/home_dao.dart';
 import 'package:feat_home/data/datasources/asset_home_datasource.dart';
 import 'package:feat_home/data/repositories/home_repository_impl.dart';
@@ -172,6 +173,26 @@ class _TipCard extends StatefulWidget {
 }
 
 class _TipCardState extends State<_TipCard> {
+  late final textController = TextEditingController(text: tip.userNote)
+    ..addListener(_onChangeListener);
+
+  TipEntity get tip => widget.tip;
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
+  }
+
+  void _onChangeListener() {
+    BlocProvider.of<HomeBloc>(context).add(
+      HomeEvent.onUserNoteChanged(
+        tip.id,
+        TipUserNote(textController.text),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -237,13 +258,13 @@ class _TipCardState extends State<_TipCard> {
                 ],
               ),
             ),
-            Text(widget.tip.note),
+            Text(widget.tip.description),
             Text(
               'Das mache ich:',
               style: TextTheme.of(context).titleSmall,
             ),
             TextFormField(
-              // controller: _controller,
+              controller: textController,
               maxLines: 2,
               decoration: InputDecoration(
                 hintText: 'Schreib deine Idee hier auf...',

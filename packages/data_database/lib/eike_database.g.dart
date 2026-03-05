@@ -325,14 +325,14 @@ class $TipTableTable extends TipTable
         requiredDuringInsert: true,
       ).withConverter<TipTitle>($TipTableTable.$convertertitle);
   @override
-  late final GeneratedColumnWithTypeConverter<TipNote, String> note =
-      GeneratedColumn<String>(
-        'note',
-        aliasedName,
-        false,
-        type: DriftSqlType.string,
-        requiredDuringInsert: true,
-      ).withConverter<TipNote>($TipTableTable.$converternote);
+  late final GeneratedColumnWithTypeConverter<TipDescription, String>
+  description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  ).withConverter<TipDescription>($TipTableTable.$converterdescription);
   @override
   late final GeneratedColumnWithTypeConverter<TipImagePath, String> imagePath =
       GeneratedColumn<String>(
@@ -355,12 +355,22 @@ class $TipTableTable extends TipTable
         $TipTableTable.$converterimageDescription,
       );
   @override
+  late final GeneratedColumnWithTypeConverter<TipUserNote, String> userNote =
+      GeneratedColumn<String>(
+        'user_note',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<TipUserNote>($TipTableTable.$converteruserNote);
+  @override
   List<GeneratedColumn> get $columns => [
     id,
     title,
-    note,
+    description,
     imagePath,
     imageDescription,
+    userNote,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -385,10 +395,10 @@ class $TipTableTable extends TipTable
           data['${effectivePrefix}title'],
         )!,
       ),
-      note: $TipTableTable.$converternote.fromSql(
+      description: $TipTableTable.$converterdescription.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.string,
-          data['${effectivePrefix}note'],
+          data['${effectivePrefix}description'],
         )!,
       ),
       imagePath: $TipTableTable.$converterimagePath.fromSql(
@@ -403,6 +413,12 @@ class $TipTableTable extends TipTable
           data['${effectivePrefix}image_description'],
         )!,
       ),
+      userNote: $TipTableTable.$converteruserNote.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}user_note'],
+        )!,
+      ),
     );
   }
 
@@ -414,26 +430,30 @@ class $TipTableTable extends TipTable
   static TypeConverter<TipId, int> $converterid = const TipIdConverter();
   static TypeConverter<TipTitle, String> $convertertitle =
       const TipTitleConverter();
-  static TypeConverter<TipNote, String> $converternote =
-      const TipNoteConverter();
+  static TypeConverter<TipDescription, String> $converterdescription =
+      const TipDescriptionConverter();
   static TypeConverter<TipImagePath, String> $converterimagePath =
       const TipImagePathConverter();
   static TypeConverter<TipImageDescription, String> $converterimageDescription =
       const TipImageDescriptionConverter();
+  static TypeConverter<TipUserNote, String> $converteruserNote =
+      const TipUserNoteConverter();
 }
 
 class TipEntity extends DataClass implements Insertable<TipEntity> {
   final TipId id;
   final TipTitle title;
-  final TipNote note;
+  final TipDescription description;
   final TipImagePath imagePath;
   final TipImageDescription imageDescription;
+  final TipUserNote userNote;
   const TipEntity({
     required this.id,
     required this.title,
-    required this.note,
+    required this.description,
     required this.imagePath,
     required this.imageDescription,
+    required this.userNote,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -447,7 +467,9 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
       );
     }
     {
-      map['note'] = Variable<String>($TipTableTable.$converternote.toSql(note));
+      map['description'] = Variable<String>(
+        $TipTableTable.$converterdescription.toSql(description),
+      );
     }
     {
       map['image_path'] = Variable<String>(
@@ -459,6 +481,11 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
         $TipTableTable.$converterimageDescription.toSql(imageDescription),
       );
     }
+    {
+      map['user_note'] = Variable<String>(
+        $TipTableTable.$converteruserNote.toSql(userNote),
+      );
+    }
     return map;
   }
 
@@ -466,9 +493,10 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
     return TipTableCompanion(
       id: Value(id),
       title: Value(title),
-      note: Value(note),
+      description: Value(description),
       imagePath: Value(imagePath),
       imageDescription: Value(imageDescription),
+      userNote: Value(userNote),
     );
   }
 
@@ -480,11 +508,12 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
     return TipEntity(
       id: serializer.fromJson<TipId>(json['id']),
       title: serializer.fromJson<TipTitle>(json['title']),
-      note: serializer.fromJson<TipNote>(json['note']),
+      description: serializer.fromJson<TipDescription>(json['description']),
       imagePath: serializer.fromJson<TipImagePath>(json['imagePath']),
       imageDescription: serializer.fromJson<TipImageDescription>(
         json['imageDescription'],
       ),
+      userNote: serializer.fromJson<TipUserNote>(json['userNote']),
     );
   }
   @override
@@ -493,36 +522,42 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
     return <String, dynamic>{
       'id': serializer.toJson<TipId>(id),
       'title': serializer.toJson<TipTitle>(title),
-      'note': serializer.toJson<TipNote>(note),
+      'description': serializer.toJson<TipDescription>(description),
       'imagePath': serializer.toJson<TipImagePath>(imagePath),
       'imageDescription': serializer.toJson<TipImageDescription>(
         imageDescription,
       ),
+      'userNote': serializer.toJson<TipUserNote>(userNote),
     };
   }
 
   TipEntity copyWith({
     TipId? id,
     TipTitle? title,
-    TipNote? note,
+    TipDescription? description,
     TipImagePath? imagePath,
     TipImageDescription? imageDescription,
+    TipUserNote? userNote,
   }) => TipEntity(
     id: id ?? this.id,
     title: title ?? this.title,
-    note: note ?? this.note,
+    description: description ?? this.description,
     imagePath: imagePath ?? this.imagePath,
     imageDescription: imageDescription ?? this.imageDescription,
+    userNote: userNote ?? this.userNote,
   );
   TipEntity copyWithCompanion(TipTableCompanion data) {
     return TipEntity(
       id: data.id.present ? data.id.value : this.id,
       title: data.title.present ? data.title.value : this.title,
-      note: data.note.present ? data.note.value : this.note,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
       imagePath: data.imagePath.present ? data.imagePath.value : this.imagePath,
       imageDescription: data.imageDescription.present
           ? data.imageDescription.value
           : this.imageDescription,
+      userNote: data.userNote.present ? data.userNote.value : this.userNote,
     );
   }
 
@@ -531,78 +566,95 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
     return (StringBuffer('TipEntity(')
           ..write('id: $id, ')
           ..write('title: $title, ')
-          ..write('note: $note, ')
+          ..write('description: $description, ')
           ..write('imagePath: $imagePath, ')
-          ..write('imageDescription: $imageDescription')
+          ..write('imageDescription: $imageDescription, ')
+          ..write('userNote: $userNote')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, title, note, imagePath, imageDescription);
+  int get hashCode => Object.hash(
+    id,
+    title,
+    description,
+    imagePath,
+    imageDescription,
+    userNote,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is TipEntity &&
           other.id == this.id &&
           other.title == this.title &&
-          other.note == this.note &&
+          other.description == this.description &&
           other.imagePath == this.imagePath &&
-          other.imageDescription == this.imageDescription);
+          other.imageDescription == this.imageDescription &&
+          other.userNote == this.userNote);
 }
 
 class TipTableCompanion extends UpdateCompanion<TipEntity> {
   final Value<TipId> id;
   final Value<TipTitle> title;
-  final Value<TipNote> note;
+  final Value<TipDescription> description;
   final Value<TipImagePath> imagePath;
   final Value<TipImageDescription> imageDescription;
+  final Value<TipUserNote> userNote;
   const TipTableCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
-    this.note = const Value.absent(),
+    this.description = const Value.absent(),
     this.imagePath = const Value.absent(),
     this.imageDescription = const Value.absent(),
+    this.userNote = const Value.absent(),
   });
   TipTableCompanion.insert({
     this.id = const Value.absent(),
     required TipTitle title,
-    required TipNote note,
+    required TipDescription description,
     required TipImagePath imagePath,
     required TipImageDescription imageDescription,
+    required TipUserNote userNote,
   }) : title = Value(title),
-       note = Value(note),
+       description = Value(description),
        imagePath = Value(imagePath),
-       imageDescription = Value(imageDescription);
+       imageDescription = Value(imageDescription),
+       userNote = Value(userNote);
   static Insertable<TipEntity> custom({
     Expression<int>? id,
     Expression<String>? title,
-    Expression<String>? note,
+    Expression<String>? description,
     Expression<String>? imagePath,
     Expression<String>? imageDescription,
+    Expression<String>? userNote,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (title != null) 'title': title,
-      if (note != null) 'note': note,
+      if (description != null) 'description': description,
       if (imagePath != null) 'image_path': imagePath,
       if (imageDescription != null) 'image_description': imageDescription,
+      if (userNote != null) 'user_note': userNote,
     });
   }
 
   TipTableCompanion copyWith({
     Value<TipId>? id,
     Value<TipTitle>? title,
-    Value<TipNote>? note,
+    Value<TipDescription>? description,
     Value<TipImagePath>? imagePath,
     Value<TipImageDescription>? imageDescription,
+    Value<TipUserNote>? userNote,
   }) {
     return TipTableCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
-      note: note ?? this.note,
+      description: description ?? this.description,
       imagePath: imagePath ?? this.imagePath,
       imageDescription: imageDescription ?? this.imageDescription,
+      userNote: userNote ?? this.userNote,
     );
   }
 
@@ -617,9 +669,9 @@ class TipTableCompanion extends UpdateCompanion<TipEntity> {
         $TipTableTable.$convertertitle.toSql(title.value),
       );
     }
-    if (note.present) {
-      map['note'] = Variable<String>(
-        $TipTableTable.$converternote.toSql(note.value),
+    if (description.present) {
+      map['description'] = Variable<String>(
+        $TipTableTable.$converterdescription.toSql(description.value),
       );
     }
     if (imagePath.present) {
@@ -632,6 +684,11 @@ class TipTableCompanion extends UpdateCompanion<TipEntity> {
         $TipTableTable.$converterimageDescription.toSql(imageDescription.value),
       );
     }
+    if (userNote.present) {
+      map['user_note'] = Variable<String>(
+        $TipTableTable.$converteruserNote.toSql(userNote.value),
+      );
+    }
     return map;
   }
 
@@ -640,9 +697,10 @@ class TipTableCompanion extends UpdateCompanion<TipEntity> {
     return (StringBuffer('TipTableCompanion(')
           ..write('id: $id, ')
           ..write('title: $title, ')
-          ..write('note: $note, ')
+          ..write('description: $description, ')
           ..write('imagePath: $imagePath, ')
-          ..write('imageDescription: $imageDescription')
+          ..write('imageDescription: $imageDescription, ')
+          ..write('userNote: $userNote')
           ..write(')'))
         .toString();
   }
@@ -862,17 +920,19 @@ typedef $$TipTableTableCreateCompanionBuilder =
     TipTableCompanion Function({
       Value<TipId> id,
       required TipTitle title,
-      required TipNote note,
+      required TipDescription description,
       required TipImagePath imagePath,
       required TipImageDescription imageDescription,
+      required TipUserNote userNote,
     });
 typedef $$TipTableTableUpdateCompanionBuilder =
     TipTableCompanion Function({
       Value<TipId> id,
       Value<TipTitle> title,
-      Value<TipNote> note,
+      Value<TipDescription> description,
       Value<TipImagePath> imagePath,
       Value<TipImageDescription> imageDescription,
+      Value<TipUserNote> userNote,
     });
 
 class $$TipTableTableFilterComposer
@@ -896,11 +956,11 @@ class $$TipTableTableFilterComposer
         builder: (column) => ColumnWithTypeConverterFilters(column),
       );
 
-  ColumnWithTypeConverterFilters<TipNote, TipNote, String> get note =>
-      $composableBuilder(
-        column: $table.note,
-        builder: (column) => ColumnWithTypeConverterFilters(column),
-      );
+  ColumnWithTypeConverterFilters<TipDescription, TipDescription, String>
+  get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
 
   ColumnWithTypeConverterFilters<TipImagePath, TipImagePath, String>
   get imagePath => $composableBuilder(
@@ -915,6 +975,12 @@ class $$TipTableTableFilterComposer
   >
   get imageDescription => $composableBuilder(
     column: $table.imageDescription,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<TipUserNote, TipUserNote, String>
+  get userNote => $composableBuilder(
+    column: $table.userNote,
     builder: (column) => ColumnWithTypeConverterFilters(column),
   );
 }
@@ -938,8 +1004,8 @@ class $$TipTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get note => $composableBuilder(
-    column: $table.note,
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -950,6 +1016,11 @@ class $$TipTableTableOrderingComposer
 
   ColumnOrderings<String> get imageDescription => $composableBuilder(
     column: $table.imageDescription,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userNote => $composableBuilder(
+    column: $table.userNote,
     builder: (column) => ColumnOrderings(column),
   );
 }
@@ -969,8 +1040,11 @@ class $$TipTableTableAnnotationComposer
   GeneratedColumnWithTypeConverter<TipTitle, String> get title =>
       $composableBuilder(column: $table.title, builder: (column) => column);
 
-  GeneratedColumnWithTypeConverter<TipNote, String> get note =>
-      $composableBuilder(column: $table.note, builder: (column) => column);
+  GeneratedColumnWithTypeConverter<TipDescription, String> get description =>
+      $composableBuilder(
+        column: $table.description,
+        builder: (column) => column,
+      );
 
   GeneratedColumnWithTypeConverter<TipImagePath, String> get imagePath =>
       $composableBuilder(column: $table.imagePath, builder: (column) => column);
@@ -980,6 +1054,9 @@ class $$TipTableTableAnnotationComposer
     column: $table.imageDescription,
     builder: (column) => column,
   );
+
+  GeneratedColumnWithTypeConverter<TipUserNote, String> get userNote =>
+      $composableBuilder(column: $table.userNote, builder: (column) => column);
 }
 
 class $$TipTableTableTableManager
@@ -1015,30 +1092,34 @@ class $$TipTableTableTableManager
               ({
                 Value<TipId> id = const Value.absent(),
                 Value<TipTitle> title = const Value.absent(),
-                Value<TipNote> note = const Value.absent(),
+                Value<TipDescription> description = const Value.absent(),
                 Value<TipImagePath> imagePath = const Value.absent(),
                 Value<TipImageDescription> imageDescription =
                     const Value.absent(),
+                Value<TipUserNote> userNote = const Value.absent(),
               }) => TipTableCompanion(
                 id: id,
                 title: title,
-                note: note,
+                description: description,
                 imagePath: imagePath,
                 imageDescription: imageDescription,
+                userNote: userNote,
               ),
           createCompanionCallback:
               ({
                 Value<TipId> id = const Value.absent(),
                 required TipTitle title,
-                required TipNote note,
+                required TipDescription description,
                 required TipImagePath imagePath,
                 required TipImageDescription imageDescription,
+                required TipUserNote userNote,
               }) => TipTableCompanion.insert(
                 id: id,
                 title: title,
-                note: note,
+                description: description,
                 imagePath: imagePath,
                 imageDescription: imageDescription,
+                userNote: userNote,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

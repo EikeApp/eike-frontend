@@ -318,11 +318,12 @@ extension HomeEventPatterns on HomeEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _OnSetup value)?  onSetup,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _OnSetup value)?  onSetup,TResult Function( _OnUserNoteChanged value)?  onUserNoteChanged,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _OnSetup() when onSetup != null:
-return onSetup(_that);case _:
+return onSetup(_that);case _OnUserNoteChanged() when onUserNoteChanged != null:
+return onUserNoteChanged(_that);case _:
   return orElse();
 
 }
@@ -340,11 +341,12 @@ return onSetup(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _OnSetup value)  onSetup,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _OnSetup value)  onSetup,required TResult Function( _OnUserNoteChanged value)  onUserNoteChanged,}){
 final _that = this;
 switch (_that) {
 case _OnSetup():
-return onSetup(_that);}
+return onSetup(_that);case _OnUserNoteChanged():
+return onUserNoteChanged(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -358,11 +360,12 @@ return onSetup(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _OnSetup value)?  onSetup,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _OnSetup value)?  onSetup,TResult? Function( _OnUserNoteChanged value)?  onUserNoteChanged,}){
 final _that = this;
 switch (_that) {
 case _OnSetup() when onSetup != null:
-return onSetup(_that);case _:
+return onSetup(_that);case _OnUserNoteChanged() when onUserNoteChanged != null:
+return onUserNoteChanged(_that);case _:
   return null;
 
 }
@@ -379,10 +382,11 @@ return onSetup(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  onSetup,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  onSetup,TResult Function( TipId tipId,  TipUserNote userNote)?  onUserNoteChanged,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OnSetup() when onSetup != null:
-return onSetup();case _:
+return onSetup();case _OnUserNoteChanged() when onUserNoteChanged != null:
+return onUserNoteChanged(_that.tipId,_that.userNote);case _:
   return orElse();
 
 }
@@ -400,10 +404,11 @@ return onSetup();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  onSetup,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  onSetup,required TResult Function( TipId tipId,  TipUserNote userNote)  onUserNoteChanged,}) {final _that = this;
 switch (_that) {
 case _OnSetup():
-return onSetup();}
+return onSetup();case _OnUserNoteChanged():
+return onUserNoteChanged(_that.tipId,_that.userNote);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -417,10 +422,11 @@ return onSetup();}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  onSetup,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  onSetup,TResult? Function( TipId tipId,  TipUserNote userNote)?  onUserNoteChanged,}) {final _that = this;
 switch (_that) {
 case _OnSetup() when onSetup != null:
-return onSetup();case _:
+return onSetup();case _OnUserNoteChanged() when onUserNoteChanged != null:
+return onUserNoteChanged(_that.tipId,_that.userNote);case _:
   return null;
 
 }
@@ -459,5 +465,73 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class _OnUserNoteChanged implements HomeEvent {
+  const _OnUserNoteChanged(this.tipId, this.userNote);
+  
+
+ final  TipId tipId;
+ final  TipUserNote userNote;
+
+/// Create a copy of HomeEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$OnUserNoteChangedCopyWith<_OnUserNoteChanged> get copyWith => __$OnUserNoteChangedCopyWithImpl<_OnUserNoteChanged>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnUserNoteChanged&&(identical(other.tipId, tipId) || other.tipId == tipId)&&(identical(other.userNote, userNote) || other.userNote == userNote));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,tipId,userNote);
+
+@override
+String toString() {
+  return 'HomeEvent.onUserNoteChanged(tipId: $tipId, userNote: $userNote)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$OnUserNoteChangedCopyWith<$Res> implements $HomeEventCopyWith<$Res> {
+  factory _$OnUserNoteChangedCopyWith(_OnUserNoteChanged value, $Res Function(_OnUserNoteChanged) _then) = __$OnUserNoteChangedCopyWithImpl;
+@useResult
+$Res call({
+ TipId tipId, TipUserNote userNote
+});
+
+
+
+
+}
+/// @nodoc
+class __$OnUserNoteChangedCopyWithImpl<$Res>
+    implements _$OnUserNoteChangedCopyWith<$Res> {
+  __$OnUserNoteChangedCopyWithImpl(this._self, this._then);
+
+  final _OnUserNoteChanged _self;
+  final $Res Function(_OnUserNoteChanged) _then;
+
+/// Create a copy of HomeEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? tipId = null,Object? userNote = null,}) {
+  return _then(_OnUserNoteChanged(
+null == tipId ? _self.tipId : tipId // ignore: cast_nullable_to_non_nullable
+as TipId,null == userNote ? _self.userNote : userNote // ignore: cast_nullable_to_non_nullable
+as TipUserNote,
+  ));
+}
+
+
+}
 
 // dart format on

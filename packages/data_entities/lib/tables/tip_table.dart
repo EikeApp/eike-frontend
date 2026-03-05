@@ -2,18 +2,20 @@ import 'package:drift/drift.dart';
 
 extension type const TipId(int value) implements int {}
 extension type const TipTitle(String value) implements String {}
-extension type const TipNote(String value) implements String {}
+extension type const TipDescription(String value) implements String {}
 extension type const TipImagePath(String value) implements String {}
 extension type const TipImageDescription(String value) implements String {}
+extension type const TipUserNote(String value) implements String {}
 
 @DataClassName('TipEntity')
 class TipTable extends Table {
   IntColumn get id => integer().map(const TipIdConverter())();
   TextColumn get title => text().map(const TipTitleConverter())();
-  TextColumn get note => text().map(const TipNoteConverter())();
+  TextColumn get description => text().map(const TipDescriptionConverter())();
   TextColumn get imagePath => text().map(const TipImagePathConverter())();
   TextColumn get imageDescription =>
       text().map(const TipImageDescriptionConverter())();
+  TextColumn get userNote => text().map(const TipUserNoteConverter())();
 
   @override
   Set<Column> get primaryKey => {id};
@@ -47,16 +49,16 @@ class TipTitleConverter implements TypeConverter<TipTitle, String> {
   }
 }
 
-class TipNoteConverter implements TypeConverter<TipNote, String> {
-  const TipNoteConverter();
+class TipDescriptionConverter implements TypeConverter<TipDescription, String> {
+  const TipDescriptionConverter();
 
   @override
-  TipNote fromSql(String fromDb) {
-    return TipNote(fromDb);
+  TipDescription fromSql(String fromDb) {
+    return TipDescription(fromDb);
   }
 
   @override
-  String toSql(TipNote value) {
+  String toSql(TipDescription value) {
     return value;
   }
 }
@@ -86,6 +88,20 @@ class TipImageDescriptionConverter
 
   @override
   String toSql(TipImageDescription value) {
+    return value;
+  }
+}
+
+class TipUserNoteConverter implements TypeConverter<TipUserNote, String> {
+  const TipUserNoteConverter();
+
+  @override
+  TipUserNote fromSql(String fromDb) {
+    return TipUserNote(fromDb);
+  }
+
+  @override
+  String toSql(TipUserNote value) {
     return value;
   }
 }
