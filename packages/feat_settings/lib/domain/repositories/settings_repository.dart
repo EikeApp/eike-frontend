@@ -9,5 +9,5 @@ abstract interface class SettingsRepository {
   );
 
   Future<void> cleanupLocalStorage();
-  Future<TeamContactEntity?> getTeamContact();
+  Stream<TeamContactEntity?> observeTeamContact();
 }

@@ -37,8 +37,8 @@ class SettingsDao extends DatabaseAccessor<EikeDatabase>
     });
   }
 
-  Future<TeamContactEntity?> getTeamContact() {
+  Stream<TeamContactEntity?> observeTeamContact() {
     final query = select(teamContactTable)..limit(1);
-    return query.getSingleOrNull();
+    return query.watchSingleOrNull();
   }
 }

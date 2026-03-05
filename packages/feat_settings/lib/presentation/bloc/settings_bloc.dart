@@ -3,13 +3,14 @@ import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:data_entities/tables/team_contacts_table.dart';
 import 'package:feat_settings/domain/usecases/interactors/cleanup_local_storage_interactor.dart';
-import 'package:feat_settings/domain/usecases/interactors/get_team_contact_interactor.dart';
 import 'package:feat_settings/domain/usecases/interactors/upsert_team_contact_interactor.dart';
+import 'package:feat_settings/domain/usecases/observers/team_contact_observer.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:feat_settings/domain/repositories/settings_repository.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:service_logging/logging_interactor.dart';
 import 'package:service_settings/domain/repositories/eike_settings_repository.dart';
 import 'package:service_settings/domain/usecases/observers/is_app_lock_enabled_observer.dart';
@@ -21,7 +22,7 @@ part 'settings_state.dart';
 part 'settings_event.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-  final GetTeamContactInteractor getTeamContact;
+  final TeamContactObserver teamContactObserver;
   final UpsertTeamContactInteractor upsertTeamContact;
   final CleanupLocalStorageInteractor cleanupLocalStorage;
   final IsAppLockEnabledObserver isAppLockEnabledObserver;
@@ -34,7 +35,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc(
     SettingsRepository repository,
     EikeSettingsRepository eikeSettingsRepository,
-  ) : getTeamContact = GetTeamContactInteractor(repository),
+  ) : teamContactObserver = TeamContactObserver(repository),
       upsertTeamContact = UpsertTeamContactInteractor(repository),
       cleanupLocalStorage = CleanupLocalStorageInteractor(repository),
       isAppLockEnabledObserver = IsAppLockEnabledObserver(
@@ -62,21 +63,23 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       ),
     );
 
-    await getTeamContact
-        .logger()
-        .after((teamContact) {
-          teamNameController.text = teamContact?.teamName ?? '';
-          phoneController.text = teamContact?.phone ?? '';
-          emailController.text = teamContact?.email ?? '';
-        })
-        .run(unit);
+    final teamContactStream = teamContactObserver.observe().doOnData((
+      teamContact,
+    ) {
+      teamNameController.text = teamContact?.teamName ?? '';
+      phoneController.text = teamContact?.phone ?? '';
+      emailController.text = teamContact?.email ?? '';
+    });
 
-    return emit.forEach(
+    final combinedStreams = Rx.combineLatest2(
+      teamContactStream,
       isAppLockEnabledObserver.observe(),
-      onData: (isEnabled) {
-        return state.copyWith(isAppLockEnabled: isEnabled);
+      (teamContact, isAppLockEnabled) {
+        return state.copyWith(isAppLockEnabled: isAppLockEnabled);
       },
     );
+
+    return emit.forEach(combinedStreams, onData: (state) => state);
   }
 
   FutureOr<void> _onUpsertTeamContact(

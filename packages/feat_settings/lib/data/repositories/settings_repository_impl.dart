@@ -26,7 +26,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
   }
 
   @override
-  Future<TeamContactEntity?> getTeamContact() {
-    return dao.getTeamContact();
+  Stream<TeamContactEntity?> observeTeamContact() {
+    return dao.observeTeamContact();
   }
 }

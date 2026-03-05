@@ -31,6 +31,7 @@ dependencies:
   feat_database_provider:
   feat_home:
   feat_settings:
+  service_design:
   service_settings:
 
 dev_dependencies:

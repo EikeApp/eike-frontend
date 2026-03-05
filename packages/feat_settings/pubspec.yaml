@@ -16,6 +16,7 @@ dependencies:
   bloc_concurrency:
   use_in_case:
   dartz:
+  rxdart:
   drift:
   meta:
 

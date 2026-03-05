@@ -7,11 +7,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
+import 'package:service_design/theming/eike_theme.dart';
 import 'package:service_settings/data/repositories/eike_settings_repository_impl.dart';
 import 'package:service_settings/domain/repositories/eike_settings_repository.dart';
-
-import 'theme/util.dart';
-import 'theme/theme.dart';
 
 import 'security/app_lock_storage.dart';
 import 'security/app_lock_gate.dart';
@@ -93,13 +91,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = createTextTheme(context, "Inter", "Inter");
-    final MaterialTheme theme = MaterialTheme(textTheme);
-
     return MaterialApp(
       title: 'EIKE',
-      theme: theme.light(),
-      darkTheme: theme.dark(),
+      theme: EikeTheme.lightTheme(context),
+      darkTheme: EikeTheme.darkTheme(context),
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
