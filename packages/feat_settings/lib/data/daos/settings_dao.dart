@@ -20,9 +20,9 @@ class SettingsDao extends DatabaseAccessor<EikeDatabase>
   ) {
     final entity = TeamContactTableCompanion.insert(
       id: Value(teamContactEntryId),
-      teamName: teamName,
-      phone: phone,
-      email: email,
+      teamName: TeamContactTeamName(teamName.trim()),
+      phone: TeamContactPhone(phone.trim()),
+      email: TeamContactEmail(email.trim()),
     );
 
     return into(teamContactTable).insertOnConflictUpdate(entity);

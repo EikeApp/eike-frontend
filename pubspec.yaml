@@ -11,12 +11,16 @@ workspace:
   - packages/data_database
   - packages/data_entities
   - packages/eike_app
+  - packages/feat_contact
   - packages/feat_database_provider
   - packages/feat_home
   - packages/feat_settings
+  - packages/feat_imprint
+  - packages/feat_navigation
   - packages/service_design
   - packages/service_logging
   - packages/service_settings
+  - packages/service_url_launcher
 
 dependencies:
   flutter:
@@ -47,6 +51,7 @@ dependencies:
   meta: ^1.17.0
   flex_color_scheme: ^8.4.0
   google_fonts: ^8.0.2
+  flutter_html: ^3.0.0
 
 dev_dependencies:
   flutter_test:

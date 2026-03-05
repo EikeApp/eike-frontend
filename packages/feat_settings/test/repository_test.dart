@@ -34,7 +34,7 @@ void main() {
     });
 
     test('should not contain a team contact initially', () async {
-      final teamContact = settingsRepository.getTeamContact();
+      final teamContact = settingsRepository.observeTeamContact().first;
       expectLater(teamContact, completion(isNull));
     });
 
@@ -44,7 +44,7 @@ void main() {
       final email = TeamContactEmail('Email');
 
       await settingsRepository.upsert(teamName, phone, email);
-      var teamContact = await settingsRepository.getTeamContact();
+      var teamContact = await settingsRepository.observeTeamContact().first;
       expect(teamContact, isNotNull);
 
       teamContact = teamContact!;

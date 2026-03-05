@@ -28,11 +28,15 @@ dependencies:
   flutter_svg:
   rx_shared_preferences:
 
+  feat_contact:
   feat_database_provider:
   feat_home:
+  feat_navigation:
   feat_settings:
+  feat_imprint:
   service_design:
   service_settings:
+  service_url_launcher:
 
 dev_dependencies:
   flutter_test:

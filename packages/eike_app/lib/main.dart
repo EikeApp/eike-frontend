@@ -1,15 +1,19 @@
+import 'package:feat_contact/presentation/contact_screen.dart';
 import 'package:feat_database_provider/presentation/eike_database_provider.dart';
+import 'package:feat_home/presentation/home_screen.dart';
+import 'package:feat_imprint/presentation/imprint_screen.dart';
+import 'package:feat_navigation/eike_routes.dart';
 import 'package:feat_settings/presentation/settings_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 import 'package:service_design/theming/eike_theme.dart';
 import 'package:service_settings/data/repositories/eike_settings_repository_impl.dart';
 import 'package:service_settings/domain/repositories/eike_settings_repository.dart';
+import 'package:service_url_launcher/presentation/url_launcher_provider.dart';
 
 import 'security/app_lock_storage.dart';
 import 'security/app_lock_gate.dart';
@@ -43,49 +47,7 @@ Future<void> main() async {
   );
 }
 
-// GoRouter Config
-// final GoRouter _router = GoRouter(
-//   initialLocation: '/',
-//   routes: <RouteBase>[
-//     StatefulShellRoute.indexedStack(
-//       builder: (context, state, navigationShell) {
-//         return ScaffoldWithNavBar(navigationShell: navigationShell);
-//       },
-//       branches: [
-//         // Home Branch
-//         StatefulShellBranch(
-//           routes: [
-//             GoRoute(path: '/', builder: (context, state) => const HomeScreen()),
-//           ],
-//         ),
-//         // Kontakt Branch
-//         StatefulShellBranch(
-//           routes: [
-//             GoRoute(
-//               path: '/contact',
-//               builder: (context, state) => const ContactScreen(),
-//             ),
-//           ],
-//         ),
-//         // Einstellungen Branch
-//         // StatefulShellBranch(
-//         //   routes: [
-//         //     GoRoute(
-//         //       path: '/settings',
-//         //       builder: (context, state) => const SettingsScreen(),
-//         //     ),
-//         //   ],
-//         // ),
-//       ],
-//     ),
-//   ],
-// );
-
 class MyApp extends StatelessWidget {
-  static final _navigatorKey = GlobalKey<NavigatorState>(
-    debugLabel: 'navigator_key',
-  );
-
   const MyApp({super.key, required this.lockStorage});
   final AppLockStorage lockStorage;
 
@@ -97,24 +59,11 @@ class MyApp extends StatelessWidget {
       darkTheme: EikeTheme.darkTheme(context),
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
       home: EikeDatabaseProvider(
         child: AppLockGate(
           storage: lockStorage,
-          child: Navigator(
-            key: _navigatorKey,
-            onGenerateRoute: (settings) {
-              if (settings.name == '/') {
-                return MaterialPageRoute(
-                  settings: settings,
-                  builder: (context) {
-                    return const SettingsScreen();
-                  },
-                );
-              }
-
-              return null;
-            },
+          child: UrlLauncherProvider(
+            child: MainScreen(),
           ),
         ),
       ),
@@ -122,92 +71,109 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Scaffold with BottomNavigationBar
-class ScaffoldWithNavBar extends StatelessWidget {
-  const ScaffoldWithNavBar({required this.navigationShell, super.key});
-
-  final StatefulNavigationShell navigationShell;
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: navigationShell,
-      bottomNavigationBar: /* TODO: Decide if ripple effect should stay */ /* Theme(
-        data: Theme.of(context).copyWith(
-          splashFactory: NoSplash.splashFactory,
-          highlightColor: Colors.transparent,
-        ),
-        child: */ BottomNavigationBar(
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-        currentIndex: navigationShell.currentIndex,
-        onTap: (index) => navigationShell.goBranch(
-          index,
-          initialLocation: index == navigationShell.currentIndex,
-        ),
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Theme.of(context).colorScheme.primary,
-        unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
-        selectedFontSize: 12,
-        unselectedFontSize: 12,
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700),
-        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700),
-        items: [
-          BottomNavigationBarItem(
-            icon: const _NavIcon(icon: Icons.favorite_outline),
-            activeIcon: _ActiveNavIcon(icon: Icons.favorite_outline),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            label: 'Meine 7 Sachen',
-          ),
-          BottomNavigationBarItem(
-            icon: const _NavIcon(icon: Icons.phone),
-            activeIcon: _ActiveNavIcon(icon: Icons.phone),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            label: 'Kontakt',
-          ),
-          BottomNavigationBarItem(
-            icon: const _NavIcon(icon: Icons.settings),
-            activeIcon: _ActiveNavIcon(icon: Icons.settings),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            label: 'Einstellungen',
-          ),
-        ],
-      ),
-      /* ), */
-    );
-  }
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _ActiveNavIcon extends StatelessWidget {
-  const _ActiveNavIcon({required this.icon});
+class _MainScreenState extends State<MainScreen> {
+  int _currentIndex = 0;
 
-  final IconData icon;
+  // Ein NavigatorKey pro Tab
+  final List<GlobalKey<NavigatorState>> _navigatorKeys = [
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+  ];
+
+  // Zurück-Button korrekt behandeln
+  Future<bool> _onWillPop() async {
+    final navigator = _navigatorKeys[_currentIndex].currentState!;
+    if (navigator.canPop()) {
+      navigator.pop();
+      return false;
+    }
+
+    return true;
+  }
+
+  Widget _buildTabNavigator(int index, EikeRoute initialRoute) {
+    return Navigator(
+      key: _navigatorKeys[index],
+      initialRoute: initialRoute.route,
+      onGenerateRoute: (settings) {
+        final associatedRoute = EikeRoute.values
+            .where((route) => route.route == settings.name)
+            .firstOrNull;
+        if (associatedRoute == null) {
+          return null;
+        }
+
+        return switch (associatedRoute) {
+          EikeRoute.home => MaterialPageRoute(
+            settings: settings,
+            builder: (context) => const HomeScreen(),
+          ),
+          EikeRoute.contact => MaterialPageRoute(
+            settings: settings,
+            builder: (context) => const ContactScreen(),
+          ),
+          EikeRoute.settings => MaterialPageRoute(
+            settings: settings,
+            builder: (context) => const SettingsScreen(),
+          ),
+          EikeRoute.imprint => MaterialPageRoute(
+            settings: settings,
+            builder: (context) => const ImprintScreen(),
+          ),
+        };
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return SizedBox(
-      height: 36,
-      child: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: colorScheme.primary.withValues(alpha: 0.14),
-          ),
-          child: Icon(icon, color: colorScheme.primary),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) async {
+        if (!didPop) await _onWillPop();
+      },
+      child: Scaffold(
+        body: IndexedStack(
+          index: _currentIndex,
+          children: [
+            _buildTabNavigator(0, EikeRoute.home),
+            _buildTabNavigator(1, EikeRoute.contact),
+            _buildTabNavigator(2, EikeRoute.settings),
+          ],
+        ),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: _currentIndex,
+          labelBehavior: .onlyShowSelected,
+          onDestinationSelected: (index) {
+            setState(() => _currentIndex = index);
+          },
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.favorite_outline),
+              selectedIcon: Icon(Icons.favorite),
+              label: 'Meine 7 Sachen',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.phone_outlined),
+              selectedIcon: Icon(Icons.phone),
+              label: 'Kontakt',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.settings_outlined),
+              selectedIcon: Icon(Icons.settings),
+              label: 'Einstellungen',
+            ),
+          ],
         ),
       ),
     );
-  }
-}
-
-class _NavIcon extends StatelessWidget {
-  const _NavIcon({required this.icon});
-
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(height: 36, child: Center(child: Icon(icon)));
   }
 }

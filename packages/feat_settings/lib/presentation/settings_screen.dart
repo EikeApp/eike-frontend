@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:feat_navigation/eike_routes.dart';
 import 'package:feat_settings/data/daos/settings_dao.dart';
 import 'package:feat_settings/data/repositories/settings_repository_impl.dart';
 import 'package:feat_settings/presentation/bloc/settings_bloc.dart';
@@ -226,7 +229,13 @@ class _Scaffold extends StatelessWidget {
                           'Angaben zum Anbieter und Kontaktmöglichkeiten',
                         ),
                         TextButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            unawaited(
+                              Navigator.of(context).pushNamed(
+                                EikeRoute.imprint.route,
+                              ),
+                            );
+                          },
                           icon: Icon(Icons.info_outline),
                           label: Text('Impressum'),
                         ),
