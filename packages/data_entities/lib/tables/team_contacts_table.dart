@@ -11,15 +11,9 @@ class TeamContactTable extends Table {
   // (Alternativ ginge auch: ohne PK und LIMIT 1 – aber PK ist cleaner.)
   IntColumn get id =>
       integer().map(const TeamContactIdConverter())(); // keine autoIncrement
-  TextColumn get teamName => text()
-      .withDefault(const Constant(''))
-      .map(const TeamContactTeamNameConverter())();
-  TextColumn get phone => text()
-      .withDefault(const Constant(''))
-      .map(const TeamContactPhoneConverter())();
-  TextColumn get email => text()
-      .withDefault(const Constant(''))
-      .map(const TeamContactEmailConverter())();
+  TextColumn get teamName => text().map(const TeamContactTeamNameConverter())();
+  TextColumn get phone => text().map(const TeamContactPhoneConverter())();
+  TextColumn get email => text().map(const TeamContactEmailConverter())();
 
   @override
   Set<Column> get primaryKey => {id};

@@ -1,5 +1,6 @@
 import 'package:feat_database_provider/presentation/eike_database_provider.dart';
 import 'package:feat_home/presentation/home_screen.dart';
+import 'package:feat_settings/presentation/settings_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -115,7 +116,7 @@ class MyApp extends StatelessWidget {
                 return MaterialPageRoute(
                   settings: settings,
                   builder: (context) {
-                    return const HomeScreen();
+                    return const SettingsScreen();
                   },
                 );
               }

@@ -26,8 +26,7 @@ class $TeamContactTableTable extends TeamContactTable
         aliasedName,
         false,
         type: DriftSqlType.string,
-        requiredDuringInsert: false,
-        defaultValue: const Constant(''),
+        requiredDuringInsert: true,
       ).withConverter<TeamContactTeamName>(
         $TeamContactTableTable.$converterteamName,
       );
@@ -38,8 +37,7 @@ class $TeamContactTableTable extends TeamContactTable
         aliasedName,
         false,
         type: DriftSqlType.string,
-        requiredDuringInsert: false,
-        defaultValue: const Constant(''),
+        requiredDuringInsert: true,
       ).withConverter<TeamContactPhone>($TeamContactTableTable.$converterphone);
   @override
   late final GeneratedColumnWithTypeConverter<TeamContactEmail, String> email =
@@ -48,8 +46,7 @@ class $TeamContactTableTable extends TeamContactTable
         aliasedName,
         false,
         type: DriftSqlType.string,
-        requiredDuringInsert: false,
-        defaultValue: const Constant(''),
+        requiredDuringInsert: true,
       ).withConverter<TeamContactEmail>($TeamContactTableTable.$converteremail);
   @override
   List<GeneratedColumn> get $columns => [id, teamName, phone, email];
@@ -230,10 +227,12 @@ class TeamContactTableCompanion extends UpdateCompanion<TeamContactEntity> {
   });
   TeamContactTableCompanion.insert({
     this.id = const Value.absent(),
-    this.teamName = const Value.absent(),
-    this.phone = const Value.absent(),
-    this.email = const Value.absent(),
-  });
+    required TeamContactTeamName teamName,
+    required TeamContactPhone phone,
+    required TeamContactEmail email,
+  }) : teamName = Value(teamName),
+       phone = Value(phone),
+       email = Value(email);
   static Insertable<TeamContactEntity> custom({
     Expression<int>? id,
     Expression<String>? teamName,
@@ -726,9 +725,9 @@ abstract class _$EikeDatabase extends GeneratedDatabase {
 typedef $$TeamContactTableTableCreateCompanionBuilder =
     TeamContactTableCompanion Function({
       Value<TeamContactId> id,
-      Value<TeamContactTeamName> teamName,
-      Value<TeamContactPhone> phone,
-      Value<TeamContactEmail> email,
+      required TeamContactTeamName teamName,
+      required TeamContactPhone phone,
+      required TeamContactEmail email,
     });
 typedef $$TeamContactTableTableUpdateCompanionBuilder =
     TeamContactTableCompanion Function({
@@ -878,9 +877,9 @@ class $$TeamContactTableTableTableManager
           createCompanionCallback:
               ({
                 Value<TeamContactId> id = const Value.absent(),
-                Value<TeamContactTeamName> teamName = const Value.absent(),
-                Value<TeamContactPhone> phone = const Value.absent(),
-                Value<TeamContactEmail> email = const Value.absent(),
+                required TeamContactTeamName teamName,
+                required TeamContactPhone phone,
+                required TeamContactEmail email,
               }) => TeamContactTableCompanion.insert(
                 id: id,
                 teamName: teamName,

@@ -28,6 +28,7 @@ dependencies:
   flutter_svg:
 
   feat_home:
+  feat_settings:
   feat_database_provider:
 
 dev_dependencies:
