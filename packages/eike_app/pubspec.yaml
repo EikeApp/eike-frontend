@@ -26,10 +26,12 @@ dependencies:
   shared_preferences:
   url_launcher:
   flutter_svg:
+  rx_shared_preferences:
 
+  feat_database_provider:
   feat_home:
   feat_settings:
-  feat_database_provider:
+  service_settings:
 
 dev_dependencies:
   flutter_test:

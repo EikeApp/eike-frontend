@@ -17,14 +17,17 @@ dependencies:
   use_in_case:
   dartz:
   drift:
+  meta:
 
   data_database:
   data_entities:
   service_design:
   service_logging:
+  service_settings:
 
 dev_dependencies:
   test:
   build_runner:
   freezed:
   drift_dev:
+  rx_shared_preferences:

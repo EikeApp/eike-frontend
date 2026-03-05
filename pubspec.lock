@@ -225,6 +225,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
+  dart_either:
+    dependency: transitive
+    description:
+      name: dart_either
+      sha256: "928895b8266ac5906eb4e2993fead563a73b17fc86eec6b40172100d56ca2507"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   dart_style:
     dependency: transitive
     description:
@@ -241,6 +249,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.10.1"
+  disposebag:
+    dependency: transitive
+    description:
+      name: disposebag
+      sha256: c38be345780e0e4a4690b25b7c76b7d7d0cb39ec1c1f7895fe5e72f3630e3b78
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.1"
   drift:
     dependency: "direct main"
     description:
@@ -626,7 +642,7 @@ packages:
     source: hosted
     version: "0.13.0"
   meta:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: meta
       sha256: "23f08335362185a5ea2ad3a4e597f1375e78bce8a040df5c600c8d3552ef2394"
@@ -809,6 +825,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  rx_shared_preferences:
+    dependency: "direct main"
+    description:
+      name: rx_shared_preferences
+      sha256: "4414a3988f58addf6cfe7932c3eb7589604010fd2d3466964abf2c2cfdf1f6ed"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
+  rx_storage:
+    dependency: transitive
+    description:
+      name: rx_storage
+      sha256: "06c73a6960eb49b410e26d55fcdec0a2c098314ddf6940dc2d499290ea8a930f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
+  rxdart:
+    dependency: transitive
+    description:
+      name: rxdart
+      sha256: "5c3004a4a8dbb94bd4bf5412a4def4acdaa12e12f269737a5751369e12d1a962"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.28.0"
+  rxdart_ext:
+    dependency: transitive
+    description:
+      name: rxdart_ext
+      sha256: "95df7e8b13140e2c3fdb3b943569a51f18090e82aaaf6ca6e8e6437e434a6fb0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0"
   shared_preferences:
     dependency: "direct main"
     description:

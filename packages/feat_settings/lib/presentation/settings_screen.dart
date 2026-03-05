@@ -15,7 +15,9 @@ class SettingsScreen extends StatelessWidget {
         return SettingsBloc(
           SettingsRepositoryImpl(
             SettingsDao(RepositoryProvider.of(context)),
+            RepositoryProvider.of(context),
           ),
+          RepositoryProvider.of(context),
         )..add(const SettingsEvent.onSetup());
       },
       child: BlocBuilder<SettingsBloc, SettingsState>(
@@ -129,8 +131,12 @@ class _Scaffold extends StatelessWidget {
                       ],
                     ),
                     Switch(
-                      value: true,
-                      onChanged: (_) {},
+                      value: state.isAppLockEnabled,
+                      onChanged: (isEnabled) {
+                        BlocProvider.of<SettingsBloc>(context).add(
+                          SettingsEvent.onSetIsAppLockEnabled(isEnabled),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -156,7 +162,11 @@ class _Scaffold extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         FilledButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            BlocProvider.of<SettingsBloc>(context).add(
+                              const SettingsEvent.onCleanupLocalStorage(),
+                            );
+                          },
                           icon: Icon(Icons.delete_outlined),
                           label: Text('Alle Daten löschen'),
                         ),

@@ -16,6 +16,7 @@ workspace:
   - packages/feat_settings
   - packages/service_design
   - packages/service_logging
+  - packages/service_settings
 
 dependencies:
   flutter:
@@ -42,6 +43,8 @@ dependencies:
   use_in_case: ^1.4.3
   dartz: ^0.10.1
   logger: ^2.6.2
+  rx_shared_preferences: ^4.0.0
+  meta: ^1.17.0
 
 dev_dependencies:
   flutter_test:

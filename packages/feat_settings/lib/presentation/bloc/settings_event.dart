@@ -5,4 +5,6 @@ sealed class SettingsEvent with _$SettingsEvent {
   const factory SettingsEvent.onSetup() = _OnSetup;
   const factory SettingsEvent.onUpsertTeamContact() = _OnUpsertTeamContact;
   const factory SettingsEvent.onCleanupLocalStorage() = _OnCleanupLocalStorage;
+  const factory SettingsEvent.onSetIsAppLockEnabled(bool isEnabled) =
+      _OnSetIsAppLockEnabled;
 }

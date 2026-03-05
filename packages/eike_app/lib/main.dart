@@ -1,5 +1,4 @@
 import 'package:feat_database_provider/presentation/eike_database_provider.dart';
-import 'package:feat_home/presentation/home_screen.dart';
 import 'package:feat_settings/presentation/settings_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,16 +6,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:rx_shared_preferences/rx_shared_preferences.dart';
+import 'package:service_settings/data/repositories/eike_settings_repository_impl.dart';
+import 'package:service_settings/domain/repositories/eike_settings_repository.dart';
 
 import 'theme/util.dart';
 import 'theme/theme.dart';
 
-import 'screens/contact_screen.dart';
-
-import 'db/app_database.dart';
 import 'security/app_lock_storage.dart';
 import 'security/app_lock_gate.dart';
-import 'security/first_run_reset.dart';
 
 Future<void> main() async {
   LicenseRegistry.addLicense(() async* {
@@ -26,23 +24,22 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  // await setupSqlCipher();
+  final secureStorage = const FlutterSecureStorage();
+  final rxStorage = RxSharedPreferences.getInstance();
 
-  // First Run Reset
-  await FirstRunReset.run();
-
-  // Secure Storage + Key Manager
-  final storage = const FlutterSecureStorage();
-  // final keyManager = DbKeyManager(storage);
-
-  // Drift DB (öffnet verschlüsselt; LazyDatabase kümmert sich um async open)
-  // final db = AppDatabase(keyManager);
-
-  final lockStorage = AppLockStorage(storage);
+  final lockStorage = AppLockStorage(secureStorage);
 
   runApp(
-    RepositoryProvider.value(
-      value: storage,
+    MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider.value(value: secureStorage),
+        RepositoryProvider.value(value: rxStorage),
+        RepositoryProvider<EikeSettingsRepository>(
+          create: (context) {
+            return EikeSettingsRepositoryImpl(RepositoryProvider.of(context));
+          },
+        ),
+      ],
       child: MyApp(lockStorage: lockStorage),
     ),
   );
