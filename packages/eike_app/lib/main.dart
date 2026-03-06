@@ -1,3 +1,4 @@
+import 'package:feat_app_protection/presentation/app_protection_screen.dart';
 import 'package:feat_contact/presentation/contact_screen.dart';
 import 'package:feat_database_provider/presentation/eike_database_provider.dart';
 import 'package:feat_home/presentation/home_screen.dart';
@@ -15,9 +16,6 @@ import 'package:service_settings/data/repositories/eike_settings_repository_impl
 import 'package:service_settings/domain/repositories/eike_settings_repository.dart';
 import 'package:service_url_launcher/presentation/url_launcher_provider.dart';
 
-import 'security/app_lock_storage.dart';
-import 'security/app_lock_gate.dart';
-
 Future<void> main() async {
   LicenseRegistry.addLicense(() async* {
     final text = await rootBundle.loadString('assets/fonts/Inter-license.txt');
@@ -28,8 +26,6 @@ Future<void> main() async {
 
   final secureStorage = const FlutterSecureStorage();
   final rxStorage = RxSharedPreferences.getInstance();
-
-  final lockStorage = AppLockStorage(secureStorage);
 
   runApp(
     MultiRepositoryProvider(
@@ -42,30 +38,28 @@ Future<void> main() async {
           },
         ),
       ],
-      child: MyApp(lockStorage: lockStorage),
+      child: MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.lockStorage});
-  final AppLockStorage lockStorage;
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'EIKE',
+      title: 'Eike',
       theme: EikeTheme.lightTheme(context),
       darkTheme: EikeTheme.darkTheme(context),
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      home: EikeDatabaseProvider(
-        child: AppLockGate(
-          storage: lockStorage,
-          child: UrlLauncherProvider(
-            child: MainScreen(),
-          ),
-        ),
+      home: AppProtectionScreen(
+        builder: (context) {
+          return const EikeDatabaseProvider(
+            child: UrlLauncherProvider(child: MainScreen()),
+          );
+        },
       ),
     );
   }

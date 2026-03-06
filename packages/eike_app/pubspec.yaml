@@ -12,22 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons:
-  go_router:
-  drift:
-  sqlite3:
-  sqlcipher_flutter_libs:
-  flutter_secure_storage:
-  path:
-  path_provider:
-  provider:
-  flutter_bloc:
-  local_auth:
-  shared_preferences:
-  url_launcher:
-  flutter_svg:
-  rx_shared_preferences:
-
+  feat_app_protection:
   feat_contact:
   feat_database_provider:
   feat_home:

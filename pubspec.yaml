@@ -11,6 +11,7 @@ workspace:
   - packages/data_database
   - packages/data_entities
   - packages/eike_app
+  - packages/feat_app_protection
   - packages/feat_contact
   - packages/feat_database_provider
   - packages/feat_home
@@ -35,7 +36,7 @@ dependencies:
   path: ^1.9.0
   path_provider: ^2.1.0
   provider: ^6.1.5+1
-  local_auth: ^3.0.0
+  local_auth: ^3.0.1
   shared_preferences: ^2.5.4
   url_launcher: ^6.3.2
   flutter_svg: ^2.2.3

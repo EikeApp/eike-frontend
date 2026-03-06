@@ -11,7 +11,7 @@ import 'package:path/path.dart' as path;
 const String repoOwner = 'EikeApp';
 const String repoName = 'eike-content';
 const String cacheDir = '.eike_cache';
-const String targetDir = 'assets/content';
+const String targetDir = '../eike_app/assets/content';
 
 // Allowed extensions for media files to keep
 const Set<String> allowedExtensions = {

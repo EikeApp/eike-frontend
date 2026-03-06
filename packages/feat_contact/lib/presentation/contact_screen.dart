@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:data_entities/tables/team_contacts_table.dart';
 import 'package:feat_contact/data/daos/contact_dao.dart';
 import 'package:feat_contact/data/repositories/contact_repository_impl.dart';
@@ -56,7 +58,7 @@ class _Scaffold extends StatelessWidget {
                 icon: Icons.emergency_rounded,
                 children: [
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     spacing: EikeTheme.verticalComponentSpacingMedium,
                     children: [
                       Text(
@@ -68,25 +70,42 @@ class _Scaffold extends StatelessWidget {
                       Text(
                         '24 Stunden, 7 Tage die Woche vertrauliche und kostenlose Beratung unter den folgenden Nummern',
                       ),
-                      Wrap(
-                        spacing: EikeTheme.horizontalComponentSpacingMedium,
+
+                      Column(
+                        spacing: EikeTheme.verticalComponentSpacingSmall,
                         children: [
-                          FilledButton.tonalIcon(
-                            onPressed: () {},
-                            icon: Icon(Icons.phone_rounded),
-                            label: Text('0800 111 0 111'),
+                          NewWidget(
+                            label: 'Seelsorge',
+                            phoneNumber: '0800 111 0 111',
+                            width: 100,
                           ),
-                          FilledButton.tonalIcon(
-                            onPressed: () {},
-                            icon: Icon(Icons.phone_rounded),
-                            label: Text('0800 111 0 222'),
+                          NewWidget(
+                            label: 'Seelsorge (Kiel)',
+                            phoneNumber: '0800 111 0 222',
+                            width: 100,
                           ),
                         ],
                       ),
+                      if (false)
+                        Wrap(
+                          spacing: EikeTheme.horizontalComponentSpacingMedium,
+                          children: [
+                            FilledButton.tonalIcon(
+                              onPressed: () {},
+                              icon: Icon(Icons.phone_rounded),
+                              label: Text('0800 111 0 111'),
+                            ),
+                            FilledButton.tonalIcon(
+                              onPressed: () {},
+                              icon: Icon(Icons.phone_rounded),
+                              label: Text('0800 111 0 222'),
+                            ),
+                          ],
+                        ),
                     ],
                   ),
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     spacing: EikeTheme.verticalComponentSpacingMedium,
                     children: [
                       Text(
@@ -98,41 +117,23 @@ class _Scaffold extends StatelessWidget {
                       Text(
                         'Zögern Sie nicht bei akuter Gefahr die Notfalldienste zu benachrichtigen.',
                       ),
-                      Wrap(
-                        spacing: EikeTheme.horizontalComponentSpacingMedium,
+                      Column(
+                        spacing: EikeTheme.verticalComponentSpacingSmall,
                         children: [
-                          FilledButton.tonalIcon(
-                            onPressed: () {
-                              BlocProvider.of<UrlLauncherBloc>(context).add(
-                                UrlLauncherEvent.onLaunchUrl(
-                                  Uri(scheme: 'tel', path: '110'),
-                                ),
-                              );
-                            },
-                            icon: Icon(Icons.phone_rounded),
-                            label: Text('110'),
+                          NewWidget(
+                            label: 'Polizei',
+                            phoneNumber: '110',
+                            width: 50,
                           ),
-                          FilledButton.tonalIcon(
-                            onPressed: () {
-                              BlocProvider.of<UrlLauncherBloc>(context).add(
-                                UrlLauncherEvent.onLaunchUrl(
-                                  Uri(scheme: 'tel', path: '112'),
-                                ),
-                              );
-                            },
-                            icon: Icon(Icons.phone_rounded),
-                            label: Text('112'),
+                          NewWidget(
+                            label: 'Rettungsdienst',
+                            phoneNumber: '112',
+                            width: 50,
                           ),
-                          FilledButton.tonalIcon(
-                            onPressed: () {
-                              BlocProvider.of<UrlLauncherBloc>(context).add(
-                                UrlLauncherEvent.onLaunchUrl(
-                                  Uri(scheme: 'tel', path: '116117'),
-                                ),
-                              );
-                            },
-                            icon: Icon(Icons.phone_rounded),
-                            label: Text('116117'),
+                          NewWidget(
+                            label: 'Patientenservice',
+                            phoneNumber: '116117',
+                            width: 50,
                           ),
                         ],
                       ),
@@ -200,6 +201,102 @@ class _Scaffold extends StatelessWidget {
   }
 }
 
+class NewWidget extends StatelessWidget {
+  const NewWidget({
+    super.key,
+    required this.label,
+    required this.phoneNumber,
+    required this.width,
+  });
+
+  final String label;
+  final String phoneNumber;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: context.textTheme.bodyLarge?.copyWith(
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(
+          width: EikeTheme.horizontalComponentSpacingMedium,
+        ),
+        Expanded(
+          child: CustomPaint(
+            painter: DashedLinePainter(
+              color: context.colors.primary.withAlpha(75),
+            ),
+          ),
+        ),
+        FilledButton.tonalIcon(
+          onPressed: () {
+            BlocProvider.of<UrlLauncherBloc>(context).add(
+              UrlLauncherEvent.onLaunchUrl(
+                Uri(scheme: 'tel', path: phoneNumber),
+              ),
+            );
+          },
+          label: SizedBox(
+            width: width,
+            child: Text(
+              phoneNumber,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          icon: Icon(Icons.phone),
+        ),
+      ],
+    );
+  }
+}
+
+class DashedLinePainter extends CustomPainter {
+  const DashedLinePainter({required this.color});
+
+  final Color color;
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p1 = Offset(0, size.height);
+    final p2 = Offset(size.width, size.height);
+    // Get normalized distance vector from p1 to p2
+    var dx = p2.dx - p1.dx;
+    var dy = p2.dy - p1.dy;
+    final magnitude = sqrt(dx * dx + dy * dy);
+    dx = dx / magnitude;
+    dy = dy / magnitude;
+
+    const dashWidth = 5.0;
+    const dashSpace = 5.0;
+
+    // Compute number of dash segments
+    final steps = magnitude ~/ (dashWidth + dashSpace);
+
+    var startX = p1.dx;
+    var startY = p1.dy;
+    final paint = Paint()
+      ..strokeWidth = 1.0
+      ..color = color;
+
+    for (int i = 0; i < steps; i++) {
+      canvas.drawCircle(Offset(startX, startY), 2.0, paint);
+      startX += dx * (dashWidth + dashSpace);
+      startY += dy * (dashWidth + dashSpace);
+    }
+  }
+}
+
 class _ExpandableCard extends StatelessWidget {
   const _ExpandableCard({
     required this.title,
@@ -248,7 +345,7 @@ class _ExpandableCard extends StatelessWidget {
             for (final (index, child) in children.indexed) ...[
               if (index > 0)
                 const SizedBox(
-                  height: EikeTheme.verticalComponentSpacingMedium,
+                  height: EikeTheme.verticalComponentSpacingLarge,
                 ),
               child,
             ],
@@ -271,30 +368,32 @@ class _AlertCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card.filled(
-      color: context.colors.errorContainer,
+      color: context.colors.primaryContainer,
       child: Padding(
         padding: EikeTheme.cardPadding,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: EikeTheme.horizontalComponentSpacingMedium,
+        child: Column(
+          crossAxisAlignment: .center,
+          spacing: EikeTheme.verticalComponentSpacingMedium,
+
           children: [
-            Icon(Icons.error, color: context.colors.onErrorContainer),
-            Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: EikeTheme.verticalComponentSpacingSmall,
-                children: [
-                  Text(
-                    title,
-                    style: context.textTheme.titleMedium?.copyWith(
-                      color: context.colors.onErrorContainer,
-                      fontWeight: FontWeight.bold,
-                    ),
+            Row(
+              mainAxisAlignment: .center,
+              spacing: EikeTheme.horizontalComponentSpacingMedium,
+              children: [
+                Icon(
+                  Icons.error_outlined,
+                  color: context.colors.primary,
+                ),
+                Text(
+                  title,
+                  style: context.textTheme.titleMedium?.copyWith(
+                    color: context.colors.onPrimaryContainer,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Text(message),
-                ],
-              ),
+                ),
+              ],
             ),
+            Text(message),
           ],
         ),
       ),
