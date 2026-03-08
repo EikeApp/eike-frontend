@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:data_database/eike_database.dart';
-import 'package:drift/drift.dart';
 import 'package:encrypted_drift/encrypted_drift.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../domain/repositories/eike_database_provider_repository.dart';
@@ -42,6 +42,8 @@ class EikeDatabaseProviderRepositoryImpl
         .then((key) => _DatabaseEncryptionKey.fromNullable(key))
         .then((key) => key ?? _DatabaseEncryptionKey.generate());
 
+    print('Key: $encryptionKey');
+
     return _openDatabase(encryptionKey);
   }
 
@@ -49,12 +51,10 @@ class EikeDatabaseProviderRepositoryImpl
     _DatabaseEncryptionKey encryptionKey,
   ) async {
     return EikeDatabase(
-      DatabaseConnection(
-        EncryptedExecutor.inDatabaseFolder(
-          path: 'app.sqlite',
-          password: encryptionKey,
-          logStatements: true,
-        ),
+      EncryptedExecutor.inDatabaseFolder(
+        path: 'app.sqlite',
+        password: encryptionKey,
+        logStatements: kDebugMode,
       ),
     );
   }
