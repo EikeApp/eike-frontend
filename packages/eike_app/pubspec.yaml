@@ -11,14 +11,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_bloc:
+  flutter_secure_storage:
+  rx_shared_preferences:
 
   feat_app_protection:
   feat_contact:
   feat_database_provider:
   feat_home:
-  feat_navigation:
   feat_settings:
   feat_imprint:
+  feat_navigation:
+  feat_privacy_policy:
   service_design:
   service_settings:
   service_url_launcher:

@@ -2,7 +2,8 @@ enum EikeRoute {
   home('/home'),
   contact('/contact'),
   settings('/settings'),
-  imprint('/imprint')
+  imprint('/imprint'),
+  privacyPolicy('/privacyPolicy')
   ;
 
   const EikeRoute(this.route);

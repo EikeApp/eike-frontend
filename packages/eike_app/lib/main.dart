@@ -15,6 +15,7 @@ import 'package:service_design/theming/eike_theme.dart';
 import 'package:service_settings/data/repositories/eike_settings_repository_impl.dart';
 import 'package:service_settings/domain/repositories/eike_settings_repository.dart';
 import 'package:service_url_launcher/presentation/url_launcher_provider.dart';
+import 'package:feat_privacy_policy/presentation/privacy_policy_screen.dart';
 
 Future<void> main() async {
   LicenseRegistry.addLicense(() async* {
@@ -57,7 +58,9 @@ class MyApp extends StatelessWidget {
       home: AppProtectionScreen(
         builder: (context) {
           return const EikeDatabaseProvider(
-            child: UrlLauncherProvider(child: MainScreen()),
+            child: UrlLauncherProvider(
+              child: MainScreen(),
+            ),
           );
         },
       ),
@@ -121,6 +124,10 @@ class _MainScreenState extends State<MainScreen> {
           EikeRoute.imprint => MaterialPageRoute(
             settings: settings,
             builder: (context) => const ImprintScreen(),
+          ),
+          EikeRoute.privacyPolicy => MaterialPageRoute(
+            settings: settings,
+            builder: (context) => const PrivacyPolicyScreen(),
           ),
         };
       },

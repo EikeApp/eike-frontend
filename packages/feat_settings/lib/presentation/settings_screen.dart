@@ -213,7 +213,13 @@ class _Scaffold extends StatelessWidget {
                           'Informationen zum Umgang mit deinen Daten',
                         ),
                         TextButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            unawaited(
+                              Navigator.of(context).pushNamed(
+                                EikeRoute.privacyPolicy.route,
+                              ),
+                            );
+                          },
                           icon: Icon(Icons.privacy_tip_outlined),
                           label: Text('Datenschutz'),
                         ),

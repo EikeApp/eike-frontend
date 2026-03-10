@@ -1,0 +1,15 @@
+name: feat_privacy_policy
+description: This package contains a privacy-policy screen.
+publish_to: none
+version: 0.0.1 # Literally does not matter
+resolution: workspace
+
+environment:
+  sdk: ^3.11.0
+  flutter: ^3.41.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_html:
+  service_design:

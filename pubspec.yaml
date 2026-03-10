@@ -10,14 +10,19 @@ environment:
 workspace:
   - packages/data_database
   - packages/data_entities
+
   - packages/eike_app
+
   - packages/feat_app_protection
   - packages/feat_contact
   - packages/feat_database_provider
   - packages/feat_home
-  - packages/feat_settings
   - packages/feat_imprint
   - packages/feat_navigation
+  - packages/feat_privacy_policy
+  - packages/feat_settings
+
+  - packages/service_auth/local_auth
   - packages/service_design
   - packages/service_logging
   - packages/service_settings

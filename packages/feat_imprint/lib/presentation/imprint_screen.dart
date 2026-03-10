@@ -3,6 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:service_url_launcher/presentation/bloc/url_launcher_bloc.dart';
 
+class MyClass {
+  int get value => 1200;
+}
+
 class ImprintScreen extends StatelessWidget {
   const ImprintScreen({super.key});
 

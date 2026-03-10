@@ -42,8 +42,6 @@ class EikeDatabaseProviderRepositoryImpl
         .then((key) => _DatabaseEncryptionKey.fromNullable(key))
         .then((key) => key ?? _DatabaseEncryptionKey.generate());
 
-    print('Key: $encryptionKey');
-
     return _openDatabase(encryptionKey);
   }
 
