@@ -22,6 +22,7 @@ dependencies:
   service_auth:
 
 dev_dependencies:
+  test:
   build_runner:
   freezed:
   drift_dev:
