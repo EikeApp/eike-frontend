@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 import 'package:service_design/theming/eike_theme.dart';
+import 'package:service_logging/eike_logger.dart';
 import 'package:service_settings/data/repositories/eike_settings_repository_impl.dart';
 import 'package:service_settings/domain/repositories/eike_settings_repository.dart';
 import 'package:service_url_launcher/presentation/url_launcher_provider.dart';
@@ -25,7 +26,7 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  final secureStorage = const FlutterSecureStorage();
+  final secureStorage = FlutterSecureStorage();
   final rxStorage = RxSharedPreferences.getInstance();
 
   runApp(
@@ -33,6 +34,7 @@ Future<void> main() async {
       providers: [
         RepositoryProvider.value(value: secureStorage),
         RepositoryProvider.value(value: rxStorage),
+        RepositoryProvider.value(value: EikeLogger.pretty()),
         RepositoryProvider<EikeSettingsRepository>(
           create: (context) {
             return EikeSettingsRepositoryImpl(RepositoryProvider.of(context));

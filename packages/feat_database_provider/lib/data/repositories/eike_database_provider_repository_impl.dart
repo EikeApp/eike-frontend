@@ -5,6 +5,7 @@ import 'package:data_database/eike_database.dart';
 import 'package:encrypted_drift/encrypted_drift.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:service_logging/eike_logger.dart';
 
 import '../../domain/repositories/eike_database_provider_repository.dart';
 
@@ -18,7 +19,10 @@ extension type _DatabaseEncryptionKey(String value) implements String {
     return _DatabaseEncryptionKey(key);
   }
 
-  static _DatabaseEncryptionKey? fromNullable(String? value) {
+  static _DatabaseEncryptionKey? fromNullable(
+    String? value,
+    EikeLogger logger,
+  ) {
     if (value == null) {
       return null;
     }
@@ -31,23 +35,33 @@ class EikeDatabaseProviderRepositoryImpl
     implements EikeDatabaseProviderRepository {
   static final _databaseKeyId = 'db_sqlcipher_key_v1';
 
-  const EikeDatabaseProviderRepositoryImpl(this.storage);
+  const EikeDatabaseProviderRepositoryImpl(this.storage, this.logger);
 
+  final EikeLogger logger;
   final FlutterSecureStorage storage;
 
   @override
   Future<EikeDatabase> getDatabaseInstance() async {
-    final encryptionKey = await storage
-        .read(key: _databaseKeyId)
-        .then((key) => _DatabaseEncryptionKey.fromNullable(key))
-        .then((key) => key ?? _DatabaseEncryptionKey.generate());
+    var encryptionKey = await _getExistingKey();
+    encryptionKey ??= await _getNewKey();
 
     return _openDatabase(encryptionKey);
   }
 
-  Future<EikeDatabase> _openDatabase(
+  Future<_DatabaseEncryptionKey?> _getExistingKey() async {
+    final encryptionKey = await storage.read(key: _databaseKeyId);
+    return _DatabaseEncryptionKey.fromNullable(encryptionKey, logger);
+  }
+
+  Future<_DatabaseEncryptionKey> _getNewKey() async {
+    final encryptionKey = _DatabaseEncryptionKey.generate();
+    await storage.write(key: _databaseKeyId, value: encryptionKey);
+    return encryptionKey;
+  }
+
+  EikeDatabase _openDatabase(
     _DatabaseEncryptionKey encryptionKey,
-  ) async {
+  ) {
     return EikeDatabase(
       EncryptedExecutor.inDatabaseFolder(
         path: 'app.sqlite',
