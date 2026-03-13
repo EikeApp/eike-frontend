@@ -23,6 +23,7 @@ dependencies:
   feat_imprint:
   feat_navigation:
   feat_privacy_policy:
+  service_auth:
   service_design:
   service_logging:
   service_settings:

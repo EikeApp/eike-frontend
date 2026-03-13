@@ -44,7 +44,6 @@ class EikeDatabaseProviderRepositoryImpl
   Future<EikeDatabase> getDatabaseInstance() async {
     var encryptionKey = await _getExistingKey();
     encryptionKey ??= await _getNewKey();
-
     return _openDatabase(encryptionKey);
   }
 

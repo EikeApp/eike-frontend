@@ -1,5 +1,5 @@
-import 'package:local_auth/local_auth.dart';
 import 'package:service_settings/domain/repositories/eike_settings_repository.dart';
+import 'package:service_auth/domain/repositories/local_auth_repository.dart';
 
 import '../../domain/repositories/app_protection_repository.dart';
 
@@ -12,7 +12,7 @@ class AppProtectionRepositoryImpl implements AppProtectionRepository {
   );
 
   final EikeSettingsRepository settingsRepository;
-  final LocalAuthentication authentication;
+  final LocalAuthRepository authentication;
 
   @override
   Future<bool> authenticate() async {
@@ -24,9 +24,6 @@ class AppProtectionRepositoryImpl implements AppProtectionRepository {
       return true;
     }
 
-    return authentication.authenticate(
-      localizedReason: 'Verifizieren Sie ihre Identität',
-      persistAcrossBackgrounding: true,
-    );
+    return authentication.authenticate();
   }
 }

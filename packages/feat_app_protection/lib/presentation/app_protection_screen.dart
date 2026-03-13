@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:feat_app_protection/presentation/bloc/app_protection_bloc.dart';
-import 'package:local_auth/local_auth.dart';
 
 class AppProtectionScreen extends StatelessWidget {
   const AppProtectionScreen({super.key, required this.builder});
@@ -17,7 +16,7 @@ class AppProtectionScreen extends StatelessWidget {
         return AppProtectionBloc(
           AppProtectionRepositoryImpl(
             RepositoryProvider.of(context),
-            LocalAuthentication(),
+            RepositoryProvider.of(context),
           ),
           RepositoryProvider.of(context),
         )..add(AppProtectionEvent.onSetup());
