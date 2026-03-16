@@ -1,0 +1,31 @@
+flutter_launcher_icons:
+  # Following path will be used for android and iOS
+  image_path: "app_icons/eike_app_logo_2.png"
+
+  ###########################
+  #     Android Options     #
+  ###########################
+  android: true
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  adaptive_icon_background: "#3a78b8"
+  adaptive_icon_foreground: "app_icons/eike_app_logo_2.png"
+  adaptive_icon_foreground_inset: 16
+
+  ###########################
+  #       iOS Options       #
+  ###########################
+  ios: true
+  remove_alpha_ios: true
+  image_path_ios_dark_transparent: "app_icons/eike_app_logo_3.png"
+  image_path_ios_tinted_grayscale: "app_icons/eike_app_logo_3.png" # Grayscale required
+  desaturate_tinted_to_grayscale_ios: true
+  background_color_ios: "#3a78b8"
+
+  ###########################
+  #       Web Options       #
+  ###########################
+  # web:
+  #   generate: true
+  #   image_path: "app_icons/eike_app_logo_3.png"
+  #   background_color: "#"
+  #   theme_color: "#hexcode"
