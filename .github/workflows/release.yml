@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version (z.B. 1.4 oder 2.0)"
+        description: "Version (z.B. 1.2.3)"
         required: true
         type: string
 
@@ -25,9 +25,9 @@ jobs:
 
       - name: Validate version format
         run: |
-          if ! echo "${{ inputs.version }}" | grep -qE '^[0-9]+\.[0-9]+$'; then
+          if ! echo "${{ inputs.version }}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
             echo "❌ Ungültiges Versionsformat: ${{ inputs.version }}"
-            echo "   Erwartet: MAJOR.MINOR (z.B. 1.4 oder 2.0)"
+            echo "   Erwartet: MAJOR.MINOR.PATCH (z.B. 1.2.3)"
             exit 1
           fi
           echo "✅ Version ${{ inputs.version }} ist gültig"
@@ -39,6 +39,19 @@ jobs:
             exit 1
           fi
           echo "✅ Tag v${{ inputs.version }} ist noch frei"
+
+      - name: Check GitHub Release does not exist yet
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/releases/tags/v${{ inputs.version }}")
+
+          if [ "$STATUS" = "200" ]; then
+            echo "❌ GitHub Release v${{ inputs.version }} existiert bereits!"
+            exit 1
+          fi
+          echo "✅ GitHub Release v${{ inputs.version }} ist noch frei"
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -57,10 +70,15 @@ jobs:
           VERSION="${{ inputs.version }}"
           BUILD_NUMBER=$(git rev-list --count HEAD)
           echo "📦 Setze Version: $VERSION+$BUILD_NUMBER"
+          echo "   --version-name $VERSION"
+          echo "   --version-code $BUILD_NUMBER"
 
-          # Nur die App-pubspec.yaml bekommt die Version
           sed -i "s/^version: .*/version: $VERSION+$BUILD_NUMBER/" packages/eike_app/pubspec.yaml
           grep "^version:" packages/eike_app/pubspec.yaml
+
+          # Als Outputs für spätere Steps verfügbar machen
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
 
       - name: Install git-cliff
         uses: taiki-e/install-action@v2
@@ -99,6 +117,13 @@ jobs:
           git tag -a "v${{ inputs.version }}" -m "Release v${{ inputs.version }}"
           git push origin main --follow-tags
 
+      - name: Build Android AppBundle for release
+        working-directory: packages/eike_app
+        run: >
+          flutter build appbundle --release
+          --build-name=${{ env.VERSION }}
+          --build-number=${{ env.BUILD_NUMBER }}
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -107,7 +132,7 @@ jobs:
           body_path: release_notes.md
           draft: false
           prerelease: false
-          # files: |
-          #   packages/eike_app/build/app/outputs/bundle/release/app-release.aab
+          files: |
+            packages/eike_app/build/app/outputs/bundle/release/app-release.aab
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

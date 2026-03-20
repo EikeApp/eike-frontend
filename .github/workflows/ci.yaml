@@ -67,7 +67,8 @@ jobs:
         working-directory: packages/eike_app
         run: flutter build apk --debug
 
-      # Auf main: AppBundle für späteren Store-Upload
+      # Auf main: AppBundle als Smoke-Check (ohne versionierte version-name/version-code)
+      # Die finale versionierte Version wird nur im Release-Workflow gebaut
       - name: Build AppBundle (release)
         if: github.ref == 'refs/heads/main'
         working-directory: packages/eike_app
