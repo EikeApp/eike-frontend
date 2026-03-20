@@ -243,6 +243,10 @@ class _AlertCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card.filled(
       color: context.colors.errorContainer,
+      shape: RoundedRectangleBorder(
+        side: BorderSide.none,
+        borderRadius: BorderRadius.circular(EikeTheme.cornerRadius),
+      ),
       child: Padding(
         padding: EikeTheme.cardPadding,
         child: Row(

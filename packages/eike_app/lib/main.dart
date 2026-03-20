@@ -168,7 +168,8 @@ class _MainScreenState extends State<MainScreen> {
           onDestinationSelected: (index) {
             setState(() => _currentIndex = index);
           },
-          destinations: const [
+          indicatorColor: context.colors.secondaryContainer,
+          destinations: [
             NavigationDestination(
               icon: Icon(Icons.favorite_outline),
               selectedIcon: Icon(Icons.favorite),

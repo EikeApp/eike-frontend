@@ -6,6 +6,7 @@ import 'package:feat_home/data/repositories/home_repository_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_design/components/eike_app_bar.dart';
+import 'package:service_design/theming/eike_theme.dart';
 
 import 'bloc/home_bloc.dart';
 
@@ -47,7 +48,7 @@ class HomeScreen extends StatelessWidget {
                 }
 
                 return ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+                  padding: EikeTheme.pagePadding,
                   itemCount: state.tips.length,
                   itemBuilder: (context, index) {
                     return _TipCard(
@@ -56,7 +57,9 @@ class HomeScreen extends StatelessWidget {
                     );
                   },
                   separatorBuilder: (_, _) {
-                    return SizedBox(height: 16);
+                    return SizedBox(
+                      height: EikeTheme.verticalComponentSpacingMedium,
+                    );
                   },
                 );
               },
@@ -197,27 +200,28 @@ class _TipCardState extends State<_TipCard> {
   Widget build(BuildContext context) {
     return Card.outlined(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        padding: EikeTheme.cardPadding,
         child: Column(
-          spacing: 16,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: EikeTheme.verticalComponentSpacingMedium,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              spacing: 16,
+              spacing: EikeTheme.horizontalComponentSpacingMedium,
               children: [
                 Container(
                   width: 36,
                   height: 36,
                   decoration: BoxDecoration(
-                    color: ColorScheme.of(context).surfaceContainerHighest,
+                    color: context.colors.secondaryContainer,
                     shape: BoxShape.circle,
                   ),
                   alignment: Alignment.center,
                   child: Text(
                     '${widget.index}',
-                    style: TextTheme.of(context).titleMedium?.copyWith(
-                      color: ColorScheme.of(context).primary,
-                      fontWeight: FontWeight.w700,
+                    style: context.textTheme.titleMedium?.copyWith(
+                      color: context.colors.onSecondaryContainer,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -234,28 +238,30 @@ class _TipCardState extends State<_TipCard> {
               ],
             ),
             Divider(),
-            SizedBox.square(
-              dimension: 250,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Positioned.fill(
-                    child: Image.asset(
-                      'assets/images/tip-icon-bg-x2.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
+            Center(
+              child: SizedBox.square(
+                dimension: 250,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned.fill(
                       child: Image.asset(
-                        'assets/content/${widget.tip.imagePath}',
-                        fit: BoxFit.contain,
-                        semanticLabel: widget.tip.imageDescription,
+                        'assets/images/tip-icon-bg-x2.png',
+                        fit: BoxFit.cover,
                       ),
                     ),
-                  ),
-                ],
+                    Positioned.fill(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Image.asset(
+                          'assets/content/${widget.tip.imagePath}',
+                          fit: BoxFit.contain,
+                          semanticLabel: widget.tip.imageDescription,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             Text(widget.tip.description),
