@@ -1,5 +1,5 @@
-name: eike_frontend
-description: The frontend project of Eike written using Flutter+Dart
+name: eike_app
+description: "Die EIKE-App bietet Einsatzkräften Informationen und Unterstützung bei der Vorbereitung und Verarbeitung von belastenden Einsätzen."
 publish_to: none
 version: 1.0.0+1
 resolution: workspace
