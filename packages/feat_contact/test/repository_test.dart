@@ -20,10 +20,6 @@ void main() {
       return database.close();
     });
 
-    test('Should return true', () {
-      expect(true, isTrue);
-    });
-
     test('should not contain a team contact initially', () async {
       final teamContact = repository.observeTeamContact().first;
       expectLater(teamContact, completion(isNull));

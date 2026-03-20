@@ -1,6 +1,7 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_design/theming/generated/eike_color_scheme.dart.dart';
 
 abstract final class EikeTheme {
   static const horizontalPagePadding = 16.0;
@@ -29,7 +30,8 @@ abstract final class EikeTheme {
 
   static ThemeData lightTheme(BuildContext context) {
     return FlexColorScheme.light(
-      scheme: FlexScheme.blueM3,
+      // scheme: FlexScheme.blueM3,
+      colorScheme: EikeColorScheme.lightScheme(),
       textTheme: GoogleFonts.interTextTheme(),
       appBarStyle: FlexAppBarStyle.surface,
     ).toTheme.applyDefaults();
@@ -37,10 +39,11 @@ abstract final class EikeTheme {
 
   static ThemeData darkTheme(BuildContext context) {
     return FlexColorScheme.dark(
-      scheme: FlexScheme.blueM3,
+      // scheme: FlexScheme.blueM3,
+      colorScheme: EikeColorScheme.darkScheme(),
       textTheme: GoogleFonts.interTextTheme(),
       appBarStyle: FlexAppBarStyle.surface,
-    ).toTheme..applyDefaults();
+    ).toTheme.applyDefaults();
   }
 }
 
@@ -57,6 +60,10 @@ extension on ThemeData {
         margin: EdgeInsets.zero, // We don't want cards to inflate empty space
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(EikeTheme.cornerRadius),
+          side: BorderSide(
+            color: colorScheme.surfaceContainer,
+            width: 2.0,
+          ),
         ),
       ),
       inputDecorationTheme: inputDecorationTheme.copyWith(

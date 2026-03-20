@@ -55,7 +55,7 @@ class _Scaffold extends StatelessWidget {
                   'Einsatznachsorgeteam',
                   style: context.textTheme.headlineSmall,
                 ),
-                Card(
+                Card.outlined(
                   margin: EdgeInsets.zero,
                   child: Padding(
                     padding: EikeTheme.cardPadding,
@@ -122,7 +122,7 @@ class _Scaffold extends StatelessWidget {
                   'Datenschutz & Sicherung',
                   style: context.textTheme.headlineMedium,
                 ),
-                Card(
+                Card.outlined(
                   child: Padding(
                     padding: EikeTheme.cardPadding,
                     child: Column(
@@ -166,7 +166,7 @@ class _Scaffold extends StatelessWidget {
                   'Daten verwalten',
                   style: context.textTheme.headlineMedium,
                 ),
-                Card(
+                Card.outlined(
                   child: Padding(
                     padding: EikeTheme.cardPadding,
                     child: Column(
@@ -203,7 +203,7 @@ class _Scaffold extends StatelessWidget {
                   'Rechtliches',
                   style: context.textTheme.headlineMedium,
                 ),
-                Card(
+                Card.outlined(
                   child: Padding(
                     padding: EikeTheme.cardPadding,
                     child: Column(

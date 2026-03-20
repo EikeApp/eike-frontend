@@ -195,7 +195,7 @@ class _TipCardState extends State<_TipCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Card.outlined(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         child: Column(
