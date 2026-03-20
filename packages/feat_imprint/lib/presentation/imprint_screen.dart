@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:service_design/components/eike_app_bar.dart';
 import 'package:service_url_launcher/presentation/bloc/url_launcher_bloc.dart';
 
 class MyClass {
@@ -13,8 +14,8 @@ class ImprintScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Impressum'),
+      appBar: EikeAppBar(
+        title: 'Impressum',
       ),
       body: SingleChildScrollView(
         child: Html(

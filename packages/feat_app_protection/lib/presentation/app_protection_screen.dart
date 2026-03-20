@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:feat_app_protection/presentation/bloc/app_protection_bloc.dart';
+import 'package:service_design/components/eike_app_bar.dart';
 
 class AppProtectionScreen extends StatelessWidget {
   const AppProtectionScreen({super.key, required this.builder});
@@ -58,9 +59,7 @@ class _LockScreen extends StatelessWidget {
       },
       child: state.map(
         initial: (_) => Scaffold(
-          appBar: AppBar(
-            title: Text('Authentifiziere...'),
-          ),
+          appBar: EikeAppBar(title: 'Authentifiziere...'),
         ),
         unlocked: (_) => builder(context),
         locked: (_) => const _LockedScreen(),
@@ -75,7 +74,7 @@ class _LockedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Entsperren Sie die App')),
+      appBar: EikeAppBar(title: 'Entsperren Sie die App'),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

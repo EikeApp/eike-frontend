@@ -7,6 +7,7 @@ import 'package:feat_settings/presentation/bloc/settings_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_design/theming/eike_theme.dart';
+import 'package:service_design/components/eike_app_bar.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -39,7 +40,7 @@ class _Scaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Einstellungen')),
+      appBar: EikeAppBar(title: 'Einstellungen'),
       body: SingleChildScrollView(
         padding: EikeTheme.pagePadding,
         child: Column(

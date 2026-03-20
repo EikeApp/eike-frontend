@@ -17,6 +17,7 @@ dependencies:
   rx_shared_preferences:
   use_in_case:
   dartz:
+  service_design:
   service_logging:
   service_settings:
   service_auth:

@@ -6,6 +6,7 @@ import 'package:feat_contact/data/repositories/contact_repository_impl.dart';
 import 'package:feat_contact/presentation/bloc/contact_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:service_design/components/eike_app_bar.dart';
 import 'package:service_design/theming/eike_theme.dart';
 import 'package:service_url_launcher/presentation/bloc/url_launcher_bloc.dart';
 
@@ -40,7 +41,7 @@ class _Scaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Kontakt')),
+      appBar: EikeAppBar(title: 'Kontakt'),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EikeTheme.pagePadding,
