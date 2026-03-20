@@ -227,7 +227,13 @@ class _Scaffold extends StatelessWidget {
                           'Open-Source-Bibliotheken, die diese App ermöglichen',
                         ),
                         TextButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            unawaited(
+                              Navigator.of(context).pushNamed(
+                                EikeRoute.licenses.route,
+                              ),
+                            );
+                          },
                           icon: Icon(Icons.description_outlined),
                           label: Text('Lizenzen'),
                         ),

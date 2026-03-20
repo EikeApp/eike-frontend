@@ -3,6 +3,7 @@ enum EikeRoute {
   contact('/contact'),
   settings('/settings'),
   imprint('/imprint'),
+  licenses('/licenses'),
   privacyPolicy('/privacyPolicy')
   ;
 

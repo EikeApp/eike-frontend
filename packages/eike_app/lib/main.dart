@@ -3,6 +3,7 @@ import 'package:feat_contact/presentation/contact_screen.dart';
 import 'package:feat_database_provider/presentation/eike_database_provider.dart';
 import 'package:feat_home/presentation/home_screen.dart';
 import 'package:feat_imprint/presentation/imprint_screen.dart';
+import 'package:feat_licenses/presentation/licenses_screen.dart';
 import 'package:feat_navigation/eike_routes.dart';
 import 'package:feat_settings/presentation/settings_screen.dart';
 import 'package:flutter/foundation.dart';
@@ -127,6 +128,10 @@ class _MainScreenState extends State<MainScreen> {
           EikeRoute.settings => MaterialPageRoute(
             settings: settings,
             builder: (context) => const SettingsScreen(),
+          ),
+          EikeRoute.licenses => MaterialPageRoute(
+            settings: settings,
+            builder: (context) => const LicensesScreen(),
           ),
           EikeRoute.imprint => MaterialPageRoute(
             settings: settings,

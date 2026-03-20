@@ -21,6 +21,7 @@ dependencies:
   feat_home:
   feat_settings:
   feat_imprint:
+  feat_licenses:
   feat_navigation:
   feat_privacy_policy:
   service_auth:
