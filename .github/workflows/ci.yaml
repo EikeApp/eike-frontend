@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - "feat/**"
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      # Workspace-Dependencies installieren (Root pubspec.yaml)
+      - name: Install workspace dependencies
+        run: flutter pub get
+
+      - name: Analyze workspace
+        run: flutter analyze --fatal-infos
+
+      - name: Run tests
+        run: flutter test ./packages/** -r github
+
+  build-android:
+    name: Build Android
+    runs-on: ubuntu-latest
+    needs: analyze
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install workspace dependencies
+        run: flutter pub get
+
+      # Debug APK als schneller Smoke-Check
+      - name: Build APK (debug)
+        working-directory: packages/eike_app
+        run: flutter build apk --debug
+
+      # Auf main: AppBundle für späteren Store-Upload
+      - name: Build AppBundle (release)
+        if: github.ref == 'refs/heads/main'
+        working-directory: packages/eike_app
+        run: flutter build appbundle --release
+
+      - name: Upload AppBundle artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: appbundle-${{ github.sha }}
+          path: packages/eike_app/build/app/outputs/bundle/release/app-release.aab
+          retention-days: 30
