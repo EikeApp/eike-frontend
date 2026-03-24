@@ -46,7 +46,7 @@ app.*.map.json
 
 # Eike Content
 .eike_cache/
-packages/eike_app/assets/content/
+# packages/eike_app/assets/content/
 packages/eike_app/build
 
 # Maestro related
