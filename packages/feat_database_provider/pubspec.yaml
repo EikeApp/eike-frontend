@@ -1,0 +1,32 @@
+name: feat_database_provider
+description: Provide an instance of the EikeDatabase to the Flutter widget tree
+publish_to: none
+version: 0.0.1 # Literally does not matter
+resolution: workspace
+
+environment:
+  sdk: ^3.11.0
+  flutter: ^3.41.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  freezed_annotation:
+  flutter_bloc:
+  bloc_concurrency:
+  use_in_case:
+  dartz:
+  flutter_secure_storage:
+  drift:
+  encrypted_drift:
+    git:
+      url: https://github.com/simolus3/drift.git
+      path: extras/encryption
+
+  data_database:
+  service_logging:
+
+dev_dependencies:
+  build_runner:
+  freezed:
+  json_serializable:
