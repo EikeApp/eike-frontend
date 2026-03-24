@@ -1,40 +1,138 @@
-name: release
+name: Release
 
 on:
-  push:
-    branches:
-      - "main"
-
-defaults:
-  run:
-    shell: bash
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version (z.B. 1.2.3)"
+        required: true
+        type: string
 
 permissions:
   contents: write
 
 jobs:
   release:
-    name: Generate changelog and version
+    name: Create Release
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Generate a changelog
-        id: git-cliff
-        uses: orhun/git-cliff-action@v4
-        with:
-          config: cliff.toml
-          args: --bump --unreleased
-        env:
-          OUTPUT: CHANGELOG.md
-          GITHUB_REPO: ${{ github.repository }}
-      - name: Create GitHub Release
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate version format
         run: |
-          gh release create "${{ steps.git-cliff.outputs.version }}" \
-          --latest \
-          --title "${{ steps.git-cliff.outputs.version }}" \
-          --notes "${{ steps.git-cliff.outputs.content }}"
+          if ! echo "${{ inputs.version }}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "❌ Ungültiges Versionsformat: ${{ inputs.version }}"
+            echo "   Erwartet: MAJOR.MINOR.PATCH (z.B. 1.2.3)"
+            exit 1
+          fi
+          echo "✅ Version ${{ inputs.version }} ist gültig"
+
+      - name: Check tag does not exist yet
+        run: |
+          if git rev-parse "v${{ inputs.version }}" >/dev/null 2>&1; then
+            echo "❌ Tag v${{ inputs.version }} existiert bereits!"
+            exit 1
+          fi
+          echo "✅ Tag v${{ inputs.version }} ist noch frei"
+
+      - name: Check GitHub Release does not exist yet
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/releases/tags/v${{ inputs.version }}")
+
+          if [ "$STATUS" = "200" ]; then
+            echo "❌ GitHub Release v${{ inputs.version }} existiert bereits!"
+            exit 1
+          fi
+          echo "✅ GitHub Release v${{ inputs.version }} ist noch frei"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install workspace dependencies
+        run: flutter pub get
+
+      - name: Run tests before release
+        run: flutter test ./packages/** -r github
+
+      - name: Bump version in pubspec.yaml
+        run: |
+          VERSION="${{ inputs.version }}"
+          BUILD_NUMBER=$(git rev-list --count HEAD)
+          echo "📦 Setze Version: $VERSION+$BUILD_NUMBER"
+          echo "   --version-name $VERSION"
+          echo "   --version-code $BUILD_NUMBER"
+
+          sed -i "s/^version: .*/version: $VERSION+$BUILD_NUMBER/" packages/eike_app/pubspec.yaml
+          grep "^version:" packages/eike_app/pubspec.yaml
+
+          # Als Outputs für spätere Steps verfügbar machen
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
+
+      - name: Install git-cliff
+        uses: taiki-e/install-action@v2
+        with:
+          tool: git-cliff
+
+      - name: Generate Changelog
+        run: |
+          git-cliff --tag "v${{ inputs.version }}" --output CHANGELOG.md
+          echo "📝 Changelog generiert"
+          head -60 CHANGELOG.md
+
+      - name: Generate release notes (seit letztem Tag)
+        run: |
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -z "$LATEST_TAG" ]; then
+            git-cliff --tag "v${{ inputs.version }}" --output release_notes.md
+          else
+            git-cliff "$LATEST_TAG".. --tag "v${{ inputs.version }}" --output release_notes.md
+          fi
+          echo "📋 Release Notes:"
+          cat release_notes.md
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit version bump & changelog
+        run: |
+          git add packages/eike_app/pubspec.yaml CHANGELOG.md
+          git commit -m "chore(release): v${{ inputs.version }}"
+
+      - name: Create and push tag
+        run: |
+          git tag -a "v${{ inputs.version }}" -m "Release v${{ inputs.version }}"
+          git push origin main --follow-tags
+
+      - name: Build Android AppBundle for release
+        working-directory: packages/eike_app
+        run: >
+          flutter build appbundle --release
+          --build-name=${{ env.VERSION }}
+          --build-number=${{ env.BUILD_NUMBER }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "v${{ inputs.version }}"
+          name: "v${{ inputs.version }}"
+          body_path: release_notes.md
+          draft: false
+          prerelease: false
+          files: |
+            packages/eike_app/build/app/outputs/bundle/release/app-release.aab
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
