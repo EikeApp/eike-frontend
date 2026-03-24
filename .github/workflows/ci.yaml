@@ -76,7 +76,7 @@ jobs:
 
       - name: Upload AppBundle artifact
         if: github.ref == 'refs/heads/main'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: appbundle-${{ github.sha }}
           path: packages/eike_app/build/app/outputs/bundle/release/app-release.aab
