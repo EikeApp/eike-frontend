@@ -8,30 +8,43 @@ all: run
 
 # Fetch content using the dart script
 fetch-content:
-	@echo "Fetching content..."
-	@flutter pub get > $(if $(OS),NUL,/dev/null) 2>&1
-	@dart run tool/fetch_content.dart $(VERSION)
+	@(cd packages/tools_fetch_content && dart pub get && dart run bin/tools_fetch_content.dart $(VERSION))
 
 # Run the app (fetches content first)
 run: fetch-content
-	@echo "Running Flutter app..."
-	@flutter run
+	@(cd packages/eike_app && flutter run)
 
 # Build APK (fetches content first)
 build-apk: fetch-content
-	@echo "Building APK..."
-	@flutter build apk
+	@(cd packages/eike_app && flutter build apk --release)
 
 # Build iOS (fetches content first)
 build-ios: fetch-content
-	@echo "Building iOS..."
-	@flutter build ios
+	@(cd packages/eike_app && flutter build ios --release)
 
 # Clean build artifacts and content cache
 clean:
-	@echo "Cleaning..."
-	@flutter clean
-	@dart run tool/fetch_content.dart clean
+	@(cd packages/tools_fetch_content && dart run bin/tools_fetch_content.dart clean)
+	@(cd packages/eike_app && flutter clean)
+	@echo "Searching for modules in $(CURDIR)/packages"
+	@if [ ! -d "packages" ]; then \
+		echo "Error: Directory 'packages' not found."; \
+		exit 1; \
+	fi
+	@found=0; \
+	for dir in in packages/*/; do \
+		dir=$${dir%/}; \
+		if [ -d "$$dir/.dart_tool" ] || [ -d "$$dir/build" ]; then \
+			echo "→ Flutter clean: $$dir"; \
+			(cd "$$dir" && flutter clean); \
+			found=$$((found + 1)); \
+		fi; \
+	done; \
+	if [ $$found -eq 0 ]; then \
+		echo "No modules have been found."; \
+	else \
+		echo "Done. $$found Projects have been cleaned."; \
+	fi
 
 # Help command
 help:

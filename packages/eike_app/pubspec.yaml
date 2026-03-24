@@ -1,0 +1,59 @@
+name: eike_app
+description: "Die EIKE-App bietet Einsatzkräften Informationen und Unterstützung bei der Vorbereitung und Verarbeitung von belastenden Einsätzen."
+publish_to: none
+version: 1.0.0+1
+resolution: workspace
+
+environment:
+  sdk: ^3.11.0
+  flutter: ^3.41.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_bloc:
+  flutter_secure_storage:
+  rx_shared_preferences:
+
+  feat_app_protection:
+  feat_contact:
+  feat_database_provider:
+  feat_home:
+  feat_settings:
+  feat_imprint:
+  feat_licenses:
+  feat_navigation:
+  feat_privacy_policy:
+  service_auth:
+  service_design:
+  service_logging:
+  service_settings:
+  service_url_launcher:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints:
+  http:
+  archive:
+  yaml:
+  drift_dev:
+  build_runner:
+  flutter_launcher_icons:
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/content/
+    - assets/content/7-things/
+    - assets/fonts/Inter-license.txt
+    - assets/images/
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-VariableFont_opsz,wght.ttf
+        - asset: assets/fonts/Inter-Italic-VariableFont_opsz,wght.ttf
+          style: italic
