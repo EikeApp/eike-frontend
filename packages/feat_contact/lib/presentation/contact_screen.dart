@@ -59,7 +59,7 @@ class _Scaffold extends StatelessWidget {
               child: Padding(
                 padding: EikeTheme.cardPadding,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: .stretch,
                   spacing: EikeTheme.verticalComponentSpacingMedium,
                   children: [
                     Text(
@@ -87,12 +87,12 @@ class _Scaffold extends StatelessWidget {
                           onPressed: () {
                             BlocProvider.of<UrlLauncherBloc>(context).add(
                               UrlLauncherEvent.onLaunchUrl(
-                                Uri.parse('tel:08001110222'),
+                                Uri.parse('tel:116123'),
                               ),
                             );
                           },
                           icon: const Icon(Icons.phone_outlined),
-                          label: Text('0800 111 0 222'),
+                          label: Text('116 123'),
                         ),
                       ],
                     ),
