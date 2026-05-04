@@ -24,6 +24,7 @@ dependencies:
   feat_licenses:
   feat_navigation:
   feat_privacy_policy:
+  feat_notification:
   service_auth:
   service_design:
   service_logging:

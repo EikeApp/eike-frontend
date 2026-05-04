@@ -22,6 +22,7 @@ class HomeScreen extends StatelessWidget {
             HomeDao(RepositoryProvider.of(context)),
             const AssetHomeDatasource(),
           ),
+          RepositoryProvider.of(context),
         )..add(const HomeEvent.onSetup());
       },
       child: BlocBuilder<HomeBloc, HomeState>(
