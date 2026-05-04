@@ -16,12 +16,16 @@ dependencies:
   bloc_concurrency:
   use_in_case:
   dartz:
+  rxdart:
   drift:
 
   data_database:
   data_entities:
+
   service_design:
   service_logging:
+
+  feat_notification:
 
 dev_dependencies:
   test:

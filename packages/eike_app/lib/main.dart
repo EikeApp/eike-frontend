@@ -5,6 +5,7 @@ import 'package:feat_home/presentation/home_screen.dart';
 import 'package:feat_imprint/presentation/imprint_screen.dart';
 import 'package:feat_licenses/presentation/licenses_screen.dart';
 import 'package:feat_navigation/eike_routes.dart';
+import 'package:feat_notification/presentation/widgets/notification_dialog_provider.dart';
 import 'package:feat_settings/presentation/settings_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -65,9 +66,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: AppProtectionScreen(
         builder: (context) {
-          return const EikeDatabaseProvider(
-            child: UrlLauncherProvider(
-              child: MainScreen(),
+          return NotificationDialogProvider(
+            child: const EikeDatabaseProvider(
+              child: UrlLauncherProvider(
+                child: MainScreen(),
+              ),
             ),
           );
         },

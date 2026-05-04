@@ -22,6 +22,7 @@ workspace:
   - packages/feat_navigation
   - packages/feat_privacy_policy
   - packages/feat_settings
+  - packages/feat_notification
 
   - packages/service_auth
   - packages/service_design
