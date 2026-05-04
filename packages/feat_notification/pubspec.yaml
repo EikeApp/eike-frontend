@@ -1,5 +1,5 @@
-name: feat_home
-description: This package contains contents related to the home screen.
+name: feat_notification
+description: This package contains a notification system.
 publish_to: none
 version: 0.0.1 # Literally does not matter
 resolution: workspace
@@ -14,22 +14,12 @@ dependencies:
   freezed_annotation:
   flutter_bloc:
   bloc_concurrency:
+  bloc_presentation:
   use_in_case:
   dartz:
-  rxdart:
-  drift:
 
-  data_database:
-  data_entities:
-
-  service_design:
   service_logging:
-
-  feat_notification:
-
+  service_design:
 dev_dependencies:
-  test:
   build_runner:
-  drift_dev:
   freezed:
-  json_serializable:

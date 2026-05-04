@@ -8,6 +8,8 @@ import 'package:feat_home/domain/repositories/home_repository.dart';
 import 'package:feat_home/domain/usecases/interactors/sync_tips_interactor.dart';
 import 'package:feat_home/domain/usecases/interactors/update_user_note_interactor.dart';
 import 'package:feat_home/domain/usecases/observers/tips_observer.dart';
+import 'package:feat_notification/domain/repositories/notification_repository.dart';
+import 'package:feat_notification/domain/usecases/interactors/emit_notification_interactor.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:service_logging/logging_interactor.dart';
@@ -21,11 +23,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final TipsObserver tipsObserver;
   final SyncTipsInteractor syncTipsInteractor;
   final UpdateUserNoteInteractor updateUserNote;
+  final EmitNotificationInteractor emitNotification;
 
-  HomeBloc(HomeRepository repository)
-    : tipsObserver = TipsObserver(repository),
+  HomeBloc(
+    HomeRepository repository,
+    NotificationRepository notificationRepository,
+  ) : tipsObserver = TipsObserver(repository),
       syncTipsInteractor = SyncTipsInteractor(repository),
       updateUserNote = UpdateUserNoteInteractor(repository),
+      emitNotification = EmitNotificationInteractor(notificationRepository),
       super(HomeState.initial()) {
     on<_OnSetup>(_onSetup);
     on<_OnUserNoteChanged>(_onUserNoteChanged, transformer: droppable());
