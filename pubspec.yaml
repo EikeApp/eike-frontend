@@ -67,7 +67,7 @@ dev_dependencies:
 
   flutter_lints: ^5.0.0
   http: ^1.2.0
-  archive: ^3.6.1
+  archive: ^4.0.0
   yaml: ^3.1.2
   drift_dev: ^2.0.2
   build_runner: ^2.4.0
