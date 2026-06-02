@@ -157,37 +157,213 @@ class _MainScreenState extends State<MainScreen> {
         if (!didPop) await _onWillPop();
       },
       child: Scaffold(
-        body: IndexedStack(
+        body: FadingAnimatedStack(
           index: _currentIndex,
-          children: [
-            _buildTabNavigator(0, EikeRoute.home),
-            _buildTabNavigator(1, EikeRoute.contact),
-            _buildTabNavigator(2, EikeRoute.settings),
-          ],
+          child: IndexedStack(
+            index: _currentIndex,
+            children: [
+              _buildTabNavigator(0, EikeRoute.home),
+              _buildTabNavigator(1, EikeRoute.contact),
+              _buildTabNavigator(2, EikeRoute.settings),
+            ],
+          ),
         ),
-        bottomNavigationBar: NavigationBar(
-          selectedIndex: _currentIndex,
-          labelBehavior: .onlyShowSelected,
-          onDestinationSelected: (index) {
-            setState(() => _currentIndex = index);
-          },
-          indicatorColor: context.colors.secondaryContainer,
-          destinations: [
-            NavigationDestination(
-              icon: Icon(Icons.favorite_outline),
-              selectedIcon: Icon(Icons.favorite),
-              label: 'Meine 7 Sachen',
+        extendBody: true,
+        bottomNavigationBar: Padding(
+          padding: EikeTheme.pagePadding,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: _BottomBar(
+              currentIndex: _currentIndex,
+              onDestinationSelected: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
             ),
-            NavigationDestination(
-              icon: Icon(Icons.phone_outlined),
-              selectedIcon: Icon(Icons.phone),
-              label: 'Kontakt',
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class FadingAnimatedStack extends StatefulWidget {
+  const FadingAnimatedStack({
+    super.key,
+    required this.index,
+    required this.child,
+  });
+
+  final int index;
+  final Widget child;
+
+  @override
+  State<FadingAnimatedStack> createState() => _FadingAnimatedStackState();
+}
+
+class _FadingAnimatedStackState extends State<FadingAnimatedStack>
+    with SingleTickerProviderStateMixin {
+  late final _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 300),
+  );
+
+  late final _animation = Tween(begin: 1.0, end: 0.0).animate(
+    CurvedAnimation(parent: _controller, curve: Curves.easeInOutCubic),
+  );
+
+  late int index = widget.index;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant FadingAnimatedStack oldWidget) {
+    if (oldWidget.index != widget.index) {
+      _runAnimation();
+    }
+
+    super.didUpdateWidget(oldWidget);
+  }
+
+  Future<void> _runAnimation() async {
+    _controller.value = 1.0;
+    setState(() {
+      index = widget.index;
+    });
+    _controller.animateTo(0.0);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        return Opacity(
+          opacity: _animation.value,
+          child: child,
+        );
+      },
+      child: widget.child,
+    );
+  }
+}
+
+class _BottomBar extends StatelessWidget {
+  const _BottomBar({
+    required this.currentIndex,
+    required this.onDestinationSelected,
+  });
+
+  final int currentIndex;
+  final void Function(int) onDestinationSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: context.colors.surfaceContainerLowest,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: EikeTheme.horizontalCardPadding,
+        ),
+        child: SizedBox(
+          height: kToolbarHeight,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            spacing: EikeTheme.horizontalComponentSpacingMedium,
+            children: [
+              Flexible(
+                flex: currentIndex == 0 ? 2 : 1,
+                child: _BottomBarButton(
+                  label: '7 Sachen',
+                  icon: Icons.favorite_outline,
+                  selectedIcon: Icons.favorite,
+                  isSelected: currentIndex == 0,
+                  onClick: () => onDestinationSelected(0),
+                ),
+              ),
+              Flexible(
+                flex: currentIndex == 1 ? 2 : 1,
+                child: _BottomBarButton(
+                  label: 'Kontakt',
+                  icon: Icons.phone_outlined,
+                  selectedIcon: Icons.phone,
+                  isSelected: currentIndex == 1,
+                  onClick: () => onDestinationSelected(1),
+                ),
+              ),
+              Flexible(
+                flex: currentIndex == 2 ? 2 : 1,
+                child: _BottomBarButton(
+                  label: 'Einstellungen',
+                  icon: Icons.settings_outlined,
+                  selectedIcon: Icons.settings,
+                  isSelected: currentIndex == 2,
+                  onClick: () => onDestinationSelected(2),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _BottomBarButton extends StatelessWidget {
+  const _BottomBarButton({
+    required this.label,
+    required this.icon,
+    required this.selectedIcon,
+    required this.isSelected,
+    required this.onClick,
+  });
+
+  final String label;
+  final IconData icon;
+  final IconData selectedIcon;
+  final bool isSelected;
+  final VoidCallback onClick;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onClick,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: isSelected ? 120 : 50,
+        height: kToolbarHeight / 1.6,
+        decoration: BoxDecoration(
+          color: isSelected ? context.colors.primaryContainer : null,
+          borderRadius: BorderRadius.circular(EikeTheme.cornerRadius),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: EikeTheme.horizontalComponentSpacingSmall,
+          children: [
+            Flexible(
+              child: Icon(
+                isSelected ? selectedIcon : icon,
+                color: context.colors.onPrimaryContainer,
+              ),
             ),
-            NavigationDestination(
-              icon: Icon(Icons.settings_outlined),
-              selectedIcon: Icon(Icons.settings),
-              label: 'Einstellungen',
-            ),
+            isSelected
+                ? Flexible(
+                    child: FittedBox(
+                      child: Text(
+                        label,
+                        style: TextStyle(
+                          color: context.colors.onPrimaryContainer,
+                        ),
+                      ),
+                    ),
+                  )
+                : SizedBox.shrink(),
           ],
         ),
       ),
