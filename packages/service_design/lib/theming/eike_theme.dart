@@ -60,6 +60,7 @@ extension on ThemeData {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(EikeTheme.cornerRadius),
         ),
+        color: Color(0xFFF5FAFD),
       ),
       inputDecorationTheme: inputDecorationTheme.copyWith(
         border: OutlineInputBorder(
