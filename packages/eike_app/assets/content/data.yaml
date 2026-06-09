@@ -1,0 +1,72 @@
+---
+data:
+  flyer:
+    tips:
+      - id: 0
+        title: Bewege dich mehr als sonst!
+        description: >
+          Stress versorgt uns mit viel Energie für Notfälle. Gib deinem Körper die Möglichkeit, diese Energie hinterher
+          wieder loszuwerden. Bewege dich mehr als sonst! Je länger, desto besser: Spazierengehen, Radfahren, Laufen,
+          Rudern, ...
+        icon:
+          src: "./7-things/bewege-dich.png"
+          alt: >
+            Eine laufende Figure – eine grüne Hälfte symbolisiert steigende Energie, eine rote Hälfte sinkenden Stress.
+      - id: 1
+        title: Bleib nüchtern!
+        description: >
+          Alkohol und Drogen betäuben Gedanken und Gefühle. Sie behindern das Gehirn aber auch bei der Verarbeitung von
+          Stress und Belastungen. Lässt ihre Wirkung nach, geht alles wieder von vorne los. Darum: Meide Alkohol und
+          Drogen! Gönne Dir stattdessen etwas: ein großes Eis, einen freien Nachmittag, einen Kinobesuch, ...
+        icon:
+          src: "./7-things/bleib-nuechtern.png"
+          alt: >
+            Figur mit ausgestreckten Armen im Sprung nach vorne. Im Hintergrund ein roter Mülleimer mit offenem Deckel
+            gefüllt mit zwei Glasflaschen.
+      - id: 2
+        title: Suche Ruhe und Sicherheit!
+        description: >
+          Starker Stress und hohe Einsatzbelastungen sind anstrengend, machen unruhig und unsicher.
+          Ruhe und Sicherheit gibt es an einem ruhigen Ort, zu einer bestimmten Zeit, bei einer Tätigkeit, ...
+        icon:
+          src: "./7-things/suche-ruhe.png"
+          alt: Eine Figur sitzt auf einem grünen Haken und entspannt mit den Händen hinter dem Kopf.
+      - id: 3
+        title: Bekomme etwas fertig!
+        description: >
+          Manchmal entsteht nach belastenden Einsätzen das Gefühl von Hilflosigkeit und Kontrollverlust. Um dich wieder
+          handlungsfähig zu fühlen, kannst du etwas reparieren, etwas aufräumen, etwas saubermachen, etwas ...
+        icon:
+          src: "./7-things/bekomme-etwas-fertig.png"
+          alt: >
+            Figur setzt ein grünes Häkchen in das oberste von drei übereinander stehenden Kästen. Die unteren zwei sind
+            bereits abgehakt.
+      - id: 4
+        title: Triff dich mit anderen!
+        description: >
+          Stress und Belastungen können einsam machen. Soziale Kontakte machen uns dagegen stärker. Darum triff dich
+          also mit anderen: zum Essen, zum Schnacken, zum Sporttreiben, zum Arbeiten, ...
+        icon:
+          src: "./7-things/triff-dich.png"
+          alt: Zwei Figuren, die sich mit einem Abklatschen begrüßen.
+      - id: 5
+        title: Plane etwas, worauf du dich freust!
+        description: >
+          Auch nach belastenden Einsätzen geht dein Leben weiter. Stärke deine Zuversicht, indem du etwas Schönes
+          planst: einen Ausflug, eine Anschaffung, den nächsten Urlaub, deinen Geburtstag, ...
+        icon:
+          src: "./7-things/plane-etwas.png"
+          alt: Figur zeigt mit erhobener Hand nach vorne, im Hintergrund ein Terminplaner.
+      - id: 6
+        title: Du kannst dir Unterstützung holen!
+        description: >
+          Wenn Stress und Belastung nicht weniger werden, ist dein Einsatznachsorgeteam für dich erreichbar. Tu das
+          auf jeden Fall, wenn es dir nach vier Wochen immer noch nicht wieder gut geht!
+        icon:
+          src: "./7-things/unterstuetzung-holen.png"
+          alt: Eine Figur hilft einer anderen über eine Mauer.
+meta:
+  author: DF-PSNV https://df-psnv.de/
+  license: >
+    Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International:
+    https://creativecommons.org/licenses/by-nc-nd/4.0/
