@@ -9,7 +9,7 @@ class AssetHomeDatasource implements HomeDatasource {
 
   @override
   Future<List<Tip>> fetchTips() async {
-    final jsonString = await rootBundle.loadString('assets/content/data.json');
+    final jsonString = await rootBundle.loadString('assets/content/data.yaml');
     final jsonData = jsonDecode(jsonString) as Map<String, dynamic>;
     final tips = (jsonData['data']?['flyer']?['tips'] as List?) ?? <dynamic>[];
 
