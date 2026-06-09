@@ -20,10 +20,11 @@ curl -L "https://github.com/EikeApp/eike-content/archive/refs/tags/${VERSION}.zi
 echo "Unzipping ..."
 unzip -q "${ZIP_FILE}"
 
-# echo "Extracting content ..."
-# mkdir -p eike_content
-# mv "${EXTRACTED_DIR}/7-things" eike_content/
-# mv "${EXTRACTED_DIR}/data.yaml" eike_content/
+echo "Extracting content ..."
+mkdir -p eike_content
+mv "${EXTRACTED_DIR}/7-things" eike_content/
+mv "${EXTRACTED_DIR}/data.yaml" eike_content/
+
 #
 # # if command -v yq &> /dev/null; then
 # #   echo "Converting YAML to JSON"
