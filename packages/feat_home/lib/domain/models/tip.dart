@@ -18,6 +18,7 @@ sealed class TipImage with _$TipImage {
 sealed class Tip with _$Tip {
   const factory Tip({
     required int id,
+    required int position,
     required String title,
     required String description,
     @JsonKey(name: 'icon') required TipImage image,
