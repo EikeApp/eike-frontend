@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_design/components/eike_app_bar.dart';
 import 'package:service_design/theming/eike_theme.dart';
+import 'package:service_design/components/eike_titled_card.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -44,110 +45,88 @@ class _Scaffold extends StatelessWidget {
       body: ListView(
         padding: EikeTheme.pagePadding,
         children: [
-          Card(
-            child: Padding(
-              padding: EikeTheme.cardPadding,
-              child: Column(
-                spacing: EikeTheme.verticalComponentSpacingMedium,
-                children: [
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: 48.0,
-                        child: Row(
-                          spacing: EikeTheme.horizontalComponentSpacingSmall,
-                          children: [
-                            Icon(
-                              Icons.lock_outline_rounded,
+          EikeTitledCard(
+            leading: Icon(
+              Icons.lock_outline_rounded,
+              color: context.colors.primary,
+            ),
+            title: "Datenschutz & Sicherheit",
+            child: Column(
+              spacing: EikeTheme.verticalComponentSpacingMedium,
+              children: [
+                Card(
+                  color: context.colors.surfaceContainerLowest,
+                  elevation: 2.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(EikeTheme.cornerRadius),
+                      topRight: Radius.circular(EikeTheme.cornerRadius),
+                      bottomRight: Radius.circular(EikeTheme.cornerRadius),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EikeTheme.cardPadding,
+                    child: Text(
+                      "Alle Daten werden lokal auf deinem Gerät gespeichert und verlassen dein Smartphone nicht.",
+                      style: TextStyle(color: context.colors.primary),
+                    ),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'App-Sperre',
+                            style: context.textTheme.titleMedium?.copyWith(
                               color: context.colors.primary,
+                              fontWeight: FontWeight.bold,
                             ),
-                            Text(
-                              "Datenschutz & Sicherheit",
-                              style: context.textTheme.titleMedium?.copyWith(
-                                color: context.colors.primary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Divider(color: context.colors.primary),
-                    ],
-                  ),
-                  Card(
-                    color: context.colors.surfaceContainerLowest,
-                    elevation: 2.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(EikeTheme.cornerRadius),
-                        topRight: Radius.circular(EikeTheme.cornerRadius),
-                        bottomRight: Radius.circular(EikeTheme.cornerRadius),
+                          ),
+                          Text("Biometrische Authentifizierung"),
+                        ],
                       ),
                     ),
-                    child: Padding(
-                      padding: EikeTheme.cardPadding,
-                      child: Text(
-                        "Alle Daten werden lokal auf deinem Gerät gespeichert und verlassen dein Smartphone nicht.",
-                        style: TextStyle(color: context.colors.primary),
+                    Switch(
+                      value: state.isAppLockEnabled,
+                      onChanged: (isEnabled) {
+                        BlocProvider.of<SettingsBloc>(context).add(
+                          SettingsEvent.onSetIsAppLockEnabled(isEnabled),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Daten löschen',
+                            style: context.textTheme.titleMedium?.copyWith(
+                              color: context.colors.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text("Daten unwiderruflich vom Gerät löschen"),
+                        ],
                       ),
                     ),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'App-Sperre',
-                              style: context.textTheme.titleMedium?.copyWith(
-                                color: context.colors.primary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text("Biometrische Authentifizierung"),
-                          ],
-                        ),
-                      ),
-                      Switch(
-                        value: state.isAppLockEnabled,
-                        onChanged: (isEnabled) {
-                          BlocProvider.of<SettingsBloc>(context).add(
-                            SettingsEvent.onSetIsAppLockEnabled(isEnabled),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Daten löschen',
-                              style: context.textTheme.titleMedium?.copyWith(
-                                color: context.colors.primary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text("Daten unwiderruflich vom Gerät löschen"),
-                          ],
-                        ),
-                      ),
-                      IconButton.filled(
-                        onPressed: () {
-                          unawaited(
-                            _onShowCleanupStorageConfirmationDialog(context),
-                          );
-                        },
-                        icon: Icon(Icons.delete_rounded),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    IconButton.filled(
+                      onPressed: () {
+                        unawaited(
+                          _onShowCleanupStorageConfirmationDialog(context),
+                        );
+                      },
+                      icon: Icon(Icons.delete_rounded),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ],
