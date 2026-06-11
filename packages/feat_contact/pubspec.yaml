@@ -17,6 +17,7 @@ dependencies:
   use_in_case:
   dartz:
   drift:
+  meta:
 
   data_database:
   data_entities:
