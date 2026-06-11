@@ -7,6 +7,7 @@ import 'package:feat_contact/presentation/bloc/contact_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_design/components/eike_app_bar.dart';
+import 'package:service_design/components/eike_titled_card.dart';
 import 'package:service_design/theming/eike_theme.dart';
 import 'package:service_url_launcher/presentation/bloc/url_launcher_bloc.dart';
 
@@ -70,150 +71,118 @@ class _EinsatznachsorgeteamCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: EikeTheme.cardPadding,
-        child: Column(
-          spacing: EikeTheme.verticalComponentSpacingMedium,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              children: [
-                SizedBox(
-                  height: _headlineHeight,
-                  child: Row(
+    return EikeTitledCard(
+      title: 'Dein Einsatznachsorgeteam',
+      leading: Icon(
+        Icons.people_outline_rounded,
+        color: context.colors.primary,
+      ),
+      trailing: IconButton.filledTonal(
+        onPressed: () => unawaited(
+          _showEinsatznachsorgeteamEditDialog(context),
+        ),
+        icon: Icon(Icons.edit),
+      ),
+      child: Column(
+        spacing: EikeTheme.verticalComponentSpacingMedium,
+        children: [
+          Text(
+            "Wenn du dich in einer akuten Krise befindest oder sofort Hilfe benötigst, wende dich bitte an die Telefonseelsorge oder den Notruf.",
+            style: TextStyle(color: context.colors.onSurface),
+          ),
+          Card(
+            color: context.colors.surfaceContainerLowest,
+            child: Padding(
+              padding: EikeTheme.cardPadding,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    teamName?.isNotEmpty == true
+                        ? (teamName?.value ?? '')
+                        : "Team",
+                    style: context.textTheme.titleLarge?.copyWith(
+                      color: context.colors.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: EikeTheme.verticalComponentSpacingSmall,
+                  ),
+                  Row(
+                    spacing: EikeTheme.horizontalComponentSpacingMedium,
                     children: [
                       Expanded(
-                        child: Row(
-                          spacing: EikeTheme.horizontalComponentSpacingSmall,
-                          children: [
-                            Icon(
-                              Icons.people_outline_rounded,
-                              color: context.colors.primary,
-                            ),
-                            Text(
-                              "Dein Einsatznachsorgeteam",
-                              style: context.textTheme.titleMedium?.copyWith(
-                                color: context.colors.primary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        child: Text(
+                          (phone == null || phone!.isEmpty)
+                              ? 'Keine Telefonnummer hinterlegt'
+                              : (phone?.value ?? ''),
+                          style: (phone == null || phone?.isEmpty == true)
+                              ? context.textTheme.labelLarge?.copyWith(
+                                  fontStyle: FontStyle.italic,
+                                )
+                              : context.textTheme.bodyLarge,
                         ),
                       ),
-                      IconButton.filledTonal(
-                        onPressed: () => unawaited(
-                          _showEinsatznachsorgeteamEditDialog(context),
-                        ),
-                        icon: Icon(Icons.edit),
+                      IconButton.filled(
+                        onPressed: (phone == null || phone?.isEmpty == true)
+                            ? null
+                            : () {
+                                if (phone case TeamContactPhone phone) {
+                                  BlocProvider.of<UrlLauncherBloc>(
+                                    context,
+                                  ).add(
+                                    UrlLauncherEvent.onLaunchUrl(
+                                      Uri(scheme: 'tel', path: phone.value),
+                                    ),
+                                  );
+                                }
+                              },
+                        icon: Icon(Icons.phone_rounded),
                       ),
                     ],
                   ),
-                ),
-                Divider(color: context.colors.primary),
-              ],
-            ),
-            Text(
-              "Wenn du dich in einer akuten Krise befindest oder sofort Hilfe benötigst, wende dich bitte an die Telefonseelsorge oder den Notruf.",
-              style: TextStyle(color: context.colors.onSurface),
-            ),
-            Card(
-              color: context.colors.surfaceContainerLowest,
-              child: Padding(
-                padding: EikeTheme.cardPadding,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      teamName?.isNotEmpty == true
-                          ? (teamName?.value ?? '')
-                          : "Team",
-                      style: context.textTheme.titleLarge?.copyWith(
-                        color: context.colors.primary,
-                        fontWeight: FontWeight.bold,
+                  Row(
+                    spacing: EikeTheme.horizontalComponentSpacingMedium,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          (email == null || email!.isEmpty)
+                              ? 'Keine Email hinterlegt'
+                              : (email?.value ?? ''),
+                          style: (email == null || email?.isEmpty == true)
+                              ? context.textTheme.labelLarge?.copyWith(
+                                  fontStyle: FontStyle.italic,
+                                )
+                              : context.textTheme.bodyLarge,
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: EikeTheme.verticalComponentSpacingSmall,
-                    ),
-                    Row(
-                      spacing: EikeTheme.horizontalComponentSpacingMedium,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            (phone == null || phone!.isEmpty)
-                                ? 'Keine Telefonnummer hinterlegt'
-                                : (phone?.value ?? ''),
-                            style: (phone == null || phone?.isEmpty == true)
-                                ? context.textTheme.labelLarge?.copyWith(
-                                    fontStyle: FontStyle.italic,
-                                  )
-                                : context.textTheme.bodyLarge,
-                          ),
-                        ),
-                        IconButton.filled(
-                          onPressed: (phone == null || phone?.isEmpty == true)
-                              ? null
-                              : () {
-                                  if (phone case TeamContactPhone phone) {
-                                    BlocProvider.of<UrlLauncherBloc>(
-                                      context,
-                                    ).add(
-                                      UrlLauncherEvent.onLaunchUrl(
-                                        Uri(scheme: 'tel', path: phone.value),
+                      IconButton.filled(
+                        onPressed: (email == null || email?.isEmpty == true)
+                            ? null
+                            : () {
+                                if (email case TeamContactEmail email) {
+                                  BlocProvider.of<UrlLauncherBloc>(
+                                    context,
+                                  ).add(
+                                    UrlLauncherEvent.onLaunchUrl(
+                                      Uri(
+                                        scheme: 'mailto',
+                                        path: email.value,
                                       ),
-                                    );
-                                  }
-                                },
-                          icon: Icon(Icons.phone_rounded),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      spacing: EikeTheme.horizontalComponentSpacingMedium,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            (email == null || email!.isEmpty)
-                                ? 'Keine Email hinterlegt'
-                                : (email?.value ?? ''),
-                            style: (email == null || email?.isEmpty == true)
-                                ? context.textTheme.labelLarge?.copyWith(
-                                    fontStyle: FontStyle.italic,
-                                  )
-                                : context.textTheme.bodyLarge,
-                          ),
-                        ),
-                        IconButton.filled(
-                          onPressed: (email == null || email?.isEmpty == true)
-                              ? null
-                              : () {
-                                  if (email case TeamContactEmail email) {
-                                    BlocProvider.of<UrlLauncherBloc>(
-                                      context,
-                                    ).add(
-                                      UrlLauncherEvent.onLaunchUrl(
-                                        Uri(
-                                          scheme: 'mailto',
-                                          path: email.value,
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                },
-                          icon: Icon(Icons.email_rounded),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                                    ),
+                                  );
+                                }
+                              },
+                        icon: Icon(Icons.email_rounded),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            const SizedBox(
-              height: EikeTheme.verticalComponentSpacingSmall * 0.5,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -224,130 +193,107 @@ class _NotfallKontakteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: EikeTheme.cardPadding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: EikeTheme.verticalComponentSpacingMedium,
-          children: [
-            Column(
-              children: [
-                SizedBox(
-                  height: _headlineHeight,
-                  child: Row(
-                    spacing: EikeTheme.horizontalComponentSpacingSmall,
-                    children: [
-                      Icon(
-                        Icons.error_outline_outlined,
-                        color: context.colors.primary,
-                      ),
-                      Text(
-                        "Notfall - Kontakte",
-                        style: context.textTheme.titleMedium?.copyWith(
-                          color: context.colors.primary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
+    return EikeTitledCard(
+      leading: Icon(
+        Icons.error_outline_outlined,
+        color: context.colors.primary,
+      ),
+      title: "Notfall - Kontakte",
+      child: Column(
+        spacing: EikeTheme.verticalComponentSpacingMedium,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: EikeTheme.verticalComponentSpacingSmall,
+            children: [
+              Text(
+                "Akute Krise?",
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: context.colors.primary,
+                  fontWeight: FontWeight.bold,
                 ),
-                Divider(color: context.colors.primary),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: EikeTheme.verticalComponentSpacingSmall,
-              children: [
-                Text(
-                  "Akute Krise?",
-                  style: context.textTheme.bodyLarge?.copyWith(
-                    color: context.colors.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
+              ),
+              Text(
+                "Wenn du dich in einer akuten Krise befindest oder sofort Hilfe benötigst, wende dich bitte an die Telefonseelsorge oder den Notruf.",
+                style: TextStyle(color: context.colors.onSurface),
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Notruf",
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: context.colors.primary,
+                  fontWeight: FontWeight.bold,
                 ),
-                Text(
-                  "Wenn du dich in einer akuten Krise befindest oder sofort Hilfe benötigst, wende dich bitte an die Telefonseelsorge oder den Notruf.",
-                  style: TextStyle(color: context.colors.onSurface),
+              ),
+              Text("Bei akuter Gefahr"),
+              const SizedBox(height: EikeTheme.verticalComponentSpacingSmall),
+              FilledButton.tonal(
+                onPressed: () {
+                  BlocProvider.of<UrlLauncherBloc>(
+                    context,
+                  ).add(
+                    UrlLauncherEvent.onLaunchUrl(
+                      Uri(scheme: 'tel', path: '112'),
+                    ),
+                  );
+                },
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text("112", textAlign: TextAlign.center),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Icon(Icons.phone_outlined),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Notruf",
-                  style: context.textTheme.bodyLarge?.copyWith(
-                    color: context.colors.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Telefonseelsorge",
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: context.colors.primary,
+                  fontWeight: FontWeight.bold,
                 ),
-                Text("Bei akuter Gefahr"),
-                const SizedBox(height: EikeTheme.verticalComponentSpacingSmall),
-                FilledButton.tonal(
-                  onPressed: () {
-                    BlocProvider.of<UrlLauncherBloc>(
-                      context,
-                    ).add(
-                      UrlLauncherEvent.onLaunchUrl(
-                        Uri(scheme: 'tel', path: '112'),
-                      ),
-                    );
-                  },
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text("112", textAlign: TextAlign.center),
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Icon(Icons.phone_outlined),
-                      ),
-                    ],
-                  ),
+              ),
+              Text("24/7 Kostenlos und vertraulich"),
+              const SizedBox(height: EikeTheme.verticalComponentSpacingSmall),
+              FilledButton.tonal(
+                onPressed: () {
+                  BlocProvider.of<UrlLauncherBloc>(
+                    context,
+                  ).add(
+                    UrlLauncherEvent.onLaunchUrl(
+                      Uri(scheme: 'tel', path: '08001110111'),
+                    ),
+                  );
+                },
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text("0800 111 0 111"),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Icon(Icons.phone_outlined),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Telefonseelsorge",
-                  style: context.textTheme.bodyLarge?.copyWith(
-                    color: context.colors.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text("24/7 Kostenlos und vertraulich"),
-                const SizedBox(height: EikeTheme.verticalComponentSpacingSmall),
-                FilledButton.tonal(
-                  onPressed: () {
-                    BlocProvider.of<UrlLauncherBloc>(
-                      context,
-                    ).add(
-                      UrlLauncherEvent.onLaunchUrl(
-                        Uri(scheme: 'tel', path: '08001110111'),
-                      ),
-                    );
-                  },
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text("0800 111 0 111"),
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Icon(Icons.phone_outlined),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
