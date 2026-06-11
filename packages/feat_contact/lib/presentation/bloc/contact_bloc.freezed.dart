@@ -55,11 +55,12 @@ extension ContactEventPatterns on ContactEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _OnSetup value)?  onSetup,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _OnSetup value)?  onSetup,TResult Function( _OnSetTeamContactData value)?  onSetTeamContactData,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _OnSetup() when onSetup != null:
-return onSetup(_that);case _:
+return onSetup(_that);case _OnSetTeamContactData() when onSetTeamContactData != null:
+return onSetTeamContactData(_that);case _:
   return orElse();
 
 }
@@ -77,11 +78,12 @@ return onSetup(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _OnSetup value)  onSetup,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _OnSetup value)  onSetup,required TResult Function( _OnSetTeamContactData value)  onSetTeamContactData,}){
 final _that = this;
 switch (_that) {
 case _OnSetup():
-return onSetup(_that);}
+return onSetup(_that);case _OnSetTeamContactData():
+return onSetTeamContactData(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -95,11 +97,12 @@ return onSetup(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _OnSetup value)?  onSetup,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _OnSetup value)?  onSetup,TResult? Function( _OnSetTeamContactData value)?  onSetTeamContactData,}){
 final _that = this;
 switch (_that) {
 case _OnSetup() when onSetup != null:
-return onSetup(_that);case _:
+return onSetup(_that);case _OnSetTeamContactData() when onSetTeamContactData != null:
+return onSetTeamContactData(_that);case _:
   return null;
 
 }
@@ -116,10 +119,11 @@ return onSetup(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  onSetup,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  onSetup,TResult Function( TeamContactTeamName teamName,  TeamContactPhone phoneNumber,  TeamContactEmail email)?  onSetTeamContactData,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OnSetup() when onSetup != null:
-return onSetup();case _:
+return onSetup();case _OnSetTeamContactData() when onSetTeamContactData != null:
+return onSetTeamContactData(_that.teamName,_that.phoneNumber,_that.email);case _:
   return orElse();
 
 }
@@ -137,10 +141,11 @@ return onSetup();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  onSetup,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  onSetup,required TResult Function( TeamContactTeamName teamName,  TeamContactPhone phoneNumber,  TeamContactEmail email)  onSetTeamContactData,}) {final _that = this;
 switch (_that) {
 case _OnSetup():
-return onSetup();}
+return onSetup();case _OnSetTeamContactData():
+return onSetTeamContactData(_that.teamName,_that.phoneNumber,_that.email);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -154,10 +159,11 @@ return onSetup();}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  onSetup,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  onSetup,TResult? Function( TeamContactTeamName teamName,  TeamContactPhone phoneNumber,  TeamContactEmail email)?  onSetTeamContactData,}) {final _that = this;
 switch (_that) {
 case _OnSetup() when onSetup != null:
-return onSetup();case _:
+return onSetup();case _OnSetTeamContactData() when onSetTeamContactData != null:
+return onSetTeamContactData(_that.teamName,_that.phoneNumber,_that.email);case _:
   return null;
 
 }
@@ -196,6 +202,76 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class _OnSetTeamContactData implements ContactEvent {
+  const _OnSetTeamContactData({required this.teamName, required this.phoneNumber, required this.email});
+  
+
+ final  TeamContactTeamName teamName;
+ final  TeamContactPhone phoneNumber;
+ final  TeamContactEmail email;
+
+/// Create a copy of ContactEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$OnSetTeamContactDataCopyWith<_OnSetTeamContactData> get copyWith => __$OnSetTeamContactDataCopyWithImpl<_OnSetTeamContactData>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetTeamContactData&&(identical(other.teamName, teamName) || other.teamName == teamName)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.email, email) || other.email == email));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,teamName,phoneNumber,email);
+
+@override
+String toString() {
+  return 'ContactEvent.onSetTeamContactData(teamName: $teamName, phoneNumber: $phoneNumber, email: $email)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$OnSetTeamContactDataCopyWith<$Res> implements $ContactEventCopyWith<$Res> {
+  factory _$OnSetTeamContactDataCopyWith(_OnSetTeamContactData value, $Res Function(_OnSetTeamContactData) _then) = __$OnSetTeamContactDataCopyWithImpl;
+@useResult
+$Res call({
+ TeamContactTeamName teamName, TeamContactPhone phoneNumber, TeamContactEmail email
+});
+
+
+
+
+}
+/// @nodoc
+class __$OnSetTeamContactDataCopyWithImpl<$Res>
+    implements _$OnSetTeamContactDataCopyWith<$Res> {
+  __$OnSetTeamContactDataCopyWithImpl(this._self, this._then);
+
+  final _OnSetTeamContactData _self;
+  final $Res Function(_OnSetTeamContactData) _then;
+
+/// Create a copy of ContactEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? teamName = null,Object? phoneNumber = null,Object? email = null,}) {
+  return _then(_OnSetTeamContactData(
+teamName: null == teamName ? _self.teamName : teamName // ignore: cast_nullable_to_non_nullable
+as TeamContactTeamName,phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
+as TeamContactPhone,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as TeamContactEmail,
+  ));
+}
+
+
+}
 
 /// @nodoc
 mixin _$ContactState {
