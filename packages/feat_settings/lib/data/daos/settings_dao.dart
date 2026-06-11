@@ -1,5 +1,6 @@
 import 'package:data_database/eike_database.dart';
 import 'package:data_entities/tables/team_contacts_table.dart';
+import 'package:data_entities/tables/tip_table.dart';
 import 'package:drift/drift.dart';
 
 part 'settings_dao.g.dart';
@@ -13,7 +14,10 @@ class SettingsDao extends DatabaseAccessor<EikeDatabase>
     // NOTE(Felix): Future-Proove implementation would be to deactivate foreign-key constraints and drop each table in reverse order.
     return batch((batch) {
       batch
-        ..deleteAll(db.tipTable)
+        ..update(
+          db.tipTable,
+          TipTableCompanion(userNote: Value(TipUserNote(''))),
+        )
         ..deleteAll(db.teamContactTable);
     });
   }

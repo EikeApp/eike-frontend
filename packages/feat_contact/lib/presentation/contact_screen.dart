@@ -284,11 +284,27 @@ class _NotfallKontakteCard extends StatelessWidget {
                 ),
                 Text("Bei akuter Gefahr"),
                 const SizedBox(height: EikeTheme.verticalComponentSpacingSmall),
-                FilledButton.tonalIcon(
-                  onPressed: () {},
-                  icon: Icon(Icons.phone_outlined),
-                  label: Expanded(
-                    child: Text("112", textAlign: TextAlign.center),
+                FilledButton.tonal(
+                  onPressed: () {
+                    BlocProvider.of<UrlLauncherBloc>(
+                      context,
+                    ).add(
+                      UrlLauncherEvent.onLaunchUrl(
+                        Uri(scheme: 'tel', path: '112'),
+                      ),
+                    );
+                  },
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text("112", textAlign: TextAlign.center),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Icon(Icons.phone_outlined),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -305,11 +321,27 @@ class _NotfallKontakteCard extends StatelessWidget {
                 ),
                 Text("24/7 Kostenlos und vertraulich"),
                 const SizedBox(height: EikeTheme.verticalComponentSpacingSmall),
-                FilledButton.tonalIcon(
-                  onPressed: () {},
-                  icon: Icon(Icons.phone_outlined),
-                  label: Expanded(
-                    child: Text("0800 111 0 111", textAlign: TextAlign.center),
+                FilledButton.tonal(
+                  onPressed: () {
+                    BlocProvider.of<UrlLauncherBloc>(
+                      context,
+                    ).add(
+                      UrlLauncherEvent.onLaunchUrl(
+                        Uri(scheme: 'tel', path: '08001110111'),
+                      ),
+                    );
+                  },
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text("0800 111 0 111"),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Icon(Icons.phone_outlined),
+                      ),
+                    ],
                   ),
                 ),
               ],
