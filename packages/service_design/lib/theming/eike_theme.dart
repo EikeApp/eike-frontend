@@ -31,7 +31,7 @@ abstract final class EikeTheme {
   static ThemeData lightTheme(BuildContext context) {
     return FlexColorScheme.light(
       // scheme: FlexScheme.blueM3,
-      colorScheme: EikeColorScheme.lightScheme(),
+      colorScheme: MaterialTheme.lightScheme(),
       textTheme: GoogleFonts.interTextTheme(),
       appBarStyle: FlexAppBarStyle.surface,
     ).toTheme.applyDefaults();
@@ -40,7 +40,7 @@ abstract final class EikeTheme {
   static ThemeData darkTheme(BuildContext context) {
     return FlexColorScheme.dark(
       // scheme: FlexScheme.blueM3,
-      colorScheme: EikeColorScheme.darkScheme(),
+      colorScheme: MaterialTheme.darkScheme(),
       textTheme: GoogleFonts.interTextTheme(),
       appBarStyle: FlexAppBarStyle.surface,
     ).toTheme.applyDefaults();
@@ -60,10 +60,6 @@ extension on ThemeData {
         margin: EdgeInsets.zero, // We don't want cards to inflate empty space
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(EikeTheme.cornerRadius),
-          side: BorderSide(
-            color: colorScheme.surfaceContainer,
-            width: 2.0,
-          ),
         ),
       ),
       inputDecorationTheme: inputDecorationTheme.copyWith(

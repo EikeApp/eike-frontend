@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SettingsState {
 
- bool get isAppLockEnabled; TextEditingController? get teamNameController; TextEditingController? get phoneController; TextEditingController? get emailController;
+ bool get isAppLockEnabled;
 /// Create a copy of SettingsState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $SettingsStateCopyWith<SettingsState> get copyWith => _$SettingsStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SettingsState&&(identical(other.isAppLockEnabled, isAppLockEnabled) || other.isAppLockEnabled == isAppLockEnabled)&&(identical(other.teamNameController, teamNameController) || other.teamNameController == teamNameController)&&(identical(other.phoneController, phoneController) || other.phoneController == phoneController)&&(identical(other.emailController, emailController) || other.emailController == emailController));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SettingsState&&(identical(other.isAppLockEnabled, isAppLockEnabled) || other.isAppLockEnabled == isAppLockEnabled));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isAppLockEnabled,teamNameController,phoneController,emailController);
+int get hashCode => Object.hash(runtimeType,isAppLockEnabled);
 
 @override
 String toString() {
-  return 'SettingsState(isAppLockEnabled: $isAppLockEnabled, teamNameController: $teamNameController, phoneController: $phoneController, emailController: $emailController)';
+  return 'SettingsState(isAppLockEnabled: $isAppLockEnabled)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $SettingsStateCopyWith<$Res>  {
   factory $SettingsStateCopyWith(SettingsState value, $Res Function(SettingsState) _then) = _$SettingsStateCopyWithImpl;
 @useResult
 $Res call({
- bool isAppLockEnabled, TextEditingController? teamNameController, TextEditingController? phoneController, TextEditingController? emailController
+ bool isAppLockEnabled
 });
 
 
@@ -62,13 +62,10 @@ class _$SettingsStateCopyWithImpl<$Res>
 
 /// Create a copy of SettingsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isAppLockEnabled = null,Object? teamNameController = freezed,Object? phoneController = freezed,Object? emailController = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? isAppLockEnabled = null,}) {
   return _then(_self.copyWith(
 isAppLockEnabled: null == isAppLockEnabled ? _self.isAppLockEnabled : isAppLockEnabled // ignore: cast_nullable_to_non_nullable
-as bool,teamNameController: freezed == teamNameController ? _self.teamNameController : teamNameController // ignore: cast_nullable_to_non_nullable
-as TextEditingController?,phoneController: freezed == phoneController ? _self.phoneController : phoneController // ignore: cast_nullable_to_non_nullable
-as TextEditingController?,emailController: freezed == emailController ? _self.emailController : emailController // ignore: cast_nullable_to_non_nullable
-as TextEditingController?,
+as bool,
   ));
 }
 
@@ -150,10 +147,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isAppLockEnabled,  TextEditingController? teamNameController,  TextEditingController? phoneController,  TextEditingController? emailController)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isAppLockEnabled)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SettingsState() when $default != null:
-return $default(_that.isAppLockEnabled,_that.teamNameController,_that.phoneController,_that.emailController);case _:
+return $default(_that.isAppLockEnabled);case _:
   return orElse();
 
 }
@@ -171,10 +168,10 @@ return $default(_that.isAppLockEnabled,_that.teamNameController,_that.phoneContr
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isAppLockEnabled,  TextEditingController? teamNameController,  TextEditingController? phoneController,  TextEditingController? emailController)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isAppLockEnabled)  $default,) {final _that = this;
 switch (_that) {
 case _SettingsState():
-return $default(_that.isAppLockEnabled,_that.teamNameController,_that.phoneController,_that.emailController);}
+return $default(_that.isAppLockEnabled);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -188,10 +185,10 @@ return $default(_that.isAppLockEnabled,_that.teamNameController,_that.phoneContr
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isAppLockEnabled,  TextEditingController? teamNameController,  TextEditingController? phoneController,  TextEditingController? emailController)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isAppLockEnabled)?  $default,) {final _that = this;
 switch (_that) {
 case _SettingsState() when $default != null:
-return $default(_that.isAppLockEnabled,_that.teamNameController,_that.phoneController,_that.emailController);case _:
+return $default(_that.isAppLockEnabled);case _:
   return null;
 
 }
@@ -203,13 +200,10 @@ return $default(_that.isAppLockEnabled,_that.teamNameController,_that.phoneContr
 
 
 class _SettingsState implements SettingsState {
-  const _SettingsState({required this.isAppLockEnabled, required this.teamNameController, required this.phoneController, required this.emailController});
+  const _SettingsState({required this.isAppLockEnabled});
   
 
 @override final  bool isAppLockEnabled;
-@override final  TextEditingController? teamNameController;
-@override final  TextEditingController? phoneController;
-@override final  TextEditingController? emailController;
 
 /// Create a copy of SettingsState
 /// with the given fields replaced by the non-null parameter values.
@@ -221,16 +215,16 @@ _$SettingsStateCopyWith<_SettingsState> get copyWith => __$SettingsStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SettingsState&&(identical(other.isAppLockEnabled, isAppLockEnabled) || other.isAppLockEnabled == isAppLockEnabled)&&(identical(other.teamNameController, teamNameController) || other.teamNameController == teamNameController)&&(identical(other.phoneController, phoneController) || other.phoneController == phoneController)&&(identical(other.emailController, emailController) || other.emailController == emailController));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SettingsState&&(identical(other.isAppLockEnabled, isAppLockEnabled) || other.isAppLockEnabled == isAppLockEnabled));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isAppLockEnabled,teamNameController,phoneController,emailController);
+int get hashCode => Object.hash(runtimeType,isAppLockEnabled);
 
 @override
 String toString() {
-  return 'SettingsState(isAppLockEnabled: $isAppLockEnabled, teamNameController: $teamNameController, phoneController: $phoneController, emailController: $emailController)';
+  return 'SettingsState(isAppLockEnabled: $isAppLockEnabled)';
 }
 
 
@@ -241,7 +235,7 @@ abstract mixin class _$SettingsStateCopyWith<$Res> implements $SettingsStateCopy
   factory _$SettingsStateCopyWith(_SettingsState value, $Res Function(_SettingsState) _then) = __$SettingsStateCopyWithImpl;
 @override @useResult
 $Res call({
- bool isAppLockEnabled, TextEditingController? teamNameController, TextEditingController? phoneController, TextEditingController? emailController
+ bool isAppLockEnabled
 });
 
 
@@ -258,13 +252,10 @@ class __$SettingsStateCopyWithImpl<$Res>
 
 /// Create a copy of SettingsState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isAppLockEnabled = null,Object? teamNameController = freezed,Object? phoneController = freezed,Object? emailController = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? isAppLockEnabled = null,}) {
   return _then(_SettingsState(
 isAppLockEnabled: null == isAppLockEnabled ? _self.isAppLockEnabled : isAppLockEnabled // ignore: cast_nullable_to_non_nullable
-as bool,teamNameController: freezed == teamNameController ? _self.teamNameController : teamNameController // ignore: cast_nullable_to_non_nullable
-as TextEditingController?,phoneController: freezed == phoneController ? _self.phoneController : phoneController // ignore: cast_nullable_to_non_nullable
-as TextEditingController?,emailController: freezed == emailController ? _self.emailController : emailController // ignore: cast_nullable_to_non_nullable
-as TextEditingController?,
+as bool,
   ));
 }
 

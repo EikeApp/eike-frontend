@@ -48,5 +48,25 @@ void main() {
       expect(teamContact.phone, equals(phone));
       expect(teamContact.email, equals(email));
     });
+
+    test('should contain team contact after call to upsert', () async {
+      final teamName = TeamContactTeamName('TeamName');
+      final phone = TeamContactPhone('Phone');
+      final email = TeamContactEmail('Email');
+
+      await repository.upsertTeamContact(
+        teamName: teamName,
+        phoneNumber: phone,
+        email: email,
+      );
+
+      var teamContact = await repository.observeTeamContact().first;
+      expect(teamContact, isNotNull);
+
+      expect(teamContact?.id, equals(ContactDao.teamContactEntryId));
+      expect(teamContact?.teamName, equals(teamName));
+      expect(teamContact?.phone, equals(phone));
+      expect(teamContact?.email, equals(email));
+    });
   });
 }
