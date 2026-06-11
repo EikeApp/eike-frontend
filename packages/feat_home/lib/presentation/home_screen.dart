@@ -72,100 +72,6 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// import 'dart:convert';
-// import 'dart:async';
-//
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart' show rootBundle;
-// import 'package:provider/provider.dart';
-//
-// import '../db/app_database.dart';
-//
-// import '../models/tip.dart';
-// import '../widgets/app_header.dart';
-//
-// class HomeScreen extends StatefulWidget {
-//   const HomeScreen({super.key});
-//
-//   @override
-//   State<HomeScreen> createState() => _HomeScreenState();
-// }
-//
-// class _HomeScreenState extends State<HomeScreen> {
-//   late final Future<List<Tip>> _tipsFuture;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _tipsFuture = _loadTips();
-//   }
-//
-//   Future<List<Tip>> _loadTips() async {
-//     final jsonString = await rootBundle.loadString('assets/content/data.json');
-//     final jsonData = jsonDecode(jsonString) as Map<String, dynamic>;
-//     final tips = (jsonData['data']?['flyer']?['tips'] as List?) ?? <dynamic>[];
-//
-//     return tips
-//         .whereType<Map>()
-//         .map((tip) => Tip.fromJson(tip.cast<String, dynamic>()))
-//         .toList(growable: false);
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final theme = Theme.of(context);
-//
-//     return Scaffold(
-//       appBar: const AppHeader(title: 'Meine 7 Sachen'),
-//       body: GestureDetector(
-//         behavior: HitTestBehavior.translucent,
-//         onTap: () => FocusScope.of(context).unfocus(),
-//         child: SafeArea(
-//           child: FutureBuilder<List<Tip>>(
-//             future: _tipsFuture,
-//             builder: (context, snapshot) {
-//               if (snapshot.connectionState == ConnectionState.waiting) {
-//                 return const Center(child: CircularProgressIndicator());
-//               }
-//
-//               if (snapshot.hasError) {
-//                 return Center(
-//                   child: Padding(
-//                     padding: const EdgeInsets.symmetric(horizontal: 24),
-//                     child: Text(
-//                       'Die Inhalte konnten nicht geladen werden. Bitte versuche es später erneut.',
-//                       style: theme.textTheme.bodyMedium,
-//                       textAlign: TextAlign.center,
-//                     ),
-//                   ),
-//                 );
-//               }
-//
-//               final tips = snapshot.data ?? <Tip>[];
-//               if (tips.isEmpty) {
-//                 return Center(
-//                   child: Text(
-//                     'Keine Inhalte gefunden.',
-//                     style: theme.textTheme.bodyMedium,
-//                   ),
-//                 );
-//               }
-//
-//               return ListView.separated(
-//                 padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
-//                 itemCount: tips.length,
-//                 separatorBuilder: (_, __) => const SizedBox(height: 16),
-//                 itemBuilder: (context, index) =>
-//                     _TipCard(tip: tips[index], position: index + 1),
-//               );
-//             },
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class _TipCard extends StatefulWidget {
   const _TipCard({required this.tip, required this.index});
 
@@ -199,7 +105,7 @@ class _TipCardState extends State<_TipCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Card.outlined(
+    return Card(
       child: Padding(
         padding: EikeTheme.cardPadding,
         child: Column(
