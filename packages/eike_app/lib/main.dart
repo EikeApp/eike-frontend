@@ -1,3 +1,6 @@
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:feat_app_protection/presentation/app_protection_screen.dart';
 import 'package:feat_contact/presentation/contact_screen.dart';
 import 'package:feat_database_provider/presentation/eike_database_provider.dart';
@@ -165,30 +168,136 @@ class _MainScreenState extends State<MainScreen> {
             _buildTabNavigator(2, EikeRoute.settings),
           ],
         ),
-        bottomNavigationBar: NavigationBar(
+        extendBody: true,
+        bottomNavigationBar: CustomBottomNavBar(
           selectedIndex: _currentIndex,
-          labelBehavior: .onlyShowSelected,
-          onDestinationSelected: (index) {
-            setState(() => _currentIndex = index);
-          },
-          indicatorColor: context.colors.secondaryContainer,
-          destinations: [
-            NavigationDestination(
-              icon: Icon(Icons.favorite_outline),
-              selectedIcon: Icon(Icons.favorite),
-              label: 'Meine 7 Sachen',
+          onItemSelected: (index) => setState(() {
+            _currentIndex = index;
+          }),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomBottomNavBar extends StatelessWidget {
+  final int selectedIndex;
+  final ValueChanged<int> onItemSelected;
+
+  const CustomBottomNavBar({
+    super.key,
+    required this.selectedIndex,
+    required this.onItemSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: EikeTheme.horizontalPagePadding,
+          right: EikeTheme.horizontalPagePadding,
+          bottom: EikeTheme.verticalPagePadding,
+        ),
+        child: SizedBox(
+          height: 60,
+          child: Card(
+            color: context.colors.surfaceContainerLowest,
+            elevation: 2,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Flexible(
+                  child: _DestinationItem(
+                    title: '7 Sachen',
+                    icon: Icons.favorite_outline_rounded,
+                    selectedIcon: Icons.favorite,
+                    isSelected: selectedIndex == 0,
+                    onClick: () => onItemSelected(0),
+                  ),
+                ),
+                Flexible(
+                  child: _DestinationItem(
+                    title: 'Kontakte',
+                    icon: Icons.phone_outlined,
+                    selectedIcon: Icons.phone,
+                    isSelected: selectedIndex == 1,
+                    onClick: () => onItemSelected(1),
+                  ),
+                ),
+                Flexible(
+                  child: _DestinationItem(
+                    title: 'Einst.',
+                    icon: Icons.settings_outlined,
+                    selectedIcon: Icons.settings,
+                    isSelected: selectedIndex == 2,
+                    onClick: () => onItemSelected(2),
+                  ),
+                ),
+              ],
             ),
-            NavigationDestination(
-              icon: Icon(Icons.phone_outlined),
-              selectedIcon: Icon(Icons.phone),
-              label: 'Kontakt',
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DestinationItem extends StatelessWidget {
+  const _DestinationItem({
+    required this.title,
+    required this.icon,
+    required this.selectedIcon,
+    required this.isSelected,
+    required this.onClick,
+  });
+
+  final String title;
+  final IconData icon;
+  final IconData selectedIcon;
+  final bool isSelected;
+  final VoidCallback onClick;
+
+  @override
+  Widget build(BuildContext context) {
+    return IntrinsicHeight(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GestureDetector(
+          onTap: onClick,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            decoration: BoxDecoration(
+              color: isSelected ? context.colors.secondaryContainer : null,
+              borderRadius: BorderRadius.circular(EikeTheme.cornerRadius),
             ),
-            NavigationDestination(
-              icon: Icon(Icons.settings_outlined),
-              selectedIcon: Icon(Icons.settings),
-              label: 'Einstellungen',
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                spacing: EikeTheme.horizontalComponentSpacingSmall,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    isSelected ? selectedIcon : icon,
+                    color: context.colors.primary,
+                  ),
+                  Flexible(
+                    child: AnimatedSize(
+                      duration: const Duration(milliseconds: 200),
+                      child: isSelected
+                          ? FittedBox(
+                              child: Text(
+                                title,
+                                style: TextStyle(color: context.colors.primary),
+                              ),
+                            )
+                          : SizedBox.shrink(),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ],
+          ),
         ),
       ),
     );
