@@ -11,8 +11,6 @@ import 'package:service_design/components/eike_titled_card.dart';
 import 'package:service_design/theming/eike_theme.dart';
 import 'package:service_url_launcher/presentation/bloc/url_launcher_bloc.dart';
 
-const _headlineHeight = 48.0;
-
 class ContactScreen extends StatelessWidget {
   const ContactScreen({super.key});
 
@@ -52,6 +50,7 @@ class _Scaffold extends StatelessWidget {
           ),
           const SizedBox(height: EikeTheme.verticalComponentSpacingMedium),
           const _NotfallKontakteCard(),
+          SizedBox(height: MediaQuery.paddingOf(context).bottom),
         ],
       ),
     );

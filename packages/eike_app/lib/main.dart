@@ -1,6 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
-
 import 'package:feat_app_protection/presentation/app_protection_screen.dart';
 import 'package:feat_contact/presentation/contact_screen.dart';
 import 'package:feat_database_provider/presentation/eike_database_provider.dart';
@@ -197,7 +194,7 @@ class CustomBottomNavBar extends StatelessWidget {
         padding: const EdgeInsets.only(
           left: EikeTheme.horizontalPagePadding,
           right: EikeTheme.horizontalPagePadding,
-          bottom: EikeTheme.verticalPagePadding,
+          bottom: EikeTheme.verticalPagePadding * 0.5,
         ),
         child: SizedBox(
           height: 60,
@@ -262,7 +259,7 @@ class _DestinationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return IntrinsicHeight(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(6.0),
         child: GestureDetector(
           onTap: onClick,
           child: AnimatedContainer(
@@ -274,7 +271,7 @@ class _DestinationItem extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
-                spacing: EikeTheme.horizontalComponentSpacingSmall,
+                spacing: EikeTheme.horizontalComponentSpacingSmall * 0.5,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(

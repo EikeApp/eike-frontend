@@ -51,8 +51,14 @@ class HomeScreen extends StatelessWidget {
 
                 return ListView.separated(
                   padding: EikeTheme.pagePadding,
-                  itemCount: state.tips.length,
+                  itemCount: state.tips.length + 1,
                   itemBuilder: (context, index) {
+                    if (index == state.tips.length) {
+                      return SizedBox(
+                        height: MediaQuery.paddingOf(context).bottom,
+                      );
+                    }
+
                     return _TipCard(
                       tip: state.tips[index],
                       index: index + 1,
