@@ -129,6 +129,7 @@ class _Scaffold extends StatelessWidget {
               ],
             ),
           ),
+          SizedBox(height: MediaQuery.paddingOf(context).bottom),
         ],
       ),
     );
