@@ -21,7 +21,7 @@ class HomeDao extends DatabaseAccessor<EikeDatabase> with _$HomeDaoMixin {
     for (final dto in dtos) {
       final associatedTipEntity = existingTipById[dto.id];
       if (associatedTipEntity == null) {
-        // DTO does not exist in our database yet - push 'im in
+        // DTO does not exist in our database yet - push em in
         tipEntities.add(_createInsertEntity(dto));
         continue;
       }
@@ -51,6 +51,7 @@ class HomeDao extends DatabaseAccessor<EikeDatabase> with _$HomeDaoMixin {
 Insertable<TipEntity> _createUpdatedEntity(Tip dto, TipEntity existingEntity) {
   return TipTableCompanion(
     id: Value(TipId(dto.id)),
+    position: Value(TipPosition(dto.position)),
     title: Value(TipTitle(dto.title)),
     description: Value(TipDescription(dto.description)),
     imagePath: Value(TipImagePath(dto.image.imagePath)),
@@ -62,6 +63,7 @@ Insertable<TipEntity> _createUpdatedEntity(Tip dto, TipEntity existingEntity) {
 Insertable<TipEntity> _createInsertEntity(Tip dto) {
   return TipTableCompanion(
     id: Value(TipId(dto.id)),
+    position: Value(TipPosition(dto.position)),
     title: Value(TipTitle(dto.title)),
     description: Value(TipDescription(dto.description)),
     imagePath: Value(TipImagePath(dto.image.imagePath)),

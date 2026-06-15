@@ -24,7 +24,6 @@ build-ios: fetch-content
 
 # Clean build artifacts and content cache
 clean:
-	@(cd packages/tools_fetch_content && dart run bin/tools_fetch_content.dart clean)
 	@(cd packages/eike_app && flutter clean)
 	@echo "Searching for modules in $(CURDIR)/packages"
 	@if [ ! -d "packages" ]; then \

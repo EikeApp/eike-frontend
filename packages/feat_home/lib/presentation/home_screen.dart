@@ -61,7 +61,6 @@ class HomeScreen extends StatelessWidget {
 
                     return _TipCard(
                       tip: state.tips[index],
-                      index: index + 1,
                     );
                   },
                   separatorBuilder: (_, _) {
@@ -80,10 +79,9 @@ class HomeScreen extends StatelessWidget {
 }
 
 class _TipCard extends StatefulWidget {
-  const _TipCard({required this.tip, required this.index});
+  const _TipCard({required this.tip});
 
   final TipEntity tip;
-  final int index;
 
   @override
   State<_TipCard> createState() => _TipCardState();
@@ -122,7 +120,7 @@ class _TipCardState extends State<_TipCard> {
         ),
         alignment: Alignment.center,
         child: Text(
-          '${widget.index}',
+          '${widget.tip.position}',
           style: context.textTheme.titleMedium?.copyWith(
             color: context.colors.onSecondaryContainer,
             fontWeight: FontWeight.bold,

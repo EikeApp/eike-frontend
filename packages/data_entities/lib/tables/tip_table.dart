@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
 extension type const TipId(int value) implements int {}
+extension type const TipPosition(int value) implements int {}
 extension type const TipTitle(String value) implements String {}
 extension type const TipDescription(String value) implements String {}
 extension type const TipImagePath(String value) implements String {}
@@ -10,6 +11,7 @@ extension type const TipUserNote(String value) implements String {}
 @DataClassName('TipEntity')
 class TipTable extends Table {
   IntColumn get id => integer().map(const TipIdConverter())();
+  IntColumn get position => integer().map(const TipPositionConverter())();
   TextColumn get title => text().map(const TipTitleConverter())();
   TextColumn get description => text().map(const TipDescriptionConverter())();
   TextColumn get imagePath => text().map(const TipImagePathConverter())();
@@ -31,6 +33,20 @@ class TipIdConverter implements TypeConverter<TipId, int> {
 
   @override
   int toSql(TipId value) {
+    return value;
+  }
+}
+
+class TipPositionConverter implements TypeConverter<TipPosition, int> {
+  const TipPositionConverter();
+
+  @override
+  TipPosition fromSql(int fromDb) {
+    return TipPosition(fromDb);
+  }
+
+  @override
+  int toSql(TipPosition value) {
     return value;
   }
 }

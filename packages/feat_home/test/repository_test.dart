@@ -20,6 +20,7 @@ class _FakeHomeDatasource implements HomeDatasource {
       for (var i = 0; i < tipCount; ++i)
         Tip(
           id: i,
+          position: i + 1,
           title: "Tip$i",
           description: "Desc$i",
           image: TipImage(imagePath: "ImgPath$i", alt: "Alt$i"),
@@ -29,7 +30,7 @@ class _FakeHomeDatasource implements HomeDatasource {
 }
 
 void main() {
-  group('group name', () {
+  group(HomeRepository, () {
     const tipCount = 10;
     late EikeDatabase database;
     late HomeRepository repository;
