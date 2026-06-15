@@ -30,7 +30,7 @@ class _FakeHomeDatasource implements HomeDatasource {
 }
 
 void main() {
-  group('group name', () {
+  group(HomeRepository, () {
     const tipCount = 10;
     late EikeDatabase database;
     late HomeRepository repository;

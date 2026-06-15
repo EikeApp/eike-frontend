@@ -27,6 +27,7 @@ dependencies:
   service_logging:
 
   feat_notification:
+  yaml:
 
 dev_dependencies:
   test:
