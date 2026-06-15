@@ -3,6 +3,7 @@ data:
   flyer:
     tips:
       - id: 0
+        position: 1
         title: Bewege dich mehr als sonst!
         description: >
           Stress versorgt uns mit viel Energie für Notfälle. Gib deinem Körper die Möglichkeit, diese Energie hinterher
@@ -13,6 +14,7 @@ data:
           alt: >
             Eine laufende Figure – eine grüne Hälfte symbolisiert steigende Energie, eine rote Hälfte sinkenden Stress.
       - id: 1
+        position: 2
         title: Bleib nüchtern!
         description: >
           Alkohol und Drogen betäuben Gedanken und Gefühle. Sie behindern das Gehirn aber auch bei der Verarbeitung von
@@ -24,6 +26,7 @@ data:
             Figur mit ausgestreckten Armen im Sprung nach vorne. Im Hintergrund ein roter Mülleimer mit offenem Deckel
             gefüllt mit zwei Glasflaschen.
       - id: 2
+        position: 3
         title: Suche Ruhe und Sicherheit!
         description: >
           Starker Stress und hohe Einsatzbelastungen sind anstrengend, machen unruhig und unsicher.
@@ -32,6 +35,7 @@ data:
           src: "./7-things/suche-ruhe.png"
           alt: Eine Figur sitzt auf einem grünen Haken und entspannt mit den Händen hinter dem Kopf.
       - id: 3
+        position: 4
         title: Bekomme etwas fertig!
         description: >
           Manchmal entsteht nach belastenden Einsätzen das Gefühl von Hilflosigkeit und Kontrollverlust. Um dich wieder
@@ -42,6 +46,7 @@ data:
             Figur setzt ein grünes Häkchen in das oberste von drei übereinander stehenden Kästen. Die unteren zwei sind
             bereits abgehakt.
       - id: 4
+        position: 5
         title: Triff dich mit anderen!
         description: >
           Stress und Belastungen können einsam machen. Soziale Kontakte machen uns dagegen stärker. Darum triff dich
@@ -50,6 +55,7 @@ data:
           src: "./7-things/triff-dich.png"
           alt: Zwei Figuren, die sich mit einem Abklatschen begrüßen.
       - id: 5
+        position: 6
         title: Plane etwas, worauf du dich freust!
         description: >
           Auch nach belastenden Einsätzen geht dein Leben weiter. Stärke deine Zuversicht, indem du etwas Schönes
@@ -58,6 +64,7 @@ data:
           src: "./7-things/plane-etwas.png"
           alt: Figur zeigt mit erhobener Hand nach vorne, im Hintergrund ein Terminplaner.
       - id: 6
+        position: 7
         title: Du kannst dir Unterstützung holen!
         description: >
           Wenn Stress und Belastung nicht weniger werden, ist dein Einsatznachsorgeteam für dich erreichbar. Tu das

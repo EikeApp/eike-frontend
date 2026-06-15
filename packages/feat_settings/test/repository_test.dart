@@ -44,6 +44,7 @@ void main() {
               .insert(
                 TipTableCompanion.insert(
                   id: Value(TipId(i)),
+                  position: TipPosition(i + 1),
                   title: TipTitle('Test Tip $i'),
                   description: TipDescription('This is a test tip.'),
                   imagePath: TipImagePath('path/to/image.png'),
