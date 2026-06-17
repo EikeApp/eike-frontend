@@ -361,7 +361,10 @@ class _EinsatznachsorgeteamEditDialogState
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Kontaktdaten anpassen"),
+      title: Text(
+        "Kontaktdaten anpassen",
+        style: TextStyle(color: context.colors.primary),
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         spacing: EikeTheme.verticalComponentSpacingMedium,
