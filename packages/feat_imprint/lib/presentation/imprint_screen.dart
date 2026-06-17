@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:service_design/components/eike_app_bar.dart';
+import 'package:service_design/theming/eike_theme.dart';
 import 'package:service_url_launcher/presentation/bloc/url_launcher_bloc.dart';
 
 class MyClass {
@@ -17,35 +18,39 @@ class ImprintScreen extends StatelessWidget {
       appBar: EikeAppBar(
         title: 'Impressum',
       ),
-      body: SingleChildScrollView(
-        child: Html(
-          data: impressumHtml,
-          extensions: [
-            TagExtension(
-              tagsToExtend: {"icon-button"},
-              builder: (extensionContext) {
-                final href = extensionContext.attributes['href'] ?? '';
-                final icon = extensionContext.attributes['icon'] == 'email'
-                    ? Icons.email_outlined
-                    : Icons.phone_outlined;
-                final label = extensionContext.innerHtml;
+      body: ListView(
+        padding: EikeTheme.pagePadding,
+        children: [
+          Html(
+            data: impressumHtml,
+            extensions: [
+              TagExtension(
+                tagsToExtend: {"icon-button"},
+                builder: (extensionContext) {
+                  final href = extensionContext.attributes['href'] ?? '';
+                  final icon = extensionContext.attributes['icon'] == 'email'
+                      ? Icons.email_outlined
+                      : Icons.phone_outlined;
+                  final label = extensionContext.innerHtml;
 
-                return TextButton.icon(
-                  onPressed: () {
-                    final uri = Uri.tryParse(href);
-                    if (uri != null) {
-                      BlocProvider.of<UrlLauncherBloc>(context).add(
-                        UrlLauncherEvent.onLaunchUrl(uri),
-                      );
-                    }
-                  },
-                  icon: Icon(icon, size: 18),
-                  label: Text(label),
-                );
-              },
-            ),
-          ],
-        ),
+                  return TextButton.icon(
+                    onPressed: () {
+                      final uri = Uri.tryParse(href);
+                      if (uri != null) {
+                        BlocProvider.of<UrlLauncherBloc>(context).add(
+                          UrlLauncherEvent.onLaunchUrl(uri),
+                        );
+                      }
+                    },
+                    icon: Icon(icon, size: 18),
+                    label: Text(label),
+                  );
+                },
+              ),
+            ],
+          ),
+          SizedBox(height: MediaQuery.paddingOf(context).bottom),
+        ],
       ),
     );
   }

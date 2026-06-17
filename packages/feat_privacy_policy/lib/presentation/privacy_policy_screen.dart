@@ -11,9 +11,12 @@ class PrivacyPolicyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: EikeAppBar(title: 'Datenschutzerklärung'),
-      body: SingleChildScrollView(
+      body: ListView(
         padding: EikeTheme.pagePadding,
-        child: Html(data: _privacyHtml),
+        children: [
+          Html(data: _privacyHtml),
+          SizedBox(height: MediaQuery.paddingOf(context).bottom),
+        ],
       ),
     );
   }
