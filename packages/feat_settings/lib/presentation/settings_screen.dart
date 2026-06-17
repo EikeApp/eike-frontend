@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:feat_navigation/eike_routes.dart';
 import 'package:feat_settings/data/daos/settings_dao.dart';
 import 'package:feat_settings/data/repositories/settings_repository_impl.dart';
 import 'package:feat_settings/presentation/bloc/settings_bloc.dart';
@@ -129,6 +130,67 @@ class _Scaffold extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(height: EikeTheme.verticalComponentSpacingMedium),
+          EikeTitledCard(
+            title: 'Rechtliches',
+            leading: Icon(Icons.security_outlined),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: EikeTheme.verticalComponentSpacingMedium,
+              children: [
+                Text("Informationen zum Umgang mit deinen Daten"),
+                TextButton.icon(
+                  onPressed: () {
+                    unawaited(
+                      Navigator.of(
+                        context,
+                      ).pushNamed(EikeRoute.privacyPolicy.route),
+                    );
+                  },
+                  icon: Icon(Icons.privacy_tip_outlined),
+                  label: Row(
+                    spacing: EikeTheme.horizontalComponentSpacingMedium,
+                    children: [
+                      Expanded(child: Text('Datenschutz')),
+                      Icon(Icons.navigate_next),
+                    ],
+                  ),
+                ),
+                Text("Open-Source-Bibliotheken, die diese App ermöglichen"),
+                TextButton.icon(
+                  onPressed: () {
+                    unawaited(
+                      Navigator.of(context).pushNamed(EikeRoute.licenses.route),
+                    );
+                  },
+                  icon: Icon(Icons.description_outlined),
+                  label: Row(
+                    spacing: EikeTheme.horizontalComponentSpacingMedium,
+                    children: [
+                      Expanded(child: Text('Lizenzen')),
+                      Icon(Icons.navigate_next),
+                    ],
+                  ),
+                ),
+                Text("Angaben zum Anbieter und Kontaktmöglichkeiten"),
+                TextButton.icon(
+                  onPressed: () {
+                    unawaited(
+                      Navigator.of(context).pushNamed(EikeRoute.imprint.route),
+                    );
+                  },
+                  icon: Icon(Icons.article_outlined),
+                  label: Row(
+                    spacing: EikeTheme.horizontalComponentSpacingMedium,
+                    children: [
+                      Expanded(child: Text('Impressum')),
+                      Icon(Icons.navigate_next),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
           SizedBox(height: MediaQuery.paddingOf(context).bottom),
         ],
       ),
@@ -183,3 +245,4 @@ class _CleanupStorageConfirmationDialog extends StatelessWidget {
     );
   }
 }
+
