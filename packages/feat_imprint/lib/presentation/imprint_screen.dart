@@ -5,10 +5,6 @@ import 'package:service_design/components/eike_app_bar.dart';
 import 'package:service_design/theming/eike_theme.dart';
 import 'package:service_url_launcher/presentation/bloc/url_launcher_bloc.dart';
 
-class MyClass {
-  int get value => 1200;
-}
-
 class ImprintScreen extends StatelessWidget {
   const ImprintScreen({super.key});
 
