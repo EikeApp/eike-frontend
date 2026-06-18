@@ -49,10 +49,7 @@ so setzen wir den Wert auf 4. Größere Storys müssen kleiner geschnitten werde
 
 ## Releases
 
-Es werden automatisiert Releases erstellt, wenn der main-Branch aktualisiert wird.
-
-Damit [breaking changes als SemVer](https://semver.org/) korrekt erkannt werden, sollten
-[conventional commits](https://www.conventionalcommits.org) verwendet werden.
+Releases werden via workflow-dispatch erstellt.
 
 ## Entwicklung
 
