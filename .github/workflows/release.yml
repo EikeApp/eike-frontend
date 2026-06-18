@@ -115,9 +115,7 @@ jobs:
           git tag v${{ inputs.version }}
           git push origin v${{ inputs.version }}
       - name: Install git-cliff
-        run: |
-          curl -sSL https://github.com/orhun/git-cliff/releases/latest/download/git-cliff-x86_64-unknown-linux-gnu.tar.gz | tar -xz
-          sudo mv git-cliff-*/git-cliff /usr/local/bin/
+        uses: kenji-miyake/setup-git-cliff@v2
       - name: Generate changelog
         run: |
           git fetch --tags
