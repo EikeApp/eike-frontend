@@ -2,10 +2,6 @@ name: Flutter CI
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
-      - feat/us-163-refactoring-der-ci
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
