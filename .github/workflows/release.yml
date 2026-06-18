@@ -1,138 +1,146 @@
-name: Release
+name: Flutter Release
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version (z.B. 1.2.3)"
+        description: Release version (e.g. 0.8.1)
         required: true
         type: string
 
 permissions:
   contents: write
 
-jobs:
-  release:
-    name: Create Release
-    runs-on: ubuntu-latest
+concurrency:
+  group: release
+  cancel-in-progress: false
 
+jobs:
+  validate:
+    name: Validate & Test
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Validate version format
-        run: |
-          if ! echo "${{ inputs.version }}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
-            echo "❌ Ungültiges Versionsformat: ${{ inputs.version }}"
-            echo "   Erwartet: MAJOR.MINOR.PATCH (z.B. 1.2.3)"
-            exit 1
-          fi
-          echo "✅ Version ${{ inputs.version }} ist gültig"
-
-      - name: Check tag does not exist yet
-        run: |
-          if git rev-parse "v${{ inputs.version }}" >/dev/null 2>&1; then
-            echo "❌ Tag v${{ inputs.version }} existiert bereits!"
-            exit 1
-          fi
-          echo "✅ Tag v${{ inputs.version }} ist noch frei"
-
-      - name: Check GitHub Release does not exist yet
-        run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/releases/tags/v${{ inputs.version }}")
-
-          if [ "$STATUS" = "200" ]; then
-            echo "❌ GitHub Release v${{ inputs.version }} existiert bereits!"
-            exit 1
-          fi
-          echo "✅ GitHub Release v${{ inputs.version }} ist noch frei"
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: "3.44.2"
           cache: true
-
-      - name: Install workspace dependencies
-        run: flutter pub get
-
-      - name: Run tests before release
-        run: flutter test ./packages/** -r github
-
-      - name: Bump version in pubspec.yaml
+      - run: flutter pub get
+      - name: Verify pubspec version
         run: |
-          VERSION="${{ inputs.version }}"
-          BUILD_NUMBER=$(git rev-list --count HEAD)
-          echo "📦 Setze Version: $VERSION+$BUILD_NUMBER"
-          echo "   --version-name $VERSION"
-          echo "   --version-code $BUILD_NUMBER"
-
-          sed -i "s/^version: .*/version: $VERSION+$BUILD_NUMBER/" packages/eike_app/pubspec.yaml
-          grep "^version:" packages/eike_app/pubspec.yaml
-
-          # Als Outputs für spätere Steps verfügbar machen
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
-
-      - name: Install git-cliff
-        uses: taiki-e/install-action@v2
-        with:
-          tool: git-cliff
-
-      - name: Generate Changelog
-        run: |
-          git-cliff --tag "v${{ inputs.version }}" --output CHANGELOG.md
-          echo "📝 Changelog generiert"
-          head -60 CHANGELOG.md
-
-      - name: Generate release notes (seit letztem Tag)
-        run: |
-          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-          if [ -z "$LATEST_TAG" ]; then
-            git-cliff --tag "v${{ inputs.version }}" --output release_notes.md
-          else
-            git-cliff "$LATEST_TAG".. --tag "v${{ inputs.version }}" --output release_notes.md
+          PUBSPEC_VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}' | cut -d '+' -f1)
+          if [ "$PUBSPEC_VERSION" != "${{ inputs.version }}" ]; then
+            echo "pubspec.yaml version ($PUBSPEC_VERSION) does not match workflow version (${{ inputs.version }})"
+            exit 1
           fi
-          echo "📋 Release Notes:"
-          cat release_notes.md
+      - name: Ensure tag does not exist
+        run: |
+          git fetch --tags
+          if git rev-parse "v${{ inputs.version }}" >/dev/null 2>&1; then
+            echo "Tag v${{ inputs.version }} already exists"
+            exit 1
+          fi
+      - run: flutter analyze
+      - run: flutter test ./packages/*
 
-      - name: Configure git
+  build-android:
+    name: Build Android
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v4
+        with:
+          flutter-version: "3.44.2"
+          cache: true
+      - run: flutter pub get
+      - name: Build APK
+        run: |
+          cd packages/eike_app
+          flutter build apk --release
+      - name: Build AAB
+        run: |
+          cd packages/eike_app
+          flutter build appbundle --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: packages/eike_app/build/app/outputs/flutter-apk/app-release.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-aab
+          path: packages/eike_app/build/app/outputs/bundle/release/app-release.aab
+
+  build-ios:
+    name: Build iOS
+    needs: validate
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.44.2"
+          cache: true
+      - run: flutter pub get
+      - name: Build iOS
+        run: |
+          cd packages/eike_app
+          flutter build ios --release --no-codesign
+      - name: Create unsigned IPA
+        run: |
+          mkdir Payload
+          cp -R packages/eike_app/build/ios/iphoneos/Runner.app Payload/
+          zip -r app-release-unsigned.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-ipa
+          path: app-release-unsigned.ipa
+
+  release:
+    name: Create Release
+    needs:
+      - build-android
+      - build-ios
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Create Tag
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Commit version bump & changelog
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag v${{ inputs.version }}
+          git push origin v${{ inputs.version }}
+      - name: Install git-cliff
         run: |
-          git add packages/eike_app/pubspec.yaml CHANGELOG.md
-          git commit -m "chore(release): v${{ inputs.version }}"
-
-      - name: Create and push tag
+          curl -sSL https://github.com/orhun/git-cliff/releases/latest/download/git-cliff-x86_64-unknown-linux-gnu.tar.gz | tar -xz
+          sudo mv git-cliff-*/git-cliff /usr/local/bin/
+      - name: Generate changelog
         run: |
-          git tag -a "v${{ inputs.version }}" -m "Release v${{ inputs.version }}"
-          git push origin main --follow-tags
-
-      - name: Build Android AppBundle for release
-        working-directory: packages/eike_app
-        run: >
-          flutter build appbundle --release
-          --build-name=${{ env.VERSION }}
-          --build-number=${{ env.BUILD_NUMBER }}
-
+          git fetch --tags
+          git-cliff --latest --output CHANGELOG.md
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-apk
+          path: artifacts
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-aab
+          path: artifacts
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-ipa
+          path: artifacts
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "v${{ inputs.version }}"
-          name: "v${{ inputs.version }}"
-          body_path: release_notes.md
-          draft: false
-          prerelease: false
+          tag_name: v${{ inputs.version }}
+          name: v${{ inputs.version }}
+          body_path: CHANGELOG.md
           files: |
-            packages/eike_app/build/app/outputs/bundle/release/app-release.aab
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            artifacts/app-release.apk
+            artifacts/app-release.aab
+            artifacts/app-release-unsigned.ipa
