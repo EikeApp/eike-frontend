@@ -7,6 +7,10 @@ on:
       - main
       - feat/us-163-refactoring-der-ci
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
