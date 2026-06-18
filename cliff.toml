@@ -1,47 +1,33 @@
 [changelog]
-header = """
-# Changelog\n
-"""
+header = ""
 body = """
 {% if version %}\
-    ## [{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }}
+## {{ version }} {% if timestamp %}({{ timestamp | date(format="%Y-%m-%d") }}){% endif %}
 {% else %}\
-    ## [Unreleased]
+## Unreleased
 {% endif %}\
 {% for group, commits in commits | group_by(attribute="group") %}
-    ### {{ group | strtitle }}
-    {% for commit in commits %}
-        - {% if commit.scope %}**{{ commit.scope }}:** {% endif %}{{ commit.message | upper_first }}\
-            {% if commit.breaking %} ⚠️ Breaking Change{% endif %} ([`{{ commit.id | truncate(length=7, end="") }}`](https://github.com/DEIN_GITHUB_USERNAME/DEIN_REPO_NAME/commit/{{ commit.id }}))\
-    {% endfor %}
+### {{ group }}
+{% for commit in commits %}
+- {{ commit.message | capitalize }} ([{{ commit.id | truncate(length=7, end="") }}](https://github.com/EikeApp/eike-frontend/commit/{{ commit.id }}))
+{%- endfor %}
 {% endfor %}\n
 """
-trim = true
 footer = ""
+trim = true
 
 [git]
-conventional_commits = true
-filter_unconventional = true
-split_commits = false
-commit_preprocessors = []
+conventional_commits = false
+filter_unconventional = false
 commit_parsers = [
-  { message = "^feat",                group = "✨ Features" },
-  { message = "^fix",                 group = "🐛 Bug Fixes" },
-  { message = "^perf",                group = "⚡ Performance" },
-  { message = "^refactor",            group = "♻️ Refactoring" },
-  { message = "^docs",                group = "📚 Dokumentation" },
-  { message = "^test",                skip = true },
-  { message = "^chore\\(release\\)",  skip = true },
-  { message = "^chore",               skip = true },
-  { message = "^style",               skip = true },
-  { message = "^ci",                  skip = true },
-  { message = "^build",               skip = true },
-  { message = "^revert",              group = "⏪ Reverts" },
-  { body    = ".*security",           group = "🔒 Security" },
+  { message = "(?i)^feat|add|neu|new|hinzugef", group = "✨ Neue Features" },
+  { message = "(?i)^fix|bug|behoben|hotfix",    group = "🐛 Bugfixes" },
+  { message = "(?i)^perf|optim|speed",           group = "⚡ Performance" },
+  { message = "(?i)^refactor|umbau|cleanup",     group = "♻️ Refactoring" },
+  { message = "(?i)^doc|readme",                 group = "📝 Dokumentation" },
+  { message = "(?i)^test|spec",                  group = "🧪 Tests" },
+  { message = "(?i)^ci|build|pipeline",          group = "🔧 CI / Build" },
+  { message = ".*",                              group = "🔀 Sonstiges" },
 ]
 filter_commits = false
-tag_pattern = "v[0-9]+\\.[0-9]+\\.[0-9]+"
-skip_tags = ""
-ignore_tags = ""
-topo_order = false
-sort_commits = "newest"
+tag_pattern = ".*"
