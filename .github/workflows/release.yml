@@ -70,7 +70,10 @@ jobs:
       - name: Build AAB
         run: |
           cd packages/eike_app
-          flutter build appbundle --release
+          flutter build appbundle \
+            --release \
+            --build-name=${{ inputs.version }} \
+            --build-number=${{ github.run_number }}
       - uses: actions/upload-artifact@v4
         with:
           name: release-aab
