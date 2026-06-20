@@ -57,7 +57,7 @@ jobs:
       - name: Create key.properties
         run: |
           cat > packages/eike_app/android/key.properties <<EOF
-          storeFile=app/release.keystore
+          storeFile=release.keystore
           storePassword=${{ secrets.KEYSTORE_PASSWORD }}
           keyAlias=${{ secrets.KEY_ALIAS }}
           keyPassword=${{ secrets.KEY_PASSWORD }}
