@@ -43,14 +43,18 @@ jobs:
             exit 1
           fi
       - run: flutter analyze
-      - run: flutter test ./packages/*
+      - run: flutter test ./packages/* --reporter github
 
-  prepare-signing:
-    name: Prepare Signing
+  build-appbundle:
+    name: Build Appbundle (AAB)
     needs: validate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.44.2"
+          cache: true
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > packages/eike_app/android/app/release.keystore
@@ -62,17 +66,6 @@ jobs:
           keyAlias=${{ secrets.KEY_ALIAS }}
           keyPassword=${{ secrets.KEY_PASSWORD }}
           EOF
-
-  build-appbundle:
-    name: Build Appbundle (AAB)
-    needs: prepare-signing
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.44.2"
-          cache: true
       - name: Build AAB
         run: |
           cd packages/eike_app
@@ -84,10 +77,13 @@ jobs:
         with:
           name: release-aab
           path: packages/eike_app/build/app/outputs/bundle/release/app-release.aab
+      - name: Remove keystore from disk
+        if: always()
+        run: rm -f packages/eike_app/android/app/release.keystore packages/eike_app/android/key.properties
 
   build-apk:
     name: Build Android-Package (APK)
-    needs: prepare-signing
+    needs: validate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -95,6 +91,17 @@ jobs:
         with:
           flutter-version: "3.44.2"
           cache: true
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > packages/eike_app/android/app/release.keystore
+      - name: Create key.properties
+        run: |
+          cat > packages/eike_app/android/key.properties <<EOF
+          storeFile=release.keystore
+          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
+          keyAlias=${{ secrets.KEY_ALIAS }}
+          keyPassword=${{ secrets.KEY_PASSWORD }}
+          EOF
       - name: Build APK
         run: |
           cd packages/eike_app
@@ -104,8 +111,11 @@ jobs:
             --build-number=${{ github.run_number }}
       - uses: actions/upload-artifact@v4
         with:
-          name: release-aab
+          name: release-apk
           path: packages/eike_app/build/app/outputs/flutter-apk/app-release.apk
+      - name: Remove keystore from disk
+        if: always()
+        run: rm -f packages/eike_app/android/app/release.keystore packages/eike_app/android/key.properties
 
   release:
     name: Create Release
@@ -127,6 +137,11 @@ jobs:
         run: |
           git fetch --tags
           git-cliff --latest --output CHANGELOG.md
+      - name: Download APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: release-apk
+          path: artifacts
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
