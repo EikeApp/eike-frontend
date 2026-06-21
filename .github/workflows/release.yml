@@ -45,8 +45,8 @@ jobs:
       - run: flutter analyze
       - run: flutter test ./packages/*
 
-  build-android:
-    name: Build Android
+  prepare-signing:
+    name: Prepare Signing
     needs: validate
     runs-on: ubuntu-latest
     steps:
@@ -62,11 +62,17 @@ jobs:
           keyAlias=${{ secrets.KEY_ALIAS }}
           keyPassword=${{ secrets.KEY_PASSWORD }}
           EOF
+
+  build-appbundle:
+    name: Build Appbundle (AAB)
+    needs: prepare-signing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.44.2"
           cache: true
-      - run: flutter pub get
       - name: Build AAB
         run: |
           cd packages/eike_app
@@ -79,9 +85,31 @@ jobs:
           name: release-aab
           path: packages/eike_app/build/app/outputs/bundle/release/app-release.aab
 
+  build-apk:
+    name: Build Android-Package (APK)
+    needs: prepare-signing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.44.2"
+          cache: true
+      - name: Build APK
+        run: |
+          cd packages/eike_app
+          flutter build apk \
+            --release \
+            --build-name=${{ inputs.version }} \
+            --build-number=${{ github.run_number }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-aab
+          path: packages/eike_app/build/app/outputs/flutter-apk/app-release.apk
+
   release:
     name: Create Release
-    needs: build-android
+    needs: build-appbundle
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -105,6 +133,8 @@ jobs:
           tag_name: v${{ inputs.version }}
           name: v${{ inputs.version }}
           body_path: CHANGELOG.md
+          files: |
+            artifacts/app-release.apk
 
   deploy-android:
     name: Deploy to Google Play (internal)
