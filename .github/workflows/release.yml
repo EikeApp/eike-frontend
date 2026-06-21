@@ -138,7 +138,9 @@ jobs:
 
   deploy-android:
     name: Deploy to Google Play (internal)
-    needs: release
+    needs:
+      - release
+      - build-appbundle
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
