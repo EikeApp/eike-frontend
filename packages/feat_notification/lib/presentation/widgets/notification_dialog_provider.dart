@@ -9,10 +9,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_design/theming/eike_theme.dart';
 
-class NotificationDialogProvider extends StatelessWidget {
-  const NotificationDialogProvider({super.key, required this.child});
+Future<void> _onShowNotificationDialog(BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (dialogContext) {
+      return BlocProvider.value(
+        value: BlocProvider.of<NotificationBloc>(context),
+        child: BlocBuilder<NotificationBloc, NotificationState>(
+          buildWhen: (prev, curr) => curr.notifications.isNotEmpty,
+          builder: (context, state) {
+            final currentNotification =
+                state.notifications[state.currentNotificationIndex];
 
+            return _Dialog(
+              currentNotification: currentNotification,
+              currentNotificationIndex: state.currentNotificationIndex,
+              notificationCount: state.notifications.length,
+              canScrollBackward: state.canScrollBackward,
+              canScrollForward: state.canScrollForward,
+            );
+          },
+        ),
+      );
+    },
+  );
+}
+
+class NotificationDialogProvider extends StatelessWidget {
   final Widget child;
+
+  const NotificationDialogProvider({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -53,83 +79,59 @@ class NotificationDialogProvider extends StatelessWidget {
   }
 }
 
-Future<void> _onShowNotificationDialog(BuildContext context) {
-  return showDialog(
-    context: context,
-    builder: (dialogContext) {
-      return BlocProvider.value(
-        value: BlocProvider.of<NotificationBloc>(context),
-        child: BlocBuilder<NotificationBloc, NotificationState>(
-          buildWhen: (prev, curr) => curr.notifications.isNotEmpty,
-          builder: (context, state) {
-            final currentNotification =
-                state.notifications[state.currentNotificationIndex];
-
-            return _Dialog(
-              currentNotification: currentNotification,
-              canScrollBackward: state.canScrollBackward,
-              canScrollForward: state.canScrollForward,
-            );
-          },
-        ),
-      );
-    },
-  );
-}
-
 class _Dialog extends StatelessWidget {
+  final EikeNotification currentNotification;
+
+  final int currentNotificationIndex;
+  final int notificationCount;
+  final bool canScrollBackward;
+  final bool canScrollForward;
   const _Dialog({
     required this.currentNotification,
+    required this.currentNotificationIndex,
+    required this.notificationCount,
     required this.canScrollBackward,
     required this.canScrollForward,
   });
 
-  final EikeNotification currentNotification;
-  final bool canScrollBackward;
-  final bool canScrollForward;
-
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: EikeTheme.cardPadding,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           spacing: EikeTheme.verticalComponentSpacingMedium,
           children: [
-            Stack(
-              alignment: Alignment.center,
+            Row(
+              spacing: EikeTheme.horizontalComponentSpacingMedium,
               children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Icon(
-                    currentNotification.getIconData(),
-                    color: currentNotification.getDisplayColor(context),
+                Icon(
+                  currentNotification.getIconData(),
+                  color: currentNotification.getDisplayColor(context),
+                  size: 32,
+                ),
+                Expanded(
+                  child: Text(
+                    currentNotification.getTitle(),
+                    style: context.textTheme.titleLarge,
+                    textAlign: TextAlign.center,
                   ),
                 ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: CloseButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      BlocProvider.of<NotificationBloc>(context).add(
-                        NotificationEvent.onCloseNotifications(),
-                      );
-                    },
-                  ),
-                ),
-                Text(
-                  currentNotification.title,
-                  style: context.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                IconButton(
+                  onPressed: () {
+                    BlocProvider.of<NotificationBloc>(context).add(
+                      const NotificationEvent.onCloseNotifications(),
+                    );
+                  },
+                  icon: const Icon(Icons.close_rounded),
                 ),
               ],
             ),
+            Divider(),
             Text(currentNotification.message),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              spacing: EikeTheme.horizontalComponentSpacingMedium,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
                   onPressed: canScrollBackward
@@ -139,7 +141,11 @@ class _Dialog extends StatelessWidget {
                           );
                         }
                       : null,
-                  icon: Icon(Icons.keyboard_arrow_left),
+                  icon: const Icon(Icons.arrow_back_ios_rounded),
+                ),
+                Text(
+                  '${currentNotificationIndex + 1} / $notificationCount',
+                  style: context.textTheme.bodyLarge,
                 ),
                 IconButton(
                   onPressed: canScrollForward
@@ -149,7 +155,7 @@ class _Dialog extends StatelessWidget {
                           );
                         }
                       : null,
-                  icon: Icon(Icons.keyboard_arrow_right),
+                  icon: const Icon(Icons.arrow_forward_ios_rounded),
                 ),
               ],
             ),
@@ -172,6 +178,13 @@ extension on EikeNotification {
     return switch (type) {
       EikeNotificationType.error => Icons.error,
       EikeNotificationType.info => Icons.info,
+    };
+  }
+
+  String getTitle() {
+    return switch (type) {
+      EikeNotificationType.error => 'Fehler',
+      EikeNotificationType.info => 'Info',
     };
   }
 }
