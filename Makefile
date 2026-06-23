@@ -1,5 +1,5 @@
 # renovate: datasource=github-releases depName=EikeApp/eike-content
-VERSION=3.0.1
+VERSION=3.0.2
 
 .PHONY: all fetch-content run build-apk build-ios clean help
 
