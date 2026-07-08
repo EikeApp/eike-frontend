@@ -39,7 +39,7 @@ class _Scaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const EikeAppBar(title: 'Kontakt'),
+      appBar: const EikeAppBar(title: 'Kontakte'),
       body: ListView(
         padding: EikeTheme.pagePadding,
         children: [
