@@ -21,6 +21,7 @@ dependencies:
   service_logging:
   service_settings:
   service_auth:
+  local_auth:
 
 dev_dependencies:
   test:

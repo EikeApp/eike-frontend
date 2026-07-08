@@ -73,6 +73,24 @@ extension on ThemeData {
           ),
         ),
       ),
+      dialogTheme: dialogTheme.copyWith(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(EikeTheme.cornerRadius),
+        ),
+      ),
+      buttonTheme: buttonTheme.copyWith(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(EikeTheme.cornerRadius),
+        ),
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          minimumSize: Size.fromHeight(56.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(EikeTheme.cornerRadius),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:feat_app_protection/domain/repositories/app_protection_repositor
 import 'package:feat_app_protection/domain/usecases/interactors/authenticate_interactor.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:service_logging/logging_interactor.dart';
 import 'package:service_settings/domain/repositories/eike_settings_repository.dart';
 import 'package:service_settings/domain/usecases/interactors/set_is_app_lock_enabled_interactor.dart';
@@ -79,6 +80,20 @@ class AppProtectionBloc extends Bloc<AppProtectionEvent, AppProtectionState> {
             }
           }
         })
+        .checkedRecover(
+          (exception) {
+            if (exception is LocalAuthException) {
+              if (exception.code == LocalAuthExceptionCode.userCanceled) {
+                return false;
+              }
+            }
+
+            return true;
+          },
+          (exception) {
+            return true;
+          },
+        )
         .intercept((exception) {
           if (state case _Locked state) {
             emit(state.copyWith(errorText: exception.toString()));
