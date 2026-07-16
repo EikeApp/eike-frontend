@@ -172,6 +172,17 @@ jobs:
           echo "=== Provisioned Devices ==="
           /usr/libexec/PlistBuddy -c "Print :ProvisionedDevices" profile.plist || true
 
+      - name: Show Xcode build settings
+        run: |
+          cd packages/eike_app
+
+          xcodebuild \
+          -workspace ios/Runner.xcworkspace \
+          -scheme Runner \
+          -configuration Release \
+          -showBuildSettings | \
+          grep -E "CODE_SIGN|PROVISIONING|DEVELOPMENT_TEAM|PRODUCT_BUNDLE_IDENTIFIER"
+
       - name: Debug signing
         run: |
           security find-identity -v -p codesigning
