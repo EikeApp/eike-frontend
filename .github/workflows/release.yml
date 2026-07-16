@@ -136,9 +136,10 @@ jobs:
           p12-password: ${{ secrets.IOS_P12_PASSWORD }}
 
       - name: Install Provisioning Profile
-        uses: apple-actions/download-provisioning-profiles@v2
+        uses: apple-actions/download-provisioning-profiles@v4
         with:
           bundle-id: de.df-psnv.eike
+          profile-type: 'IOS_APP_STORE'
           issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
           api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
