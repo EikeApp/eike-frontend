@@ -153,6 +153,25 @@ jobs:
         run: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           echo "$PROFILE_BASE64" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/app.mobileprovision
+
+      - name: Debug provisioning profile
+        run: |
+          security cms -D \
+          -i ~/Library/MobileDevice/Provisioning\ Profiles/app.mobileprovision \
+          > profile.plist
+
+          echo "=== Profile Name ==="
+          /usr/libexec/PlistBuddy -c "Print :Name" profile.plist
+
+          echo "=== Team ID ==="
+          /usr/libexec/PlistBuddy -c "Print :TeamIdentifier:0" profile.plist
+
+          echo "=== Application Identifier ==="
+          /usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" profile.plist
+
+          echo "=== Provisioned Devices ==="
+          /usr/libexec/PlistBuddy -c "Print :ProvisionedDevices" profile.plist || true
+
       - name: Debug signing
         run: |
           security find-identity -v -p codesigning
