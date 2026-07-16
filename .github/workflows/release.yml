@@ -117,9 +117,67 @@ jobs:
         if: always()
         run: rm -f packages/eike_app/android/app/release.keystore packages/eike_app/android/key.properties
 
+  build-ios:
+    name: Build iOS IPA
+    needs: validate
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.44.2"
+          cache: true
+      - name: Install Apple certificate
+        env:
+          CERTIFICATE_BASE64: ${{ secrets.IOS_P12 }}
+          CERTIFICATE_PASSWORD: ${{ secrets.IOS_P12_PASSWORD }}
+          # CERTIFICATE_BASE64: ${{ secrets.IOS_CERTIFICATE_BASE64 }}
+          # CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+        run: |
+          echo "$CERTIFICATE_BASE64" | base64 --decode > certificate.p12
+          security create-keychain -p "" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "" build.keychain
+          security import certificate.p12 \
+            -k build.keychain \
+            -P "$CERTIFICATE_PASSWORD" \
+            -T /usr/bin/codesign
+          security set-key-partition-list \
+            -S apple-tool:,apple: \
+            -s \
+            -k "" build.keychain
+      - name: Install provisioning profile
+        env:
+          PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+        run: |
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          echo "$PROFILE_BASE64" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/app.mobileprovision
+      - name: Build IPA
+        run: |
+          cd packages/eike_app
+          flutter pub get # NOTE(Felix): This should probably be removed
+          flutter build ipa \
+            --release \
+            --build-name=${{ inputs.version }} \
+            --build-number=${{ github.run_number }}
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-ipa
+          path: packages/eike_app/build/ios/ipa/*.ipa
+      - name: Cleanup signing files
+        if: always()
+        run: |
+          rm -f certificate.p12
+          rm -f ~/Library/MobileDevice/Provisioning\ Profiles/app.mobileprovision
+
   release:
     name: Create Release
-    needs: build-apk
+    needs:
+      - build-apk
+      - build-ios
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -142,6 +200,11 @@ jobs:
         with:
           name: release-apk
           path: artifacts
+      - name: Download IPA artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: release-ipa
+          path: artifacts
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -150,6 +213,7 @@ jobs:
           body_path: CHANGELOG.md
           files: |
             artifacts/app-release.apk
+            artifacts/*.ipa
 
   deploy-android:
     name: Deploy to Google Play (internal)
@@ -170,3 +234,21 @@ jobs:
           releaseFiles: artifacts/app-release.aab
           track: internal
           status: completed
+
+  deploy-ios:
+    name: Deploy to TestFlight
+    needs:
+      - build-ios
+    runs-on: macos-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-ipa
+          path: artifacts
+      - name: Upload to TestFlight
+        uses: apple-actions/upload-testflight-build@v1
+        with:
+          app-path: artifacts/*.ipa
+          issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          api-key-id: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          api-private-key: ${{ secrets.APP_STORE_CONNECT_API_KEY }}

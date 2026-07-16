@@ -14,7 +14,7 @@ ZIP_FILE="content.zip"
 EXTRACTED_DIR="eike-content-${VERSION}"
 TARGET_DIR="../packages/eike_app/assets/content"
 
-rm -rf ${TARGET_DIR}/
+rm -rf ${TARGET_DIR:?}/
 
 echo "Downloading version ${VERSION} ..."
 curl -L "https://github.com/EikeApp/eike-content/archive/refs/tags/${VERSION}.zip" -o "${ZIP_FILE}"
