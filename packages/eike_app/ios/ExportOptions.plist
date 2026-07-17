@@ -7,7 +7,12 @@
 	<key>teamID</key>
 	<string>M48XWQX64F</string>
 	<key>signingStyle</key>
-	<string>automatic</string>
+	<string>manual</string>
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>de.df-psnv.eike</key>
+		<string>EikeApp Provisioning Profile</string>
+	</dict>
 	<key>uploadBitcode</key>
 	<false/>
 	<key>uploadSymbols</key>
