@@ -169,7 +169,6 @@ jobs:
     needs:
       - build-apk
       - build-ios
-
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -207,40 +206,41 @@ jobs:
             artifacts/app-release.apk
             artifacts/*.ipa
 
-  # deploy-android:
-  #   name: Deploy to Google Play (internal)
-  #   needs:
-  #     - release
-  #     - build-appbundle
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/download-artifact@v4
-  #       with:
-  #         name: release-aab
-  #         path: artifacts
-  #     - name: Upload to Google Play
-  #       uses: r0adkll/upload-google-play@v1
-  #       with:
-  #         serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
-  #         packageName: de.dfpsnv.eike
-  #         releaseFiles: artifacts/app-release.aab
-  #         track: internal
-  #         status: completed
-  #
-  # deploy-ios:
-  #   name: Deploy to TestFlight
-  #   needs:
-  #     - build-ios
-  #   runs-on: macos-latest
-  #   steps:
-  #     - uses: actions/download-artifact@v4
-  #       with:
-  #         name: release-ipa
-  #         path: artifacts
-  #     - name: Upload to TestFlight
-  #       uses: apple-actions/upload-testflight-build@v1
-  #       with:
-  #         app-path: artifacts/*.ipa
-  #         issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-  #         api-key-id: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
-  #         api-private-key: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+  deploy-android:
+    name: Deploy to Google Play (internal)
+    needs:
+      - release
+      - build-appbundle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-aab
+          path: artifacts
+      - name: Upload to Google Play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: de.dfpsnv.eike
+          releaseFiles: artifacts/app-release.aab
+          track: internal
+          status: completed
+
+  deploy-ios:
+    name: Deploy to TestFlight
+    needs:
+      - release
+      - build-ios
+    runs-on: macos-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-ipa
+          path: artifacts
+      - name: Upload to TestFlight
+        uses: apple-actions/upload-testflight-build@v1
+        with:
+          app-path: artifacts/*.ipa
+          issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          api-key-id: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          api-private-key: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
