@@ -130,13 +130,13 @@ jobs:
           cache: true
 
       - name: Install Certificate
-        uses: apple-actions/import-codesign-certs@v3
+        uses: apple-actions/import-codesign-certs@v6
         with:
           p12-file-base64: ${{ secrets.IOS_P12 }}
           p12-password: ${{ secrets.IOS_P12_PASSWORD }}
 
       - name: Install Provisioning Profile
-        uses: apple-actions/download-provisioning-profiles@v4
+        uses: apple-actions/download-provisioning-profiles@v6
         with:
           bundle-id: de.df-psnv.eike
           profile-type: 'IOS_APP_STORE'
