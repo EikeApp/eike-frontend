@@ -139,10 +139,10 @@ jobs:
         uses: apple-actions/download-provisioning-profiles@v6
         with:
           bundle-id: de.df-psnv.eike
-          profile-type: 'IOS_APP_STORE'
-          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
-          api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
-          api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+          profile-type: "IOS_APP_STORE"
+          issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          api-key-id: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          api-private-key: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
 
       - name: Build IPA
         run: |
