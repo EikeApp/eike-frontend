@@ -206,25 +206,25 @@ jobs:
             artifacts/app-release.apk
             artifacts/*.ipa
 
-  deploy-android:
-    name: Deploy to Google Play (internal)
-    needs:
-      - release
-      - build-appbundle
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: release-aab
-          path: artifacts
-      - name: Upload to Google Play
-        uses: r0adkll/upload-google-play@v1
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
-          packageName: de.dfpsnv.eike
-          releaseFiles: artifacts/app-release.aab
-          track: internal
-          status: completed
+  # deploy-android:
+  #   name: Deploy to Google Play (internal)
+  #   needs:
+  #     - release
+  #     - build-appbundle
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: release-aab
+  #         path: artifacts
+  #     - name: Upload to Google Play
+  #       uses: r0adkll/upload-google-play@v1
+  #       with:
+  #         serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+  #         packageName: de.dfpsnv.eike
+  #         releaseFiles: artifacts/app-release.aab
+  #         track: internal
+  #         status: completed
 
   deploy-ios:
     name: Deploy to TestFlight
