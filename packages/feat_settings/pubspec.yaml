@@ -23,6 +23,8 @@ dependencies:
   data_database:
   data_entities:
   feat_navigation:
+  feat_notification:
+  service_bloc:
   service_design:
   service_logging:
   service_settings:

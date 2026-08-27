@@ -20,6 +20,7 @@ class ContactScreen extends StatelessWidget {
       create: (context) {
         return ContactBloc(
           ContactRepositoryImpl(ContactDao(RepositoryProvider.of(context))),
+          RepositoryProvider.of(context),
         )..add(const ContactEvent.onSetup());
       },
       child: BlocBuilder<ContactBloc, ContactState>(

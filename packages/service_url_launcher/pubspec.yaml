@@ -16,6 +16,8 @@ dependencies:
   flutter_bloc:
   freezed_annotation:
 
+  feat_notification:
+  service_bloc:
   service_logging:
 
 dev_dependencies:

@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:dartz/dartz.dart';
 import 'package:data_database/eike_database.dart';
+import 'package:feat_notification/domain/repositories/notification_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:service_bloc/contracts/eike_bloc.dart';
 import 'package:service_logging/logging_interactor.dart';
 import 'package:use_in_case/use_in_case.dart';
 
@@ -15,12 +17,17 @@ part 'eike_database_provider_event.dart';
 part 'eike_database_provider_state.dart';
 
 class EikeDatabaseProviderBloc
-    extends Bloc<EikeDatabaseProviderEvent, EikeDatabaseProviderState> {
+    extends EikeBloc<EikeDatabaseProviderEvent, EikeDatabaseProviderState> {
   final GetEikeDatabaseInteractor getEikeDatabase;
 
-  EikeDatabaseProviderBloc(EikeDatabaseProviderRepository repository)
-    : getEikeDatabase = GetEikeDatabaseInteractor(repository),
-      super(EikeDatabaseProviderState.initial()) {
+  EikeDatabaseProviderBloc(
+    EikeDatabaseProviderRepository repository,
+    NotificationRepository notificationRepository,
+  ) : getEikeDatabase = GetEikeDatabaseInteractor(repository),
+      super(
+        EikeDatabaseProviderState.initial(),
+        notificationRepository,
+      ) {
     on<_OnSetup>(_onSetup);
   }
 
