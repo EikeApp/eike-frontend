@@ -23,6 +23,7 @@ class SettingsScreen extends StatelessWidget {
             RepositoryProvider.of(context),
           ),
           RepositoryProvider.of(context),
+          RepositoryProvider.of(context),
         )..add(const SettingsEvent.onSetup());
       },
       child: BlocBuilder<SettingsBloc, SettingsState>(

@@ -12,7 +12,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
   }
 
   @override
-  Future<void> emitNotification(EikeNotification notification) async {
+  void emitNotification(EikeNotification notification) async {
     _controller.add(notification);
   }
 

@@ -16,12 +16,13 @@ class NotificationDialogProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider<NotificationRepository>.value(
-      value: NotificationRepositoryImpl(),
+    return RepositoryProvider<NotificationRepository>(
+      create: (context) => NotificationRepositoryImpl(),
       child: BlocProvider(
-        create: (context) =>
-            NotificationBloc(RepositoryProvider.of(context))
-              ..add(const NotificationEvent.onSetup()),
+        create: (context) {
+          return NotificationBloc(RepositoryProvider.of(context))
+            ..add(const NotificationEvent.onSetup());
+        },
         lazy: false,
         child: BlocBuilder<NotificationBloc, NotificationState>(
           builder: (context, state) {
