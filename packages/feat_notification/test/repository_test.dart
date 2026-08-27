@@ -15,10 +15,10 @@ void main() {
       await repository.closeStream();
     });
 
-    test('should return emitted notifications via observation', () async {
+    test('should return emitted notifications via observation', () {
       final stream = repository.observeNotification();
 
-      await repository.emitNotification(
+      repository.emitNotification(
         EikeNotification(
           type: EikeNotificationType.info,
           title: 'Test Notification (Info)',
@@ -26,7 +26,7 @@ void main() {
         ),
       );
 
-      await repository.emitNotification(
+      repository.emitNotification(
         EikeNotification(
           type: EikeNotificationType.error,
           title: 'Test Notification (Error)',
