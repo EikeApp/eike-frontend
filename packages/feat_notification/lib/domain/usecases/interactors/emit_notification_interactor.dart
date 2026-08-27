@@ -12,6 +12,6 @@ class EmitNotificationInteractor
 
   @override
   FutureOr<void> getOrThrow(EikeNotification input) {
-    return repository.emitNotification(input);
+    repository.emitNotification(input);
   }
 }

@@ -12,6 +12,7 @@ import 'package:feat_notification/domain/repositories/notification_repository.da
 import 'package:feat_notification/domain/usecases/interactors/emit_notification_interactor.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:service_bloc/contracts/eike_bloc.dart';
 import 'package:service_logging/logging_interactor.dart';
 import 'package:use_in_case/use_in_case.dart';
 
@@ -19,7 +20,7 @@ part 'home_bloc.freezed.dart';
 part 'home_state.dart';
 part 'home_event.dart';
 
-class HomeBloc extends Bloc<HomeEvent, HomeState> {
+class HomeBloc extends EikeBloc<HomeEvent, HomeState> {
   final TipsObserver tipsObserver;
   final SyncTipsInteractor syncTipsInteractor;
   final UpdateUserNoteInteractor updateUserNote;
@@ -32,7 +33,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       syncTipsInteractor = SyncTipsInteractor(repository),
       updateUserNote = UpdateUserNoteInteractor(repository),
       emitNotification = EmitNotificationInteractor(notificationRepository),
-      super(HomeState.initial()) {
+      super(HomeState.initial(), notificationRepository) {
     on<_OnSetup>(_onSetup);
     on<_OnUserNoteChanged>(_onUserNoteChanged, transformer: droppable());
   }
@@ -40,6 +41,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   FutureOr<void> _onSetup(_OnSetup event, Emitter<HomeState> emit) async {
     await syncTipsInteractor
         .logger()
+        .intercept(submitError)
         .busyStateChange((isBusy) => emit(state.copyWith(isLoading: isBusy)))
         .intercept((_) => emit(state.copyWith(hasError: true)))
         .before((_) => emit(state.copyWith(hasError: false)))
@@ -57,7 +59,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     _OnUserNoteChanged event,
     Emitter<HomeState> emit,
   ) {
-    return updateUserNote.logger().run((
+    return updateUserNote.logger().intercept(submitError).run((
       tipId: event.tipId,
       userNote: event.userNote,
     ));

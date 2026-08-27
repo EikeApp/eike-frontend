@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:dartz/dartz.dart';
+import 'package:feat_notification/domain/repositories/notification_repository.dart';
 import 'package:feat_settings/domain/usecases/interactors/cleanup_local_storage_interactor.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:feat_settings/domain/repositories/settings_repository.dart';
+import 'package:service_bloc/contracts/eike_bloc.dart';
 import 'package:service_logging/logging_interactor.dart';
 import 'package:service_settings/domain/repositories/eike_settings_repository.dart';
 import 'package:service_settings/domain/usecases/observers/is_app_lock_enabled_observer.dart';
@@ -16,7 +18,7 @@ part 'settings_bloc.freezed.dart';
 part 'settings_state.dart';
 part 'settings_event.dart';
 
-class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
+class SettingsBloc extends EikeBloc<SettingsEvent, SettingsState> {
   final CleanupLocalStorageInteractor cleanupLocalStorage;
   final IsAppLockEnabledObserver isAppLockEnabledObserver;
   final SetIsAppLockEnabledInteractor setIsAppLockEnabled;
@@ -24,6 +26,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc(
     SettingsRepository repository,
     EikeSettingsRepository eikeSettingsRepository,
+    NotificationRepository notificationRepository,
   ) : cleanupLocalStorage = CleanupLocalStorageInteractor(repository),
       isAppLockEnabledObserver = IsAppLockEnabledObserver(
         eikeSettingsRepository,
@@ -31,7 +34,10 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       setIsAppLockEnabled = SetIsAppLockEnabledInteractor(
         eikeSettingsRepository,
       ),
-      super(SettingsState.initial()) {
+      super(
+        SettingsState.initial(),
+        notificationRepository,
+      ) {
     on<_OnSetup>(_onSetup);
     on<_OnCleanupLocalStorage>(_onCleanupLocalStorage);
     on<_OnSetIsAppLockEnabled>(_onSetIsAppLockEnabled);
@@ -50,13 +56,16 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     _OnCleanupLocalStorage event,
     Emitter<SettingsState> emit,
   ) {
-    return cleanupLocalStorage.logger().run(unit);
+    return cleanupLocalStorage.logger().intercept(submitError).run(unit);
   }
 
   FutureOr<void> _onSetIsAppLockEnabled(
     _OnSetIsAppLockEnabled event,
     Emitter<SettingsState> emit,
   ) {
-    return setIsAppLockEnabled.logger().run(event.isEnabled);
+    return setIsAppLockEnabled
+        .logger()
+        .intercept(submitError)
+        .run(event.isEnabled);
   }
 }

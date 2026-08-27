@@ -64,16 +64,16 @@ class MyApp extends StatelessWidget {
       darkTheme: EikeTheme.darkTheme(context),
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      home: AppProtectionScreen(
-        builder: (context) {
-          return NotificationDialogProvider(
-            child: const EikeDatabaseProvider(
+      home: NotificationDialogProvider(
+        child: AppProtectionScreen(
+          builder: (context) {
+            return const EikeDatabaseProvider(
               child: UrlLauncherProvider(
                 child: MainScreen(),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

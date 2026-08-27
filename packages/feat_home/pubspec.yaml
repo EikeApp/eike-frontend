@@ -23,6 +23,7 @@ dependencies:
   data_database:
   data_entities:
 
+  service_bloc:
   service_design:
   service_logging:
 

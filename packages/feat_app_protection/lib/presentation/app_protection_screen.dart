@@ -20,6 +20,7 @@ class AppProtectionScreen extends StatelessWidget {
             RepositoryProvider.of(context),
           ),
           RepositoryProvider.of(context),
+          RepositoryProvider.of(context),
         )..add(AppProtectionEvent.onSetup());
       },
       lazy: false,

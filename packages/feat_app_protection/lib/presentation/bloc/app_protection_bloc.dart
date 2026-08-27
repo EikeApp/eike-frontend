@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:feat_app_protection/domain/repositories/app_protection_repository.dart';
 import 'package:feat_app_protection/domain/usecases/interactors/authenticate_interactor.dart';
+import 'package:feat_notification/domain/repositories/notification_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:service_bloc/contracts/eike_bloc.dart';
 import 'package:service_logging/logging_interactor.dart';
 import 'package:service_settings/domain/repositories/eike_settings_repository.dart';
 import 'package:service_settings/domain/usecases/interactors/set_is_app_lock_enabled_interactor.dart';
@@ -15,7 +17,8 @@ part 'app_protection_bloc.freezed.dart';
 part 'app_protection_state.dart';
 part 'app_protection_event.dart';
 
-class AppProtectionBloc extends Bloc<AppProtectionEvent, AppProtectionState> {
+class AppProtectionBloc
+    extends EikeBloc<AppProtectionEvent, AppProtectionState> {
   final AuthenticateInteractor authenticate;
   final SetIsAppLockEnabledInteractor setIsAppLockEnabled;
   final IsAppLockEnabledObserver isAppLockEnabledObserver;
@@ -23,6 +26,7 @@ class AppProtectionBloc extends Bloc<AppProtectionEvent, AppProtectionState> {
   AppProtectionBloc(
     AppProtectionRepository repository,
     EikeSettingsRepository eikeSettingsRepository,
+    NotificationRepository notificationRepository,
   ) : authenticate = AuthenticateInteractor(repository),
       setIsAppLockEnabled = SetIsAppLockEnabledInteractor(
         eikeSettingsRepository,
@@ -30,7 +34,10 @@ class AppProtectionBloc extends Bloc<AppProtectionEvent, AppProtectionState> {
       isAppLockEnabledObserver = IsAppLockEnabledObserver(
         eikeSettingsRepository,
       ),
-      super(AppProtectionState.initial()) {
+      super(
+        AppProtectionState.initial(),
+        notificationRepository,
+      ) {
     on<_OnSetup>(_onSetup);
     on<_OnAppPaused>(_onAppPaused);
     on<_OnAuthRequested>(_onAuthRequested);
@@ -61,6 +68,7 @@ class AppProtectionBloc extends Bloc<AppProtectionEvent, AppProtectionState> {
   ) {
     return authenticate
         .logger()
+        .intercept(submitError)
         .busyStateChange((isBusy) {
           if (state case _Locked state) {
             emit(state.copyWith(isAuthenticating: isBusy));

@@ -29,6 +29,7 @@ workspace:
   - packages/service_logging
   - packages/service_settings
   - packages/service_url_launcher
+  - packages/service_bloc
 
 dependencies:
   flutter:

@@ -19,6 +19,7 @@ class EikeDatabaseProvider extends StatelessWidget {
             RepositoryProvider.of(context),
             RepositoryProvider.of(context),
           ),
+          RepositoryProvider.of(context),
         )..add(const EikeDatabaseProviderEvent.onSetup());
       },
       child: BlocBuilder<EikeDatabaseProviderBloc, EikeDatabaseProviderState>(

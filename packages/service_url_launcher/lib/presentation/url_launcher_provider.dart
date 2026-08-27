@@ -11,7 +11,10 @@ class UrlLauncherProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        return UrlLauncherBloc(UrlLauncherRepositoryImpl());
+        return UrlLauncherBloc(
+          UrlLauncherRepositoryImpl(),
+          RepositoryProvider.of(context),
+        );
       },
       lazy: false,
       child: child,
