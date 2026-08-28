@@ -7,6 +7,10 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    working-directory: packages/eike_app
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -18,7 +22,7 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: flutter analyze
-      - run: flutter test ./packages/*
+      - run: flutter test
 
   build-apk:
     name: Build APK
@@ -31,9 +35,7 @@ jobs:
           flutter-version: "3.44.2"
           cache: true
       - run: flutter pub get
-      - run: |
-          cd packages/eike_app
-          flutter build apk --release
+      - run: flutter build apk --release
       - uses: actions/upload-artifact@v4
         with:
           name: android-apk
@@ -50,9 +52,7 @@ jobs:
           flutter-version: "3.44.2"
           cache: true
       - run: flutter pub get
-      - run: |
-          cd packages/eike_app
-          flutter build appbundle --release
+      - run: flutter build appbundle --release
       - uses: actions/upload-artifact@v4
         with:
           name: android-appbundle
@@ -69,14 +69,12 @@ jobs:
           flutter-version: "3.44.2"
           cache: true
       - run: flutter pub get
-      - run: |
-          cd packages/eike_app
-          flutter build ios --release --no-codesign
+      - run: flutter build ios --release --no-codesign
       - run: |
           mkdir -p Payload
-          cp -R packages/eike_app/build/ios/iphoneos/Runner.app Payload/
+          cp -R build/ios/iphoneos/Runner.app Payload/
           zip -r app-release-unsigned.ipa Payload
       - uses: actions/upload-artifact@v4
         with:
           name: ios-ipa
-          path: app-release-unsigned.ipa
+          path: packages/eike_app/app-release-unsigned.ipa

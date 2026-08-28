@@ -1,8 +1,7 @@
 name: eike_app
 description: "Die EIKE-App bietet Einsatzkräften Informationen und Unterstützung bei der Vorbereitung und Verarbeitung von belastenden Einsätzen."
 publish_to: none
-version: 1.0.0+1
-resolution: workspace
+version: 0.8.3
 
 environment:
   sdk: ^3.13.2
@@ -11,37 +10,53 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_bloc:
-  flutter_secure_storage:
-  rx_shared_preferences:
 
-  feat_app_protection:
-  feat_contact:
-  feat_database_provider:
-  feat_home:
-  feat_settings:
-  feat_imprint:
-  feat_licenses:
-  feat_navigation:
-  feat_privacy_policy:
-  feat_notification:
-  service_auth:
-  service_design:
-  service_logging:
-  service_settings:
-  service_url_launcher:
+  cupertino_icons: ^1.0.8
+  go_router: ^18.0.0
+  drift: ^2.34.0
+  sqlite3: ^3.3.3
+  sqlcipher_flutter_libs: ^0.7.0+eol
+  encrypted_drift:
+    git:
+      url: https://github.com/simolus3/drift.git
+      path: extras/encryption
+  flutter_secure_storage: ^11.0.0
+  path: ^1.9.0
+  path_provider: ^2.1.6
+  provider: ^6.1.5+1
+  local_auth: ^3.0.1
+  shared_preferences: ^2.5.4
+  url_launcher: ^6.3.2
+  flutter_svg: ^2.2.3
+  freezed_annotation: ^3.1.0
+  flutter_bloc: ^9.1.1
+  bloc_presentation: ^1.1.2
+  bloc_concurrency: ^0.3.0
+  json_annotation: ^4.11.0
+  use_in_case: ^1.4.3
+  dartz: ^0.10.1
+  logger: ^2.6.2
+  rx_shared_preferences: ^4.0.0
+  rxdart: ^0.28.0
+  meta: ^1.18.0
+  flex_color_scheme: ^8.4.0
+  google_fonts: ^8.0.2
+  flutter_html: ^3.0.0
+  yaml: ^3.1.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints:
-  http:
+  flutter_lints: ^6.0.0
+  http: ^1.2.0
   archive:
-  yaml:
-  drift_dev:
-  build_runner:
-  flutter_launcher_icons:
+  drift_dev: ^2.34.0
+  build_runner: ^2.4.0
+  flutter_launcher_icons: ^0.14.4
+  freezed: ^4.0.0
+  json_serializable: ^6.13.0
+  test: ^1.31.0
 
 flutter:
   uses-material-design: true

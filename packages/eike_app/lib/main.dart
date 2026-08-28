@@ -1,26 +1,26 @@
-import 'package:feat_app_protection/presentation/app_protection_screen.dart';
-import 'package:feat_contact/presentation/contact_screen.dart';
-import 'package:feat_database_provider/presentation/eike_database_provider.dart';
-import 'package:feat_home/presentation/home_screen.dart';
-import 'package:feat_imprint/presentation/imprint_screen.dart';
-import 'package:feat_licenses/presentation/licenses_screen.dart';
-import 'package:feat_navigation/eike_routes.dart';
-import 'package:feat_notification/presentation/widgets/notification_dialog_provider.dart';
-import 'package:feat_settings/presentation/settings_screen.dart';
+import 'package:eike_app/feat_app_protection/presentation/app_protection_screen.dart';
+import 'package:eike_app/feat_contact/presentation/contact_screen.dart';
+import 'package:eike_app/feat_database_provider/presentation/eike_database_provider.dart';
+import 'package:eike_app/feat_home/presentation/home_screen.dart';
+import 'package:eike_app/feat_imprint/presentation/imprint_screen.dart';
+import 'package:eike_app/feat_licenses/presentation/licenses_screen.dart';
+import 'package:eike_app/feat_navigation/eike_routes.dart';
+import 'package:eike_app/feat_notification/presentation/widgets/notification_dialog_provider.dart';
+import 'package:eike_app/feat_settings/presentation/settings_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
-import 'package:service_auth/data/repositories/local_auth_repository_impl.dart';
-import 'package:service_auth/domain/repositories/local_auth_repository.dart';
-import 'package:service_design/theming/eike_theme.dart';
-import 'package:service_logging/eike_logger.dart';
-import 'package:service_settings/data/repositories/eike_settings_repository_impl.dart';
-import 'package:service_settings/domain/repositories/eike_settings_repository.dart';
-import 'package:service_url_launcher/presentation/url_launcher_provider.dart';
-import 'package:feat_privacy_policy/presentation/privacy_policy_screen.dart';
+import 'package:eike_app/service_auth/data/repositories/local_auth_repository_impl.dart';
+import 'package:eike_app/service_auth/domain/repositories/local_auth_repository.dart';
+import 'package:eike_app/service_design/theming/eike_theme.dart';
+import 'package:eike_app/service_logging/eike_logger.dart';
+import 'package:eike_app/service_settings/data/repositories/eike_settings_repository_impl.dart';
+import 'package:eike_app/service_settings/domain/repositories/eike_settings_repository.dart';
+import 'package:eike_app/service_url_launcher/presentation/url_launcher_provider.dart';
+import 'package:eike_app/feat_privacy_policy/presentation/privacy_policy_screen.dart';
 
 Future<void> main() async {
   LicenseRegistry.addLicense(() async* {
