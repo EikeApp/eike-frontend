@@ -7,13 +7,12 @@ import 'package:eike_app/feat_licenses/presentation/licenses_screen.dart';
 import 'package:eike_app/feat_navigation/eike_routes.dart';
 import 'package:eike_app/feat_notification/presentation/widgets/notification_dialog_provider.dart';
 import 'package:eike_app/feat_settings/presentation/settings_screen.dart';
+import 'package:eike_app/feat_splash/presentation/animated_splash_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 import 'package:eike_app/service_auth/data/repositories/local_auth_repository_impl.dart';
 import 'package:eike_app/service_auth/domain/repositories/local_auth_repository.dart';
@@ -58,110 +57,6 @@ Future<void> main() async {
       child: MyApp(),
     ),
   );
-}
-
-class AnimatedSplashScreen extends StatefulWidget {
-  const new({super.key, required this.app});
-
-  final Widget app;
-
-  @override
-  State<AnimatedSplashScreen> createState() => _AnimatedSplashScreenState();
-}
-
-class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        widget.app.animate().slideX(
-          delay: const Duration(milliseconds: 2500),
-          duration: const Duration(milliseconds: 200),
-          begin: 1.0,
-          end: 0.0,
-          curve: Curves.easeInOutCubic,
-        ),
-        IgnorePointer(
-          ignoring: true,
-          child:
-              Scaffold(
-                backgroundColor: context.colors.primary,
-                body: SafeArea(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EikeTheme.pagePadding,
-                        child:
-                            Column(
-                              children: [
-                                Text(
-                                  "EIKE",
-                                  style: context.textTheme.displayLarge
-                                      ?.copyWith(
-                                        color: context.colors.onPrimary,
-                                        fontWeight: .bold,
-                                      ),
-                                ),
-                                Text(
-                                  "Hilfe für Helfer",
-                                  style: context.textTheme.headlineMedium
-                                      ?.copyWith(
-                                        color: context.colors.onPrimary,
-                                      ),
-                                ),
-                              ],
-                            ).animate().fadeIn(
-                              delay: const Duration(milliseconds: 1200),
-                              duration: const Duration(milliseconds: 500),
-                            ),
-                      ),
-                      Image.asset(
-                            'assets/images/splash_screen_logo.png',
-                            width: 400,
-                            height: 400,
-                          )
-                          .animate()
-                          .scale(
-                            duration: const Duration(milliseconds: 1000),
-                            curve: Curves.easeInOutBack,
-                            alignment: .center,
-                          )
-                          .fadeIn(
-                            duration: const Duration(milliseconds: 100),
-                          ),
-                      Padding(
-                        padding: EikeTheme.pagePadding,
-                        child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/splash_screen_footer.png',
-                              ).animate().fadeIn(
-                                delay: const Duration(milliseconds: 1200),
-                                duration: const Duration(milliseconds: 500),
-                                curve: Curves.easeOutCubic,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ).animate().slideX(
-                delay: const Duration(milliseconds: 2500),
-                duration: const Duration(milliseconds: 200),
-                begin: 0.0,
-                end: -1.0,
-                curve: Curves.easeInOutCubic,
-              ),
-        ),
-      ],
-    );
-  }
 }
 
 class MyApp extends StatelessWidget {
