@@ -73,6 +73,11 @@ extension on ThemeData {
           ),
         ),
       ),
+      dialogTheme: dialogTheme.copyWith(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(EikeTheme.cornerRadius),
+        ),
+      ),
     );
   }
 }
