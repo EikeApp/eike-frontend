@@ -251,7 +251,7 @@ jobs:
         id: ipa
         run: echo "path=$(ls artifacts/*.ipa)" >> "$GITHUB_OUTPUT"
       - name: Upload to TestFlight
-        uses: apple-actions/upload-testflight-build@v1
+        uses: apple-actions/upload-testflight-build@v5
         with:
           app-path: ${{ steps.ipa.outputs.path }}
           issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
