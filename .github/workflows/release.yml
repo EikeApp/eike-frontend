@@ -27,10 +27,12 @@ jobs:
         with:
           flutter-version: "3.44.2"
           cache: true
-      - run: flutter pub get
+      - run: |
+          cd packages/eike_app
+          flutter pub get
       - name: Verify pubspec version
         run: |
-          PUBSPEC_VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}' | cut -d '+' -f1)
+          PUBSPEC_VERSION=$(grep '^version:' packages/eike_app/pubspec.yaml | awk '{print $2}' | cut -d '+' -f1)
           if [ "$PUBSPEC_VERSION" != "${{ inputs.version }}" ]; then
             echo "pubspec.yaml version ($PUBSPEC_VERSION) does not match workflow version (${{ inputs.version }})"
             exit 1
@@ -42,8 +44,12 @@ jobs:
             echo "Tag v${{ inputs.version }} already exists"
             exit 1
           fi
-      - run: flutter analyze
-      - run: flutter test ./packages/* --reporter github
+      - run: |
+          cd packages/eike_app
+          flutter analyze
+      - run: |
+          cd packages/eike_app
+          flutter test --reporter github
 
   build-appbundle:
     name: Build Appbundle (AAB)
