@@ -7,6 +7,10 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  # Silences the JDK 24+ "restricted method" warning from Gradle's launcher JVM.
+  GRADLE_OPTS: --enable-native-access=ALL-UNNAMED
+
 defaults:
   run:
     working-directory: packages/eike_app

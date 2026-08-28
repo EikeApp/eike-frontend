@@ -1,9 +1,8 @@
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:eike_app/service_design/theming/generated/eike_color_scheme.dart.dart';
 
 abstract final class EikeTheme {
+  static const fontFamily = 'Roboto';
   static const horizontalPagePadding = 16.0;
   static const verticalPagePadding = 16.0;
   static const EdgeInsets pagePadding = EdgeInsets.symmetric(
@@ -29,21 +28,18 @@ abstract final class EikeTheme {
   static const cornerRadius = 16.0;
 
   static ThemeData lightTheme(BuildContext context) {
-    return FlexColorScheme.light(
-      // scheme: FlexScheme.blueM3,
-      colorScheme: MaterialTheme.lightScheme(),
-      textTheme: GoogleFonts.interTextTheme(),
-      appBarStyle: FlexAppBarStyle.surface,
-    ).toTheme.applyDefaults();
+    return _themeFrom(MaterialTheme.lightScheme());
   }
 
   static ThemeData darkTheme(BuildContext context) {
-    return FlexColorScheme.dark(
-      // scheme: FlexScheme.blueM3,
-      colorScheme: MaterialTheme.darkScheme(),
-      textTheme: GoogleFonts.interTextTheme(),
-      appBarStyle: FlexAppBarStyle.surface,
-    ).toTheme.applyDefaults();
+    return _themeFrom(MaterialTheme.darkScheme());
+  }
+
+  static ThemeData _themeFrom(ColorScheme colorScheme) {
+    return ThemeData(
+      colorScheme: colorScheme,
+      fontFamily: fontFamily,
+    ).applyDefaults();
   }
 }
 

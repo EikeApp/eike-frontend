@@ -1,14 +1,18 @@
 # renovate: datasource=github-releases depName=EikeApp/eike-content
 VERSION=3.0.1
 
+# Gradle's launcher JVM loads native-platform through System::load. On JDK 24+
+# this prints a "restricted method" warning unless native access is enabled.
+export GRADLE_OPTS := --enable-native-access=ALL-UNNAMED
+
 .PHONY: all fetch-content run build-apk build-ios clean help
 
 # Default target
 all: run
 
-# Fetch content using the dart script
+# Fetch content using the shell script
 fetch-content:
-	@(cd packages/tools_fetch_content && dart pub get && dart run bin/tools_fetch_content.dart $(VERSION))
+	@(cd scripts && ./fetch_content.sh $(VERSION))
 
 # Run the app (fetches content first)
 run: fetch-content
