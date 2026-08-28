@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.44.2"
+          flutter-version: "3.47.2"
           cache: true
       - run: flutter pub get
       - run: flutter analyze
@@ -36,7 +36,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.44.2"
+          flutter-version: "3.47.2"
           cache: true
       - run: flutter pub get
       - run: flutter build apk --release
@@ -53,7 +53,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.44.2"
+          flutter-version: "3.47.2"
           cache: true
       - run: flutter pub get
       - run: flutter build appbundle --release
@@ -70,7 +70,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.44.2"
+          flutter-version: "3.47.2"
           cache: true
       - run: flutter pub get
       - run: flutter build ios --release --no-codesign
