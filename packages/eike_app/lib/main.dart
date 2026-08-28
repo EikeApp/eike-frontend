@@ -26,6 +26,11 @@ Future<void> main() async {
   LicenseRegistry.addLicense(() async* {
     final text = await rootBundle.loadString('assets/fonts/Inter-license.txt');
     yield LicenseEntryWithLineBreaks(['Inter'], text);
+
+    final robotoLicense = await rootBundle.loadString(
+      'assets/fonts/Roboto/OFL.txt',
+    );
+    yield LicenseEntryWithLineBreaks(['Roboto'], robotoLicense);
   });
 
   WidgetsFlutterBinding.ensureInitialized();

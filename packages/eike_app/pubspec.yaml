@@ -39,8 +39,6 @@ dependencies:
   rx_shared_preferences: ^4.0.0
   rxdart: ^0.28.0
   meta: ^1.18.0
-  flex_color_scheme: ^8.4.0
-  google_fonts: ^8.0.2
   flutter_html: ^3.0.0
   yaml: ^3.1.3
 
@@ -64,12 +62,12 @@ flutter:
   assets:
     - assets/content/
     - assets/content/7-things/
-    - assets/fonts/Inter-license.txt
+    - assets/fonts/Roboto/OFL.txt
     - assets/images/
 
   fonts:
-    - family: Inter
+    - family: Roboto
       fonts:
-        - asset: assets/fonts/Inter-VariableFont_opsz,wght.ttf
-        - asset: assets/fonts/Inter-Italic-VariableFont_opsz,wght.ttf
+        - asset: assets/fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf
+        - asset: assets/fonts/Roboto/Roboto-Italic-VariableFont_wdth,wght.ttf
           style: italic

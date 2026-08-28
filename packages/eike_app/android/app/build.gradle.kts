@@ -21,7 +21,9 @@ val hasSigning = listOf("keyAlias", "keyPassword", "storeFile", "storePassword")
 
 android {
     namespace = "de.dfpsnv.eike"
-    compileSdk = flutter.compileSdkVersion
+    // flutter_secure_storage requires compileSdk 37; flutter.compileSdkVersion
+    // currently resolves to 36, so it is overridden explicitly here.
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -34,7 +36,7 @@ android {
         // minSdk = flutter.minSdkVersion
         // targetSdk = flutter.targetSdkVersion
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 37
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
