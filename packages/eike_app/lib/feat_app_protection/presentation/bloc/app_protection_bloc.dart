@@ -43,7 +43,16 @@ class AppProtectionBloc
     on<_OnAuthRequested>(_onAuthRequested);
   }
 
-  FutureOr<void> _onSetup(_OnSetup event, Emitter<AppProtectionState> emit) {
+  FutureOr<void> _onSetup(
+    _OnSetup event,
+    Emitter<AppProtectionState> emit,
+  ) async {
+    final isLockRequired = await isAppLockEnabledObserver.observe().first;
+    if (!isLockRequired) {
+      emit(AppProtectionState.unlocked());
+      return;
+    }
+
     return _onAuthRequested(const _OnAuthRequested(), emit);
   }
 
