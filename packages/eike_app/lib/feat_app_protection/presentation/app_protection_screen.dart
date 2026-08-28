@@ -1,5 +1,6 @@
 import 'package:eike_app/feat_app_protection/data/repositories/app_protection_repository_impl.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:eike_app/feat_app_protection/presentation/bloc/app_protection_bloc.dart';
@@ -53,18 +54,65 @@ class _LockScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 270),
-      transitionBuilder: (child, animation) {
-        return ScaleTransition(scale: animation, child: child);
-      },
-      child: state.map(
-        initial: (_) => Scaffold(
-          appBar: EikeAppBar(title: 'Authentifiziere...'),
+    final isUnlocked = state.maybeMap(
+      unlocked: (_) => true,
+      orElse: () => false,
+    );
+
+    return Stack(
+      children: [
+        builder(context),
+        IgnorePointer(
+          ignoring: isUnlocked,
+          child: _LockOverlay(state: state, isUnlocked: isUnlocked),
         ),
-        unlocked: (_) => builder(context),
-        locked: (_) => const _LockedScreen(),
-      ),
+      ],
+    );
+  }
+}
+
+class _LockOverlay extends StatelessWidget {
+  const _LockOverlay({
+    required this.state,
+    required this.isUnlocked,
+  });
+
+  static const transitionDuration = Duration(milliseconds: 420);
+
+  final AppProtectionState state;
+  final bool isUnlocked;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 220),
+          child: state.map(
+            initial: (_) => const _AuthenticatingScreen(),
+            locked: (_) => const _LockedScreen(),
+            unlocked: (_) => const _LockedScreen(),
+          ),
+        )
+        .animate(target: isUnlocked ? 1.0 : 0.0)
+        .slideY(
+          duration: transitionDuration,
+          begin: 0.0,
+          end: -1.0,
+          curve: Curves.easeInOutCubic,
+        )
+        .fadeOut(
+          duration: transitionDuration,
+          curve: Curves.easeInOutCubic,
+        );
+  }
+}
+
+class _AuthenticatingScreen extends StatelessWidget {
+  const _AuthenticatingScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: EikeAppBar(title: 'Authentifiziere...'),
     );
   }
 }

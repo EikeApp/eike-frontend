@@ -9,8 +9,9 @@ class LocalAuthRepositoryImpl implements LocalAuthRepository {
 
   @override
   Future<bool> authenticate() async {
-    if (!await localAuth.isDeviceSupported()) {
-      return true; // Nothing we can do at this point.
+    final deviceSupportsBiometrics = await localAuth.isDeviceSupported();
+    if (!deviceSupportsBiometrics) {
+      return true;
     }
 
     return localAuth.authenticate(
