@@ -15,6 +15,10 @@ concurrency:
   group: release
   cancel-in-progress: false
 
+env:
+  # Silences the JDK 24+ "restricted method" warning from Gradle's launcher JVM.
+  GRADLE_OPTS: --enable-native-access=ALL-UNNAMED
+
 jobs:
   validate:
     name: Validate & Test
