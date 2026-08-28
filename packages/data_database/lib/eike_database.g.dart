@@ -963,26 +963,24 @@ typedef $$TeamContactTableTableProcessedTableManager =
       TeamContactEntity,
       PrefetchHooks Function()
     >;
-typedef $$TipTableTableCreateCompanionBuilder =
-    TipTableCompanion Function({
-      Value<TipId> id,
-      required TipPosition position,
-      required TipTitle title,
-      required TipDescription description,
-      required TipImagePath imagePath,
-      required TipImageDescription imageDescription,
-      required TipUserNote userNote,
-    });
-typedef $$TipTableTableUpdateCompanionBuilder =
-    TipTableCompanion Function({
-      Value<TipId> id,
-      Value<TipPosition> position,
-      Value<TipTitle> title,
-      Value<TipDescription> description,
-      Value<TipImagePath> imagePath,
-      Value<TipImageDescription> imageDescription,
-      Value<TipUserNote> userNote,
-    });
+typedef $$TipTableTableCreateCompanionBuilder = TipTableCompanion Function({
+  Value<TipId> id,
+  required TipPosition position,
+  required TipTitle title,
+  required TipDescription description,
+  required TipImagePath imagePath,
+  required TipImageDescription imageDescription,
+  required TipUserNote userNote,
+});
+typedef $$TipTableTableUpdateCompanionBuilder = TipTableCompanion Function({
+  Value<TipId> id,
+  Value<TipPosition> position,
+  Value<TipTitle> title,
+  Value<TipDescription> description,
+  Value<TipImagePath> imagePath,
+  Value<TipImageDescription> imageDescription,
+  Value<TipUserNote> userNote,
+});
 
 class $$TipTableTableFilterComposer
     extends Composer<_$EikeDatabase, $TipTableTable> {

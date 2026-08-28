@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'home_bloc.dart';
@@ -9,6 +9,7 @@ part of 'home_bloc.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -63,7 +64,7 @@ class _$HomeStateCopyWithImpl<$Res>
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? tips = null,Object? hasError = null,Object? isLoading = null,}) {
-  return _then(_self.copyWith(
+  return _then(HomeState(
 tips: null == tips ? _self.tips : tips // ignore: cast_nullable_to_non_nullable
 as List<TipEntity>,hasError: null == hasError ? _self.hasError : hasError // ignore: cast_nullable_to_non_nullable
 as bool,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
@@ -202,7 +203,7 @@ return $default(_that.tips,_that.hasError,_that.isLoading);case _:
 
 
 class _HomeState implements HomeState {
-  const _HomeState({required final  List<TipEntity> tips, required this.hasError, required this.isLoading}): _tips = tips;
+  const _HomeState({required  List<TipEntity> tips, required this.hasError, required this.isLoading}): _tips = tips;
   
 
  final  List<TipEntity> _tips;
