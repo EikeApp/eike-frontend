@@ -4,8 +4,6 @@ import 'package:eike_app/service_auth/domain/repositories/local_auth_repository.
 import '../../domain/repositories/app_protection_repository.dart';
 
 class AppProtectionRepositoryImpl implements AppProtectionRepository {
-  static const appProtectionStorageKey = 'app_protection_key';
-
   const AppProtectionRepositoryImpl(
     this.settingsRepository,
     this.authentication,
