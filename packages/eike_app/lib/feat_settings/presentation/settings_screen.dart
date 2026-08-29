@@ -6,6 +6,7 @@ import 'package:eike_app/feat_settings/data/repositories/settings_repository_imp
 import 'package:eike_app/feat_settings/presentation/bloc/settings_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:eike_app/service_design/components/eike_app_bar.dart';
 import 'package:eike_app/service_design/theming/eike_theme.dart';
 import 'package:eike_app/service_design/components/eike_titled_card.dart';
@@ -142,11 +143,7 @@ class _Scaffold extends StatelessWidget {
                 Text("Informationen zum Umgang mit deinen Daten"),
                 TextButton.icon(
                   onPressed: () {
-                    unawaited(
-                      Navigator.of(
-                        context,
-                      ).pushNamed(EikeRoute.privacyPolicy.route),
-                    );
+                    context.pushNamed(EikeRoute.privacyPolicy.name);
                   },
                   icon: Icon(Icons.privacy_tip_outlined),
                   label: Row(
@@ -160,9 +157,7 @@ class _Scaffold extends StatelessWidget {
                 Text("Open-Source-Bibliotheken, die diese App ermöglichen"),
                 TextButton.icon(
                   onPressed: () {
-                    unawaited(
-                      Navigator.of(context).pushNamed(EikeRoute.licenses.route),
-                    );
+                    context.pushNamed(EikeRoute.licenses.name);
                   },
                   icon: Icon(Icons.description_outlined),
                   label: Row(
@@ -176,9 +171,7 @@ class _Scaffold extends StatelessWidget {
                 Text("Angaben zum Anbieter und Kontaktmöglichkeiten"),
                 TextButton.icon(
                   onPressed: () {
-                    unawaited(
-                      Navigator.of(context).pushNamed(EikeRoute.imprint.route),
-                    );
+                    context.pushNamed(EikeRoute.imprint.name);
                   },
                   icon: Icon(Icons.article_outlined),
                   label: Row(
