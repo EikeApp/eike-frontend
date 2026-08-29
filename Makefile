@@ -8,7 +8,7 @@ export GRADLE_OPTS := --enable-native-access=ALL-UNNAMED
 .PHONY: all fetch-content run build-apk build-ios clean help
 
 # Default target
-all: run
+all: fetch-content run build-apk build-ios clean
 
 # Fetch content using the shell script
 fetch-content:
@@ -29,25 +29,6 @@ build-ios: fetch-content
 # Clean build artifacts and content cache
 clean:
 	@(cd packages/eike_app && flutter clean)
-	@echo "Searching for modules in $(CURDIR)/packages"
-	@if [ ! -d "packages" ]; then \
-		echo "Error: Directory 'packages' not found."; \
-		exit 1; \
-	fi
-	@found=0; \
-	for dir in in packages/*/; do \
-		dir=$${dir%/}; \
-		if [ -d "$$dir/.dart_tool" ] || [ -d "$$dir/build" ]; then \
-			echo "→ Flutter clean: $$dir"; \
-			(cd "$$dir" && flutter clean); \
-			found=$$((found + 1)); \
-		fi; \
-	done; \
-	if [ $$found -eq 0 ]; then \
-		echo "No modules have been found."; \
-	else \
-		echo "Done. $$found Projects have been cleaned."; \
-	fi
 
 # Help command
 help:

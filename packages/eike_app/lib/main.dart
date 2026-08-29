@@ -1,12 +1,7 @@
 import 'package:eike_app/feat_app_protection/presentation/app_protection_screen.dart';
-import 'package:eike_app/feat_contact/presentation/contact_screen.dart';
 import 'package:eike_app/feat_database_provider/presentation/eike_database_provider.dart';
-import 'package:eike_app/feat_home/presentation/home_screen.dart';
-import 'package:eike_app/feat_imprint/presentation/imprint_screen.dart';
-import 'package:eike_app/feat_licenses/presentation/licenses_screen.dart';
-import 'package:eike_app/feat_navigation/eike_routes.dart';
+import 'package:eike_app/feat_navigation/app_router.dart';
 import 'package:eike_app/feat_notification/presentation/widgets/notification_dialog_provider.dart';
-import 'package:eike_app/feat_settings/presentation/settings_screen.dart';
 import 'package:eike_app/feat_splash/presentation/animated_splash_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +16,6 @@ import 'package:eike_app/service_logging/eike_logger.dart';
 import 'package:eike_app/service_settings/data/repositories/eike_settings_repository_impl.dart';
 import 'package:eike_app/service_settings/domain/repositories/eike_settings_repository.dart';
 import 'package:eike_app/service_url_launcher/presentation/url_launcher_provider.dart';
-import 'package:eike_app/feat_privacy_policy/presentation/privacy_policy_screen.dart';
 
 Future<void> main() async {
   LicenseRegistry.addLicense(() async* {
@@ -64,247 +58,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Eike',
       theme: EikeTheme.lightTheme(context),
       darkTheme: EikeTheme.darkTheme(context),
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      home: AnimatedSplashScreen(
-        app: NotificationDialogProvider(
-          child: AppProtectionScreen(
-            builder: (context) {
-              return const EikeDatabaseProvider(
-                child: UrlLauncherProvider(
-                  child: MainScreen(),
-                ),
-              );
-            },
+      routerConfig: eikeRouter,
+      builder: (context, child) {
+        return AnimatedSplashScreen(
+          app: NotificationDialogProvider(
+            child: AppProtectionScreen(
+              builder: (context) {
+                return EikeDatabaseProvider(
+                  child: UrlLauncherProvider(
+                    child: child!,
+                  ),
+                );
+              },
+            ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
-
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  int _currentIndex = 0;
-
-  // Ein NavigatorKey pro Tab
-  final List<GlobalKey<NavigatorState>> _navigatorKeys = [
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
-  ];
-
-  // Zurück-Button korrekt behandeln
-  Future<bool> _onWillPop() async {
-    final navigator = _navigatorKeys[_currentIndex].currentState!;
-    if (navigator.canPop()) {
-      navigator.pop();
-      return false;
-    }
-
-    return true;
-  }
-
-  Widget _buildTabNavigator(int index, EikeRoute initialRoute) {
-    return Navigator(
-      key: _navigatorKeys[index],
-      initialRoute: initialRoute.route,
-      onGenerateRoute: (settings) {
-        final associatedRoute = EikeRoute.values
-            .where((route) => route.route == settings.name)
-            .firstOrNull;
-        if (associatedRoute == null) {
-          return null;
-        }
-
-        return switch (associatedRoute) {
-          EikeRoute.home => MaterialPageRoute(
-            settings: settings,
-            builder: (context) => const HomeScreen(),
-          ),
-          EikeRoute.contact => MaterialPageRoute(
-            settings: settings,
-            builder: (context) => const ContactScreen(),
-          ),
-          EikeRoute.settings => MaterialPageRoute(
-            settings: settings,
-            builder: (context) => const SettingsScreen(),
-          ),
-          EikeRoute.licenses => MaterialPageRoute(
-            settings: settings,
-            builder: (context) => const LicensesScreen(),
-          ),
-          EikeRoute.imprint => MaterialPageRoute(
-            settings: settings,
-            builder: (context) => const ImprintScreen(),
-          ),
-          EikeRoute.privacyPolicy => MaterialPageRoute(
-            settings: settings,
-            builder: (context) => const PrivacyPolicyScreen(),
-          ),
-        };
+        );
       },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, _) async {
-        if (!didPop) await _onWillPop();
-      },
-      child: Scaffold(
-        body: IndexedStack(
-          index: _currentIndex,
-          children: [
-            _buildTabNavigator(0, EikeRoute.home),
-            _buildTabNavigator(1, EikeRoute.contact),
-            _buildTabNavigator(2, EikeRoute.settings),
-          ],
-        ),
-        extendBody: true,
-        bottomNavigationBar: CustomBottomNavBar(
-          selectedIndex: _currentIndex,
-          onItemSelected: (index) => setState(() {
-            _currentIndex = index;
-          }),
-        ),
-      ),
-    );
-  }
-}
-
-class CustomBottomNavBar extends StatelessWidget {
-  final int selectedIndex;
-  final ValueChanged<int> onItemSelected;
-
-  const CustomBottomNavBar({
-    super.key,
-    required this.selectedIndex,
-    required this.onItemSelected,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: EikeTheme.horizontalPagePadding,
-          right: EikeTheme.horizontalPagePadding,
-          bottom: EikeTheme.verticalPagePadding * 0.5,
-        ),
-        child: SizedBox(
-          height: 60,
-          child: Card(
-            color: context.colors.surfaceContainerLowest,
-            elevation: 2,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Flexible(
-                  child: _DestinationItem(
-                    title: '7 Sachen',
-                    icon: Icons.favorite_outline_rounded,
-                    selectedIcon: Icons.favorite,
-                    isSelected: selectedIndex == 0,
-                    onClick: () => onItemSelected(0),
-                  ),
-                ),
-                Flexible(
-                  child: _DestinationItem(
-                    title: 'Kontakte',
-                    icon: Icons.phone_outlined,
-                    selectedIcon: Icons.phone,
-                    isSelected: selectedIndex == 1,
-                    onClick: () => onItemSelected(1),
-                  ),
-                ),
-                Flexible(
-                  child: _DestinationItem(
-                    title: 'Einst.',
-                    icon: Icons.settings_outlined,
-                    selectedIcon: Icons.settings,
-                    isSelected: selectedIndex == 2,
-                    onClick: () => onItemSelected(2),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _DestinationItem extends StatelessWidget {
-  const _DestinationItem({
-    required this.title,
-    required this.icon,
-    required this.selectedIcon,
-    required this.isSelected,
-    required this.onClick,
-  });
-
-  final String title;
-  final IconData icon;
-  final IconData selectedIcon;
-  final bool isSelected;
-  final VoidCallback onClick;
-
-  @override
-  Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Padding(
-        padding: const EdgeInsets.all(6.0),
-        child: GestureDetector(
-          onTap: onClick,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            decoration: BoxDecoration(
-              color: isSelected ? context.colors.secondaryContainer : null,
-              borderRadius: BorderRadius.circular(EikeTheme.cornerRadius),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                spacing: EikeTheme.horizontalComponentSpacingSmall * 0.5,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    isSelected ? selectedIcon : icon,
-                    color: context.colors.primary,
-                  ),
-                  Flexible(
-                    child: AnimatedSize(
-                      duration: const Duration(milliseconds: 200),
-                      child: isSelected
-                          ? FittedBox(
-                              child: Text(
-                                title,
-                                style: TextStyle(color: context.colors.primary),
-                              ),
-                            )
-                          : SizedBox.shrink(),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
