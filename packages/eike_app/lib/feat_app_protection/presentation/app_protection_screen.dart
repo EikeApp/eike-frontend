@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:eike_app/feat_app_protection/presentation/bloc/app_protection_bloc.dart';
 import 'package:eike_app/service_design/components/eike_app_bar.dart';
+import 'package:eike_app/service_design/theming/eike_theme.dart';
 
 class AppProtectionScreen extends StatelessWidget {
   const AppProtectionScreen({super.key, required this.builder});
@@ -88,7 +89,7 @@ class _LockOverlay extends StatelessWidget {
           duration: const Duration(milliseconds: 220),
           child: state.map(
             initial: (_) => const _AuthenticatingScreen(),
-            locked: (_) => const _LockedScreen(),
+            locked: (state) => _LockedScreen(errorText: state.errorText),
             unlocked: (_) => const _LockedScreen(),
           ),
         )
@@ -118,7 +119,9 @@ class _AuthenticatingScreen extends StatelessWidget {
 }
 
 class _LockedScreen extends StatelessWidget {
-  const _LockedScreen();
+  const _LockedScreen({this.errorText});
+
+  final String? errorText;
 
   @override
   Widget build(BuildContext context) {
@@ -127,6 +130,18 @@ class _LockedScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          if (errorText != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: EikeTheme.horizontalPagePadding,
+              ),
+              child: Text(
+                errorText!,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: context.colors.error),
+              ),
+            ),
+          const SizedBox(height: EikeTheme.verticalComponentSpacingMedium),
           Center(
             child: FilledButton.icon(
               onPressed: () {

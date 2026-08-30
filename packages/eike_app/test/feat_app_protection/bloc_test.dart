@@ -1,3 +1,4 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:eike_app/feat_app_protection/domain/repositories/app_protection_repository.dart';
 import 'package:eike_app/feat_app_protection/presentation/bloc/app_protection_bloc.dart';
 import 'package:eike_app/feat_notification/domain/models/eike_notification.dart';
@@ -38,7 +39,6 @@ void main() {
     late _FakeAppProtectionRepository authRepo;
     late EikeSettingsRepository settingsRepo;
     late _FakeNotificationRepository notificationRepo;
-    late AppProtectionBloc bloc;
 
     setUp(() {
       SharedPreferences.setMockInitialValues({});
@@ -48,104 +48,101 @@ void main() {
         RxSharedPreferences.getInstance(),
       );
       notificationRepo = _FakeNotificationRepository();
-      bloc = AppProtectionBloc(authRepo, settingsRepo, notificationRepo);
     });
 
-    tearDown(() {
-      return bloc.close();
-    });
-
-    test(
-      'should unlock without authenticating when app lock is disabled',
-      () async {
-        await settingsRepo.setAppLockEnabled(false);
-
-        bloc.add(const AppProtectionEvent.onSetup());
-        await bloc.stream.firstWhere(
-          (state) => state == const AppProtectionState.unlocked(),
-        );
-
-        expect(authRepo.callCount, 0);
-      },
+    const lockedIdle = AppProtectionState.locked(
+      isAuthenticating: false,
+      errorText: null,
+    );
+    const lockedBusy = AppProtectionState.locked(
+      isAuthenticating: true,
+      errorText: null,
     );
 
-    test(
+    AppProtectionBloc buildBloc() =>
+        AppProtectionBloc(authRepo, settingsRepo, notificationRepo);
+
+    blocTest<AppProtectionBloc, AppProtectionState>(
+      'should unlock without authenticating when app lock is disabled',
+      setUp: () => settingsRepo.setAppLockEnabled(false),
+      build: buildBloc,
+      act: (bloc) => bloc.add(const AppProtectionEvent.onSetup()),
+      expect: () => [const AppProtectionState.unlocked()],
+      verify: (_) => expect(authRepo.callCount, 0),
+    );
+
+    blocTest<AppProtectionBloc, AppProtectionState>(
       'should unlock after a successful authentication when app lock is enabled',
-      () async {
+      setUp: () async {
         await settingsRepo.setAppLockEnabled(true);
         authRepo.authenticationResult = true;
-
-        bloc.add(const AppProtectionEvent.onSetup());
-        await bloc.stream.firstWhere(
-          (state) => state == const AppProtectionState.unlocked(),
-        );
-
-        expect(authRepo.callCount, 1);
       },
+      build: buildBloc,
+      act: (bloc) => bloc.add(const AppProtectionEvent.onSetup()),
+      expect: () => [
+        lockedIdle,
+        lockedBusy,
+        lockedIdle,
+        const AppProtectionState.unlocked(),
+      ],
+      verify: (_) => expect(authRepo.callCount, 1),
     );
 
-    test(
+    blocTest<AppProtectionBloc, AppProtectionState>(
       'should surface a failed authentication as a locked error state',
-      () async {
+      setUp: () async {
         await settingsRepo.setAppLockEnabled(true);
         authRepo.authenticationResult = false;
-
-        bloc.add(const AppProtectionEvent.onSetup());
-        final lockedState = await bloc.stream.firstWhere(
-          (state) =>
-              state.mapOrNull(locked: (locked) => locked.errorText != null) ??
-              false,
-        );
-
-        expect(
-          lockedState,
-          const AppProtectionState.locked(
-            isAuthenticating: false,
-            errorText: 'Authentifizierung ist fehlgeschlagen',
-          ),
-        );
       },
+      build: buildBloc,
+      act: (bloc) => bloc.add(const AppProtectionEvent.onSetup()),
+      expect: () => [
+        lockedIdle,
+        lockedBusy,
+        lockedIdle,
+        const AppProtectionState.locked(
+          isAuthenticating: false,
+          errorText: 'Authentifizierung ist fehlgeschlagen',
+        ),
+      ],
     );
 
-    test(
+    blocTest<AppProtectionBloc, AppProtectionState>(
       'should lock again once the app is paused while app lock is enabled',
-      () async {
+      setUp: () async {
         await settingsRepo.setAppLockEnabled(true);
         authRepo.authenticationResult = true;
+      },
+      build: buildBloc,
+      act: (bloc) async {
         bloc.add(const AppProtectionEvent.onSetup());
         await bloc.stream.firstWhere(
           (state) => state == const AppProtectionState.unlocked(),
         );
-
         bloc.add(const AppProtectionEvent.onAppPaused());
-        final lockedState = await bloc.stream.firstWhere(
-          (state) => state != const AppProtectionState.unlocked(),
-        );
-
-        expect(
-          lockedState,
-          const AppProtectionState.locked(
-            isAuthenticating: false,
-            errorText: null,
-          ),
-        );
       },
+      expect: () => [
+        lockedIdle,
+        lockedBusy,
+        lockedIdle,
+        const AppProtectionState.unlocked(),
+        lockedIdle,
+      ],
     );
 
-    test(
+    blocTest<AppProtectionBloc, AppProtectionState>(
       'should stay unlocked once the app is paused while app lock is disabled',
-      () async {
-        await settingsRepo.setAppLockEnabled(false);
+      setUp: () => settingsRepo.setAppLockEnabled(false),
+      build: buildBloc,
+      act: (bloc) async {
         bloc.add(const AppProtectionEvent.onSetup());
         await bloc.stream.firstWhere(
           (state) => state == const AppProtectionState.unlocked(),
         );
-
         bloc.add(const AppProtectionEvent.onAppPaused());
         await Future<void>.delayed(Duration.zero);
-
-        expect(bloc.state, const AppProtectionState.unlocked());
       },
+      expect: () => [const AppProtectionState.unlocked()],
     );
   });
 }
