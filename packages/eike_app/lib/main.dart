@@ -19,9 +19,6 @@ import 'package:eike_app/service_url_launcher/presentation/url_launcher_provider
 
 Future<void> main() async {
   LicenseRegistry.addLicense(() async* {
-    final text = await rootBundle.loadString('assets/fonts/Inter-license.txt');
-    yield LicenseEntryWithLineBreaks(['Inter'], text);
-
     final robotoLicense = await rootBundle.loadString(
       'assets/fonts/Roboto/OFL.txt',
     );
