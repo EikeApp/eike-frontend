@@ -27,19 +27,23 @@ class AnimatedSplashScreen extends StatelessWidget {
             children: [
               IgnorePointer(
                 ignoring: !appInteractive,
-                child: appChild.animate(target: target).slideX(
-                  duration: SplashScreenBloc.transitionDuration,
-                  begin: 1.0,
-                  end: 0.0,
-                  curve: Curves.easeInOutCubic,
-                ),
+                child: appChild
+                    .animate(target: target)
+                    .slideX(
+                      duration: SplashScreenBloc.transitionDuration,
+                      begin: 1.0,
+                      end: 0.0,
+                      curve: Curves.easeInOutCubic,
+                    ),
               ),
-              const _SplashContent().animate(target: target).slideX(
-                duration: SplashScreenBloc.transitionDuration,
-                begin: 0.0,
-                end: -1.0,
-                curve: Curves.easeInOutCubic,
-              ),
+              const _SplashContent()
+                  .animate(target: target)
+                  .slideX(
+                    duration: SplashScreenBloc.transitionDuration,
+                    begin: 0.0,
+                    end: -1.0,
+                    curve: Curves.easeInOutCubic,
+                  ),
             ],
           );
         },
@@ -53,67 +57,75 @@ class _SplashContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.colors.primary,
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: EikeTheme.pagePadding,
+    return Theme(
+      data: EikeTheme.lightTheme(context),
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            backgroundColor: context.colors.primary,
+            body: SafeArea(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "EIKE",
-                    style: context.textTheme.displayLarge?.copyWith(
-                      color: context.colors.onPrimary,
-                      fontWeight: .bold,
-                    ),
+                  Padding(
+                    padding: EikeTheme.pagePadding,
+                    child:
+                        Column(
+                          children: [
+                            Text(
+                              "EIKE",
+                              style: context.textTheme.displayLarge?.copyWith(
+                                color: context.colors.onPrimary,
+                                fontWeight: .bold,
+                              ),
+                            ),
+                            Text(
+                              "Hilfe für Helfer",
+                              style: context.textTheme.headlineMedium?.copyWith(
+                                color: context.colors.onPrimary,
+                              ),
+                            ),
+                          ],
+                        ).animate().fadeIn(
+                          delay: const Duration(milliseconds: 1200),
+                          duration: const Duration(milliseconds: 500),
+                        ),
                   ),
-                  Text(
-                    "Hilfe für Helfer",
-                    style: context.textTheme.headlineMedium?.copyWith(
-                      color: context.colors.onPrimary,
+                  Image.asset(
+                        'assets/images/splash_screen_logo.png',
+                        width: 400,
+                        height: 400,
+                      )
+                      .animate()
+                      .scale(
+                        duration: const Duration(milliseconds: 1000),
+                        curve: Curves.easeInOutBack,
+                        alignment: .center,
+                      )
+                      .fadeIn(duration: const Duration(milliseconds: 100)),
+                  Padding(
+                    padding: EikeTheme.pagePadding,
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/splash_screen_footer.png',
+                          ).animate().fadeIn(
+                            delay: const Duration(milliseconds: 1200),
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeOutCubic,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
-              ).animate().fadeIn(
-                delay: const Duration(milliseconds: 1200),
-                duration: const Duration(milliseconds: 500),
               ),
             ),
-            Image.asset(
-                  'assets/images/splash_screen_logo.png',
-                  width: 400,
-                  height: 400,
-                )
-                .animate()
-                .scale(
-                  duration: const Duration(milliseconds: 1000),
-                  curve: Curves.easeInOutBack,
-                  alignment: .center,
-                )
-                .fadeIn(duration: const Duration(milliseconds: 100)),
-            Padding(
-              padding: EikeTheme.pagePadding,
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/splash_screen_footer.png',
-                    ).animate().fadeIn(
-                      delay: const Duration(milliseconds: 1200),
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeOutCubic,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
