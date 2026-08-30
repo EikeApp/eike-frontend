@@ -366,87 +366,89 @@ class _EinsatznachsorgeteamEditDialogState
         "Kontaktdaten anpassen",
         style: TextStyle(color: context.colors.primary),
       ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        spacing: EikeTheme.verticalComponentSpacingMedium,
-        children: [
-          Text(
-            "Hier kannst du die Kontaktdaten deines Einsatznachsorgeteams anpassen.",
-          ),
-          TextField(
-            controller: _teamNameController,
-            textInputAction: TextInputAction.next,
-            decoration: InputDecoration(
-              labelText: "Team Name",
-              prefixIcon: Icon(Icons.people_rounded),
-              suffixIcon: ValueListenableBuilder(
-                valueListenable: _teamNameController,
-                builder: (context, value, child) {
-                  return AnimatedScale(
-                    scale: _teamNameController.text.isNotEmpty ? 1.0 : 0.0,
-                    duration: const Duration(milliseconds: 200),
-                    child: child,
-                  );
-                },
-                child: IconButton(
-                  onPressed: () {
-                    _teamNameController.clear();
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          spacing: EikeTheme.verticalComponentSpacingMedium,
+          children: [
+            Text(
+              "Hier kannst du die Kontaktdaten deines Einsatznachsorgeteams anpassen.",
+            ),
+            TextField(
+              controller: _teamNameController,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                labelText: "Team Name",
+                prefixIcon: Icon(Icons.people_rounded),
+                suffixIcon: ValueListenableBuilder(
+                  valueListenable: _teamNameController,
+                  builder: (context, value, child) {
+                    return AnimatedScale(
+                      scale: _teamNameController.text.isNotEmpty ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 200),
+                      child: child,
+                    );
                   },
-                  icon: Icon(Icons.close_rounded),
+                  child: IconButton(
+                    onPressed: () {
+                      _teamNameController.clear();
+                    },
+                    icon: Icon(Icons.close_rounded),
+                  ),
                 ),
               ),
             ),
-          ),
-          TextField(
-            controller: _phoneController,
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.phone,
-            decoration: InputDecoration(
-              labelText: "Telefonnummer",
-              prefixIcon: Icon(Icons.phone_rounded),
-              suffixIcon: ValueListenableBuilder(
-                valueListenable: _phoneController,
-                builder: (context, value, child) {
-                  return AnimatedScale(
-                    scale: _phoneController.text.isNotEmpty ? 1.0 : 0.0,
-                    duration: const Duration(milliseconds: 200),
-                    child: child,
-                  );
-                },
-                child: IconButton(
-                  onPressed: () {
-                    _phoneController.clear();
+            TextField(
+              controller: _phoneController,
+              textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.phone,
+              decoration: InputDecoration(
+                labelText: "Telefonnummer",
+                prefixIcon: Icon(Icons.phone_rounded),
+                suffixIcon: ValueListenableBuilder(
+                  valueListenable: _phoneController,
+                  builder: (context, value, child) {
+                    return AnimatedScale(
+                      scale: _phoneController.text.isNotEmpty ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 200),
+                      child: child,
+                    );
                   },
-                  icon: Icon(Icons.close_rounded),
+                  child: IconButton(
+                    onPressed: () {
+                      _phoneController.clear();
+                    },
+                    icon: Icon(Icons.close_rounded),
+                  ),
                 ),
               ),
             ),
-          ),
-          TextField(
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              labelText: "Email",
-              prefixIcon: Icon(Icons.email_rounded),
-              suffixIcon: ValueListenableBuilder(
-                valueListenable: _phoneController,
-                builder: (context, value, child) {
-                  return AnimatedScale(
-                    scale: _emailController.text.isNotEmpty ? 1.0 : 0.0,
-                    duration: const Duration(milliseconds: 200),
-                    child: child,
-                  );
-                },
-                child: IconButton(
-                  onPressed: () {
-                    _emailController.clear();
+            TextField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                labelText: "Email",
+                prefixIcon: Icon(Icons.email_rounded),
+                suffixIcon: ValueListenableBuilder(
+                  valueListenable: _phoneController,
+                  builder: (context, value, child) {
+                    return AnimatedScale(
+                      scale: _emailController.text.isNotEmpty ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 200),
+                      child: child,
+                    );
                   },
-                  icon: Icon(Icons.close_rounded),
+                  child: IconButton(
+                    onPressed: () {
+                      _emailController.clear();
+                    },
+                    icon: Icon(Icons.close_rounded),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       actions: [
         TextButton(
