@@ -3,6 +3,7 @@ import 'package:eike_app/service_design/theming/eike_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 class AnimatedSplashScreen extends StatelessWidget {
   const AnimatedSplashScreen({super.key, required this.app});
@@ -110,9 +111,7 @@ class _SplashContent extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset(
-                            'assets/images/splash_screen_footer.png',
-                          ).animate().fadeIn(
+                          const _PSNVLogo().animate().fadeIn(
                             delay: const Duration(milliseconds: 1200),
                             duration: const Duration(milliseconds: 500),
                             curve: Curves.easeOutCubic,
@@ -126,6 +125,48 @@ class _SplashContent extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _PSNVLogo extends StatelessWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: EikeTheme.cardPadding,
+        child: Row(
+          spacing: EikeTheme.horizontalComponentSpacingMedium,
+          children: [
+            SvgPicture.asset(
+              'assets/images/splash_screen_people.svg',
+              width: 60,
+              height: 60,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "PSNV",
+                  style: context.textTheme.titleMedium?.copyWith(
+                    color: context.colors.onSurface,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  "Deutscher Fachverband",
+                  style: context.textTheme.labelSmall?.copyWith(
+                    color: context.colors.onSurface,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

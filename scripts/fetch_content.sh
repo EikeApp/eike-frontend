@@ -10,26 +10,46 @@ if [[ -z "${VERSION}" ]]; then
   exit 1
 fi
 
-ZIP_FILE="content.zip"
-EXTRACTED_DIR="eike-content-${VERSION}"
-TARGET_DIR="../packages/eike_app/assets/content"
+SCRIPT_DIR="${0:A:h}"
+TARGET_DIR="${SCRIPT_DIR}/../packages/eike_app/assets/content"
+REPO_URL="https://github.com/EikeApp/eike-content"
 
-rm -rf ${TARGET_DIR}/
+WORK_DIR="$(mktemp -d)"
+trap 'rm -rf "${WORK_DIR}"' EXIT
+
+ZIP_FILE="${WORK_DIR}/content.zip"
 
 echo "Downloading version ${VERSION} ..."
-curl -L "https://github.com/EikeApp/eike-content/archive/refs/tags/${VERSION}.zip" -o "${ZIP_FILE}"
+curl --fail --show-error --location --retry 3 \
+  "${REPO_URL}/archive/refs/tags/${VERSION}.zip" -o "${ZIP_FILE}"
 
 echo "Unzipping ..."
-unzip -q "${ZIP_FILE}"
+unzip -q "${ZIP_FILE}" -d "${WORK_DIR}"
 
-echo "Extracting content ..."
-mkdir -p eike_content
-mv "${EXTRACTED_DIR}/7-things" eike_content/
-mv "${EXTRACTED_DIR}/data.yaml" eike_content/
+# Don't assume GitHub's auto-generated folder name (e.g. it changes if the
+# tag ever gets a "v" prefix) - just take whatever single directory the
+# archive extracted to.
+EXTRACTED_DIR="$(find "${WORK_DIR}" -mindepth 1 -maxdepth 1 -type d)"
 
+if [[ -z "${EXTRACTED_DIR}" ]]; then
+  echo "Could not find extracted content directory in archive!"
+  exit 1
+fi
+
+for entry in "7-things" "data.yaml"; do
+  if [[ ! -e "${EXTRACTED_DIR}/${entry}" ]]; then
+    echo "Expected '${entry}' in downloaded content but it is missing!"
+    echo "Did the content repo's structure change?"
+    exit 1
+  fi
+done
+
+# Only touch the real target directory once we know we have everything we
+# need - if anything above fails, the existing content stays untouched.
+echo "Installing content ..."
+rm -rf "${TARGET_DIR}"
 mkdir -p "${TARGET_DIR}"
-mv eike_content/* ${TARGET_DIR}/
+mv "${EXTRACTED_DIR}/7-things" "${TARGET_DIR}/"
+mv "${EXTRACTED_DIR}/data.yaml" "${TARGET_DIR}/"
 
-rm -rf eike_content/
-rm -rf "${EXTRACTED_DIR}"
-rm "${ZIP_FILE}"
+echo "Done. Content ${VERSION} installed to ${TARGET_DIR}"

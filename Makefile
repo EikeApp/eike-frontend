@@ -1,5 +1,5 @@
 # renovate: datasource=github-releases depName=EikeApp/eike-content
-VERSION=3.0.1
+VERSION=3.0.2
 
 # Gradle's launcher JVM loads native-platform through System::load. On JDK 24+
 # this prints a "restricted method" warning unless native access is enabled.
