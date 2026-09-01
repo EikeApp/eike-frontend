@@ -1,7 +1,7 @@
 name: eike_app
 description: "Die EIKE-App bietet Einsatzkräften Informationen und Unterstützung bei der Vorbereitung und Verarbeitung von belastenden Einsätzen."
 publish_to: none
-version: 0.8.3
+version: 0.8.4
 
 environment:
   sdk: ^3.13.2
