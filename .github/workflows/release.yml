@@ -257,3 +257,8 @@ jobs:
           issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           api-key-id: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           api-private-key: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          # NOTE(Felix): Our App Store Connect API key only has the
+          # "Developer" role, which isn't enough to query build processing
+          # state (needs "App Manager"). The upload itself still succeeds -
+          # skip waiting until the key gets rotated with the right role.
+          wait-for-processing: "false"
