@@ -71,23 +71,13 @@ class _SplashContent extends StatelessWidget {
                   Padding(
                     padding: EikeTheme.pagePadding,
                     child:
-                        Column(
-                          children: [
                             Text(
                               "EIKE",
                               style: context.textTheme.displayLarge?.copyWith(
                                 color: context.colors.onPrimary,
                                 fontWeight: .bold,
                               ),
-                            ),
-                            Text(
-                              "Hilfe für Helfer",
-                              style: context.textTheme.headlineMedium?.copyWith(
-                                color: context.colors.onPrimary,
-                              ),
-                            ),
-                          ],
-                        ).animate().fadeIn(
+                            ).animate().fadeIn(
                           delay: const Duration(milliseconds: 1200),
                           duration: const Duration(milliseconds: 500),
                         ),
