@@ -1,16 +1,27 @@
 import 'package:drift/drift.dart';
 
 extension type const TeamContactId(int value) implements int {}
+
+
+
+
+
 extension type const TeamContactTeamName(String value) implements String {}
-extension type const TeamContactPhone(String value) implements String {}
+
+
+
+
+
+
+ex  tension type const TeamContactPhone(String value) implements String {}
+
+
+
 extension type const TeamContactEmail(String value) implements String {}
 
 @DataClassName('TeamContactEntity')
 class TeamContactTable extends Table {
-  // Wir erzwingen "genau 1 Datensatz" indem wir die ID fix auf 0/1 setzen.
-  // (Alternativ ginge auch: ohne PK und LIMIT 1 – aber PK ist cleaner.)
-  IntColumn get id =>
-      integer().map(const TeamContactIdConverter())(); // keine autoIncrement
+  IntColumn get id => integer().map(const TeamContactIdConverter())();
   TextColumn get teamName => text().map(const TeamContactTeamNameConverter())();
   TextColumn get phone => text().map(const TeamContactPhoneConverter())();
   TextColumn get email => text().map(const TeamContactEmailConverter())();

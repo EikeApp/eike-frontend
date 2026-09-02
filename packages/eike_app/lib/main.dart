@@ -9,6 +9,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
+import 'package:eike_app/service_app_info/data/repositories/app_info_repository_impl.dart';
+import 'package:eike_app/service_app_info/domain/repositories/app_info_repository.dart';
 import 'package:eike_app/service_auth/data/repositories/local_auth_repository_impl.dart';
 import 'package:eike_app/service_auth/domain/repositories/local_auth_repository.dart';
 import 'package:eike_app/service_design/theming/eike_theme.dart';
@@ -38,6 +40,9 @@ Future<void> main() async {
         RepositoryProvider.value(value: EikeLogger.pretty()),
         RepositoryProvider<LocalAuthRepository>.value(
           value: LocalAuthRepositoryImpl(),
+        ),
+        RepositoryProvider<AppInfoRepository>.value(
+          value: AppInfoRepositoryImpl(),
         ),
         RepositoryProvider<EikeSettingsRepository>(
           create: (context) {

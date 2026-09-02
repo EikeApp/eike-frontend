@@ -1,11 +1,17 @@
 import 'package:drift/drift.dart';
 
 extension type const TipId(int value) implements int {}
+
 extension type const TipPosition(int value) implements int {}
+
 extension type const TipTitle(String value) implements String {}
+
 extension type const TipDescription(String value) implements String {}
+
 extension type const TipImagePath(String value) implements String {}
+
 extension type const TipImageDescription(String value) implements String {}
+
 extension type const TipUserNote(String value) implements String {}
 
 @DataClassName('TipEntity')
