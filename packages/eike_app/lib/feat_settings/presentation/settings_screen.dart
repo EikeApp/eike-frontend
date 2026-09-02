@@ -4,7 +4,10 @@ import 'package:eike_app/feat_navigation/eike_routes.dart';
 import 'package:eike_app/feat_settings/data/daos/settings_dao.dart';
 import 'package:eike_app/feat_settings/data/repositories/settings_repository_impl.dart';
 import 'package:eike_app/feat_settings/presentation/bloc/settings_bloc.dart';
+import 'package:eike_app/service_app_info/domain/repositories/app_info_repository.dart';
+import 'package:eike_app/service_design/components/eike_snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:eike_app/service_design/components/eike_app_bar.dart';
@@ -25,6 +28,7 @@ class SettingsScreen extends StatelessWidget {
           ),
           RepositoryProvider.of(context),
           RepositoryProvider.of(context),
+          RepositoryProvider.of<AppInfoRepository>(context),
         )..add(const SettingsEvent.onSetup());
       },
       child: BlocBuilder<SettingsBloc, SettingsState>(
@@ -185,8 +189,37 @@ class _Scaffold extends StatelessWidget {
               ],
             ),
           ),
+          if (state.appInfo case final appInfo?) ...[
+            const SizedBox(height: EikeTheme.verticalComponentSpacingMedium),
+            _VersionInfo(displayVersion: appInfo.displayVersion),
+          ],
           SizedBox(height: MediaQuery.paddingOf(context).bottom),
         ],
+      ),
+    );
+  }
+}
+
+class _VersionInfo extends StatelessWidget {
+  const _VersionInfo({required this.displayVersion});
+
+  final String displayVersion;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: TextButton.icon(
+        onPressed: () {
+          unawaited(Clipboard.setData(ClipboardData(text: displayVersion)));
+
+          EikeSnackBar.show(context, 'Version kopiert');
+        },
+        icon: Icon(Icons.copy_outlined, size: 16),
+        label: Text(
+          'Version $displayVersion',
+          style: context.textTheme.bodySmall,
+        ),
+        style: TextButton.styleFrom(foregroundColor: context.colors.outline),
       ),
     );
   }
