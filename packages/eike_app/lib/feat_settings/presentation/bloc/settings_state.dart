@@ -4,6 +4,7 @@ part of 'settings_bloc.dart';
 sealed class SettingsState with _$SettingsState {
   const factory SettingsState({
     required bool isAppLockEnabled,
+    AppInfo? appInfo,
   }) = _SettingsState;
 
   factory SettingsState.initial() {

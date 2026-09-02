@@ -5,8 +5,11 @@ import 'package:eike_app/data_entities/tables/team_contacts_table.dart';
 import 'package:eike_app/feat_notification/domain/models/eike_notification.dart';
 import 'package:eike_app/feat_notification/domain/repositories/notification_repository.dart';
 import 'package:eike_app/feat_settings/presentation/settings_screen.dart';
+import 'package:eike_app/service_app_info/domain/models/app_info.dart';
+import 'package:eike_app/service_app_info/domain/repositories/app_info_repository.dart';
 import 'package:eike_app/service_settings/domain/repositories/eike_settings_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/rxdart.dart';
@@ -53,6 +56,13 @@ class _FakeEikeSettingsRepository implements EikeSettingsRepository {
   }
 }
 
+class _FakeAppInfoRepository implements AppInfoRepository {
+  @override
+  Future<AppInfo> getAppInfo() async {
+    return const AppInfo(version: '1.2.3', buildNumber: '42');
+  }
+}
+
 void main() {
   group(SettingsScreen, () {
     late EikeDatabase database;
@@ -75,6 +85,9 @@ void main() {
             ),
             RepositoryProvider<NotificationRepository>(
               create: (_) => _FakeNotificationRepository(),
+            ),
+            RepositoryProvider<AppInfoRepository>(
+              create: (_) => _FakeAppInfoRepository(),
             ),
           ],
           child: const MaterialApp(home: SettingsScreen()),
@@ -162,5 +175,50 @@ void main() {
 
       await disposeSettingsScreen(tester);
     });
+
+    testWidgets(
+      'should show the app version and copy it to the clipboard on tap',
+      (tester) async {
+        final copiedData = <ClipboardData>[];
+        tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          SystemChannels.platform,
+          (methodCall) async {
+            if (methodCall.method == 'Clipboard.setData') {
+              copiedData.add(
+                ClipboardData(text: methodCall.arguments['text']),
+              );
+            }
+            return null;
+          },
+        );
+        addTearDown(() {
+          tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+            SystemChannels.platform,
+            null,
+          );
+        });
+
+        await pumpSettingsScreen(tester);
+        await tester.pumpAndSettle();
+
+        // The version footer sits below the legal section, off-screen at
+        // the default test surface size.
+        await tester.scrollUntilVisible(
+          find.text('Version 1.2.3 (42)'),
+          500.0,
+          scrollable: find.byType(Scrollable),
+        );
+
+        expect(find.text('Version 1.2.3 (42)'), findsOneWidget);
+
+        await tester.tap(find.text('Version 1.2.3 (42)'));
+        await tester.pumpAndSettle();
+
+        expect(copiedData.single.text, '1.2.3 (42)');
+        expect(find.text('Version kopiert'), findsOneWidget);
+
+        await disposeSettingsScreen(tester);
+      },
+    );
   });
 }

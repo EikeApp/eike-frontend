@@ -10,4 +10,18 @@ class EikeDatabase extends _$EikeDatabase {
 
   @override
   int get schemaVersion => 1;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    beforeOpen: (details) async {
+      customStatement('PRAGMA foreign_keys = ON');
+    },
+    onCreate: (migrator) => migrator.createAll(),
+    onUpgrade: (migrator, from, to) async {
+      for (final table in allTables) {
+        await migrator.deleteTable(table.actualTableName);
+      }
+      await migrator.createAll();
+    },
+  );
 }

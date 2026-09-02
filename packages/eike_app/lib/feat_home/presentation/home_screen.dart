@@ -30,46 +30,51 @@ class HomeScreen extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             appBar: EikeAppBar(title: 'Meine 7 Sachen'),
-            body: Builder(
-              builder: (context) {
-                if (state.isLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+            body: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              behavior: HitTestBehavior.opaque,
+              child: Builder(
+                builder: (context) {
+                  if (state.isLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                if (state.hasError) {
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Text(
-                        'Die Inhalte konnten nicht geladen werden. Bitte versuche es später erneut.',
-                        style: TextTheme.of(context).bodyMedium,
-                        textAlign: TextAlign.center,
+                  if (state.hasError) {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Text(
+                          'Die Inhalte konnten nicht geladen werden. Bitte versuche es später erneut.',
+                          style: TextTheme.of(context).bodyMedium,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
-                  );
-                }
+                    );
+                  }
 
-                return ListView.separated(
-                  padding: EikeTheme.pagePadding,
-                  itemCount: state.tips.length + 1,
-                  itemBuilder: (context, index) {
-                    if (index == state.tips.length) {
-                      return SizedBox(
-                        height: MediaQuery.paddingOf(context).bottom,
+                  return ListView.separated(
+                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                    padding: EikeTheme.pagePadding,
+                    itemCount: state.tips.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index == state.tips.length) {
+                        return SizedBox(
+                          height: MediaQuery.paddingOf(context).bottom,
+                        );
+                      }
+
+                      return _TipCard(
+                        tip: state.tips[index],
                       );
-                    }
-
-                    return _TipCard(
-                      tip: state.tips[index],
-                    );
-                  },
-                  separatorBuilder: (_, _) {
-                    return SizedBox(
-                      height: EikeTheme.verticalComponentSpacingMedium,
-                    );
-                  },
-                );
-              },
+                    },
+                    separatorBuilder: (_, _) {
+                      return SizedBox(
+                        height: EikeTheme.verticalComponentSpacingMedium,
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           );
         },
@@ -158,43 +163,49 @@ class _TipCardState extends State<_TipCard> {
             ),
           ),
           Text(widget.tip.description),
-          Text(
-            'Das mache ich:',
-            style: TextTheme.of(context).titleSmall,
-          ),
-          TextFormField(
-            controller: textController,
-            maxLines: 2,
-            decoration: InputDecoration(
-              hintText: 'Schreib deine Idee hier auf...',
-              suffixIcon: const Icon(Icons.edit_outlined),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 12,
+          Column(
+            spacing: EikeTheme.verticalComponentSpacingSmall,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Das mache ich:',
+                style: TextTheme.of(context).titleSmall,
               ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(
-                  color: ColorScheme.of(context).outlineVariant,
+              TextFormField(
+                controller: textController,
+                minLines: 2,
+                maxLines: null,
+                decoration: InputDecoration(
+                  hintText: 'Schreib deine Idee hier auf...',
+                  suffixIcon: const Icon(Icons.edit_outlined),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 12,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: ColorScheme.of(context).outlineVariant,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: ColorScheme.of(context).outlineVariant,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: ColorScheme.of(context).primary,
+                    ),
+                  ),
                 ),
               ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(
-                  color: ColorScheme.of(context).outlineVariant,
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(
-                  color: ColorScheme.of(context).primary,
-                ),
-              ),
-            ),
+            ],
           ),
         ],
       ),
     );
   }
 }
-

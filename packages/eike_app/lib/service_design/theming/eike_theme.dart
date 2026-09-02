@@ -69,6 +69,24 @@ extension on ThemeData {
           ),
         ),
       ),
+      // "Marken-Chip": reuses secondaryContainer, the same color as the
+      // numbered badge on the home screen's tip cards, so a snackbar reads
+      // as part of the app rather than a generic system notification.
+      snackBarTheme: snackBarTheme.copyWith(
+        backgroundColor: colorScheme.secondaryContainer,
+        contentTextStyle: TextStyle(
+          fontFamily: EikeTheme.fontFamily,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          color: colorScheme.onSecondaryContainer,
+        ),
+        actionTextColor: colorScheme.onSecondaryContainer,
+        behavior: SnackBarBehavior.floating,
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(EikeTheme.cornerRadius),
+        ),
+      ),
     );
   }
 }

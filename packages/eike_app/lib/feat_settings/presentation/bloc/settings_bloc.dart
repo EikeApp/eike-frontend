@@ -7,6 +7,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:eike_app/feat_settings/domain/repositories/settings_repository.dart';
+import 'package:eike_app/service_app_info/domain/models/app_info.dart';
+import 'package:eike_app/service_app_info/domain/repositories/app_info_repository.dart';
+import 'package:eike_app/service_app_info/domain/usecases/interactors/get_app_info_interactor.dart';
 import 'package:eike_app/service_bloc/contracts/eike_bloc.dart';
 import 'package:eike_app/service_logging/logging_interactor.dart';
 import 'package:eike_app/service_settings/domain/repositories/eike_settings_repository.dart';
@@ -22,11 +25,13 @@ class SettingsBloc extends EikeBloc<SettingsEvent, SettingsState> {
   final CleanupLocalStorageInteractor cleanupLocalStorage;
   final IsAppLockEnabledObserver isAppLockEnabledObserver;
   final SetIsAppLockEnabledInteractor setIsAppLockEnabled;
+  final GetAppInfoInteractor getAppInfo;
 
   SettingsBloc(
     SettingsRepository repository,
     EikeSettingsRepository eikeSettingsRepository,
     NotificationRepository notificationRepository,
+    AppInfoRepository appInfoRepository,
   ) : cleanupLocalStorage = CleanupLocalStorageInteractor(repository),
       isAppLockEnabledObserver = IsAppLockEnabledObserver(
         eikeSettingsRepository,
@@ -34,6 +39,7 @@ class SettingsBloc extends EikeBloc<SettingsEvent, SettingsState> {
       setIsAppLockEnabled = SetIsAppLockEnabledInteractor(
         eikeSettingsRepository,
       ),
+      getAppInfo = GetAppInfoInteractor(appInfoRepository),
       super(
         SettingsState.initial(),
         notificationRepository,
@@ -44,6 +50,12 @@ class SettingsBloc extends EikeBloc<SettingsEvent, SettingsState> {
   }
 
   FutureOr<void> _onSetup(_OnSetup event, Emitter<SettingsState> emit) async {
+    await getAppInfo
+        .logger()
+        .intercept(submitError)
+        .after((appInfo) => emit(state.copyWith(appInfo: appInfo)))
+        .run(unit);
+
     return emit.forEach(
       isAppLockEnabledObserver.observe(),
       onData: (isAppLockEnabled) {

@@ -3,6 +3,8 @@ import 'package:eike_app/feat_notification/domain/models/eike_notification.dart'
 import 'package:eike_app/feat_notification/domain/repositories/notification_repository.dart';
 import 'package:eike_app/feat_settings/domain/repositories/settings_repository.dart';
 import 'package:eike_app/feat_settings/presentation/bloc/settings_bloc.dart';
+import 'package:eike_app/service_app_info/domain/models/app_info.dart';
+import 'package:eike_app/service_app_info/domain/repositories/app_info_repository.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 import 'package:eike_app/service_settings/data/repositories/eike_settings_repository_impl.dart';
 import 'package:eike_app/service_settings/domain/repositories/eike_settings_repository.dart';
@@ -15,6 +17,13 @@ class _FakeSettingsRepository implements SettingsRepository {
   Future<void> cleanupLocalStorage() async {
     cleanupCallCount++;
   }
+}
+
+class _FakeAppInfoRepository implements AppInfoRepository {
+  static const appInfo = AppInfo(version: '1.0.0', buildNumber: '1');
+
+  @override
+  Future<AppInfo> getAppInfo() async => appInfo;
 }
 
 class _FakeNotificationRepository implements NotificationRepository {
@@ -48,15 +57,28 @@ void main() {
       notificationRepo = _FakeNotificationRepository();
     });
 
-    SettingsBloc buildBloc() =>
-        SettingsBloc(settingsRepository, eikeSettingsRepository, notificationRepo);
+    SettingsBloc buildBloc() => SettingsBloc(
+      settingsRepository,
+      eikeSettingsRepository,
+      notificationRepo,
+      _FakeAppInfoRepository(),
+    );
 
     blocTest<SettingsBloc, SettingsState>(
-      'should reflect the persisted app lock setting on setup',
+      'should reflect the persisted app lock setting and app info on setup',
       setUp: () => eikeSettingsRepository.setAppLockEnabled(true),
       build: buildBloc,
       act: (bloc) => bloc.add(const SettingsEvent.onSetup()),
-      expect: () => [const SettingsState(isAppLockEnabled: true)],
+      expect: () => [
+        const SettingsState(
+          isAppLockEnabled: false,
+          appInfo: _FakeAppInfoRepository.appInfo,
+        ),
+        const SettingsState(
+          isAppLockEnabled: true,
+          appInfo: _FakeAppInfoRepository.appInfo,
+        ),
+      ],
     );
 
     // Toggling doesn't emit a new SettingsState directly — the switch
