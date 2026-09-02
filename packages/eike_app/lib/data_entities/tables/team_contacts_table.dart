@@ -2,20 +2,9 @@ import 'package:drift/drift.dart';
 
 extension type const TeamContactId(int value) implements int {}
 
-
-
-
-
 extension type const TeamContactTeamName(String value) implements String {}
 
-
-
-
-
-
-ex  tension type const TeamContactPhone(String value) implements String {}
-
-
+extension type const TeamContactPhone(String value) implements String {}
 
 extension type const TeamContactEmail(String value) implements String {}
 

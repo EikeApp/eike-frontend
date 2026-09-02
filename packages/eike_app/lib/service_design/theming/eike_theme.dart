@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:eike_app/service_design/theming/generated/eike_color_scheme.dart.dart';
 
 abstract final class EikeTheme {
-  static const fontFamily = 'Roboto';
   static const horizontalPagePadding = 16.0;
   static const verticalPagePadding = 16.0;
   static const EdgeInsets pagePadding = EdgeInsets.symmetric(
@@ -38,7 +37,7 @@ abstract final class EikeTheme {
   static ThemeData _themeFrom(ColorScheme colorScheme) {
     return ThemeData(
       colorScheme: colorScheme,
-      fontFamily: fontFamily,
+      fontFamily: 'Roboto',
     ).applyDefaults();
   }
 }
@@ -69,20 +68,13 @@ extension on ThemeData {
           ),
         ),
       ),
-      // "Marken-Chip": reuses secondaryContainer, the same color as the
-      // numbered badge on the home screen's tip cards, so a snackbar reads
-      // as part of the app rather than a generic system notification.
       snackBarTheme: snackBarTheme.copyWith(
         backgroundColor: colorScheme.secondaryContainer,
-        contentTextStyle: TextStyle(
-          fontFamily: EikeTheme.fontFamily,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
+        contentTextStyle: textTheme.bodyMedium?.copyWith(
           color: colorScheme.onSecondaryContainer,
         ),
         actionTextColor: colorScheme.onSecondaryContainer,
         behavior: SnackBarBehavior.floating,
-        elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(EikeTheme.cornerRadius),
         ),
