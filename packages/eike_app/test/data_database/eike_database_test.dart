@@ -28,13 +28,6 @@ class _FakeHomeDatasource implements HomeDatasource {
 
 void main() {
   group(EikeDatabase, () {
-    // Regression test for the bug where `TipTable.position` was added
-    // without bumping `schemaVersion` - already-installed apps kept their
-    // pre-`position` on-disk schema forever, and every query touching
-    // TipTable started failing with "no such column: position", which
-    // rendered the home screen empty for exactly those users. This
-    // reproduces that stale on-disk shape and confirms opening the
-    // database now recovers instead of failing.
     test(
       'should recover when opened against a pre-"position" on-disk schema',
       () async {
