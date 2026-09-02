@@ -231,7 +231,7 @@ class _NotfallKontakteCard extends StatelessWidget {
               ),
               Text("Bei akuter Gefahr"),
               const SizedBox(height: EikeTheme.verticalComponentSpacingSmall),
-              FilledButton.tonal(
+              FilledButton.tonalIcon(
                 onPressed: () {
                   BlocProvider.of<UrlLauncherBloc>(
                     context,
@@ -241,18 +241,8 @@ class _NotfallKontakteCard extends StatelessWidget {
                     ),
                   );
                 },
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text("112", textAlign: TextAlign.center),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Icon(Icons.phone_outlined),
-                    ),
-                  ],
-                ),
+                icon: Icon(Icons.phone_outlined),
+                label: Center(child: Text("112")),
               ),
             ],
           ),
@@ -268,7 +258,8 @@ class _NotfallKontakteCard extends StatelessWidget {
               ),
               Text("24/7 Kostenlos und vertraulich"),
               const SizedBox(height: EikeTheme.verticalComponentSpacingSmall),
-              FilledButton.tonal(
+
+              FilledButton.tonalIcon(
                 onPressed: () {
                   BlocProvider.of<UrlLauncherBloc>(
                     context,
@@ -278,18 +269,8 @@ class _NotfallKontakteCard extends StatelessWidget {
                     ),
                   );
                 },
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text("0800 111 0 111"),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Icon(Icons.phone_outlined),
-                    ),
-                  ],
-                ),
+                icon: Icon(Icons.phone_outlined),
+                label: Center(child: Text("0800 111 0 111")),
               ),
             ],
           ),
