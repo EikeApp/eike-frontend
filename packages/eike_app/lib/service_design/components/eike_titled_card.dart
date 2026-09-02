@@ -30,8 +30,8 @@ class EikeTitledCard extends StatelessWidget {
                   color: context.colors.primary,
                 ),
               ),
-              child: SizedBox(
-                height: 48.0,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 48.0),
                 child: Row(
                   children: [
                     Expanded(
@@ -39,11 +39,13 @@ class EikeTitledCard extends StatelessWidget {
                         spacing: EikeTheme.horizontalComponentSpacingSmall,
                         children: [
                           ?leading,
-                          Text(
-                            title,
-                            style: context.textTheme.titleMedium?.copyWith(
-                              color: context.colors.primary,
-                              fontWeight: FontWeight.bold,
+                          Expanded(
+                            child: Text(
+                              title,
+                              style: context.textTheme.titleMedium?.copyWith(
+                                color: context.colors.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ],
