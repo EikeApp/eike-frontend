@@ -58,63 +58,65 @@ class _SplashContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: EikeTheme.lightTheme(context),
-      child: Builder(
-        builder: (context) {
-          return Scaffold(
-            backgroundColor: context.colors.primary,
-            body: SafeArea(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: EikeTheme.pagePadding,
-                    child:
-                        Text(
-                          "EIKE",
-                          style: context.textTheme.displayLarge?.copyWith(
-                            color: context.colors.onPrimary,
-                            fontWeight: .bold,
-                          )
-                        ).animate().fadeIn(
-                          delay: const Duration(milliseconds: 1200),
-                          duration: const Duration(milliseconds: 500),
-                        ),
-                  ),
-                  Image.asset(
-                        'assets/images/splash_screen_logo.png',
-                        width: 400,
-                        height: 400,
-                      )
-                      .animate()
-                      .scale(
-                        duration: const Duration(milliseconds: 1000),
-                        curve: Curves.easeInOutBack,
-                        alignment: .center,
-                      )
-                      .fadeIn(duration: const Duration(milliseconds: 100)),
-                  Padding(
-                    padding: EikeTheme.pagePadding,
-                    child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const _PSNVLogo().animate().fadeIn(
+    return MediaQuery.withNoTextScaling(
+      child: Theme(
+        data: EikeTheme.lightTheme(context),
+        child: Builder(
+          builder: (context) {
+            return Scaffold(
+              backgroundColor: context.colors.primary,
+              body: SafeArea(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: EikeTheme.pagePadding,
+                      child:
+                          Text(
+                            "EIKE",
+                            style: context.textTheme.displayLarge?.copyWith(
+                              color: context.colors.onPrimary,
+                              fontWeight: .bold,
+                            ),
+                          ).animate().fadeIn(
                             delay: const Duration(milliseconds: 1200),
                             duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeOutCubic,
                           ),
-                        ],
+                    ),
+                    Image.asset(
+                          'assets/images/splash_screen_logo.png',
+                          width: 400,
+                          height: 400,
+                        )
+                        .animate()
+                        .scale(
+                          duration: const Duration(milliseconds: 1000),
+                          curve: Curves.easeInOutBack,
+                          alignment: .center,
+                        )
+                        .fadeIn(duration: const Duration(milliseconds: 100)),
+                    Padding(
+                      padding: EikeTheme.pagePadding,
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const _PSNVLogo().animate().fadeIn(
+                              delay: const Duration(milliseconds: 1200),
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeOutCubic,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
