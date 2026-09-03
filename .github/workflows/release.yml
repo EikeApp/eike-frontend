@@ -83,7 +83,7 @@ jobs:
             --release \
             --build-name=${{ inputs.version }} \
             --build-number=${{ github.run_number }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: release-aab
           path: packages/eike_app/build/app/outputs/bundle/release/app-release.aab
@@ -119,7 +119,7 @@ jobs:
             --release \
             --build-name=${{ inputs.version }} \
             --build-number=${{ github.run_number }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: release-apk
           path: packages/eike_app/build/app/outputs/flutter-apk/app-release.apk
@@ -164,7 +164,7 @@ jobs:
             --build-number=${{ github.run_number }} \
             --export-options-plist=ios/ExportOptions.plist
       - name: Upload IPA artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-ipa
           path: packages/eike_app/build/ios/ipa/*.ipa

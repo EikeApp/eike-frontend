@@ -40,7 +40,7 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: flutter build apk --release
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: android-apk
           path: packages/eike_app/build/app/outputs/flutter-apk/app-release.apk
@@ -57,7 +57,7 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: flutter build appbundle --release
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: android-appbundle
           path: packages/eike_app/build/app/outputs/bundle/app-release.aab
@@ -78,7 +78,7 @@ jobs:
           mkdir -p Payload
           cp -R build/ios/iphoneos/Runner.app Payload/
           zip -r app-release-unsigned.ipa Payload
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ios-ipa
           path: packages/eike_app/app-release-unsigned.ipa
