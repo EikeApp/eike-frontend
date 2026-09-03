@@ -140,7 +140,7 @@ jobs:
           cache: true
 
       - name: Install Certificate
-        uses: apple-actions/import-codesign-certs@v6
+        uses: apple-actions/import-codesign-certs@v7
         with:
           p12-file-base64: ${{ secrets.IOS_P12 }}
           p12-password: ${{ secrets.IOS_P12_PASSWORD }}
