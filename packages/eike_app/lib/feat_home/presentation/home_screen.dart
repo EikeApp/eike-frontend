@@ -83,6 +83,9 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+// TODO(Felix): Refactor BlockSemantics on this tip card so it does not get read entirely
+// as soon as the focus is on the card. Instead, only the title should be read and the rest
+// of the content should be read when the user navigates through the card with a screen reader.
 class _TipCard extends StatefulWidget {
   const _TipCard({required this.tip});
 
