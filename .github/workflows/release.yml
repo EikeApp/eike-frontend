@@ -31,6 +31,8 @@ jobs:
         with:
           flutter-version: "3.47.4"
           cache: true
+      - name: Fetch content
+        run: make fetch-content
       - run: |
           cd packages/eike_app
           flutter pub get
@@ -65,6 +67,8 @@ jobs:
         with:
           flutter-version: "3.47.4"
           cache: true
+      - name: Fetch content
+        run: make fetch-content
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > packages/eike_app/android/app/release.keystore
@@ -101,6 +105,8 @@ jobs:
         with:
           flutter-version: "3.47.4"
           cache: true
+      - name: Fetch content
+        run: make fetch-content
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > packages/eike_app/android/app/release.keystore
@@ -138,6 +144,9 @@ jobs:
         with:
           flutter-version: "3.47.4"
           cache: true
+
+      - name: Fetch content
+        run: make fetch-content
 
       - name: Install Certificate
         uses: apple-actions/import-codesign-certs@v6
