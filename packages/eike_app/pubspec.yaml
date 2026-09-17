@@ -4,8 +4,8 @@ publish_to: none
 version: 0.8.7
 
 environment:
-  sdk: ^3.13.2
-  flutter: ^3.47.2
+  sdk: ^3.13.3
+  flutter: ^3.47.4
 
 dependencies:
   flutter:
@@ -34,7 +34,7 @@ dependencies:
   flutter_bloc: ^9.1.1
   bloc_presentation: ^1.1.2
   bloc_concurrency: ^0.3.0
-  json_annotation: ^4.11.0
+  json_annotation: ^4.12.0
   use_in_case: ^1.4.3
   dartz: ^0.10.1
   logger: ^2.6.2
@@ -60,6 +60,12 @@ dev_dependencies:
   freezed: ^4.0.0
   json_serializable: ^6.13.0
   test: ^1.31.0
+
+# flutter_html 3.0.0 reaches into html's internal query_selector.dart API,
+# which dropped the `matches` function in 0.15.7. Pin to 0.15.6 until
+# flutter_html is updated to no longer depend on that internal API.
+dependency_overrides:
+  html: 0.15.6
 
 flutter:
   uses-material-design: true

@@ -21,7 +21,7 @@ mixin _$UrlLauncherEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UrlLauncherEvent);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is UrlLauncherEvent);
 }
 
 
@@ -30,7 +30,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'UrlLauncherEvent()';
+    return 'UrlLauncherEvent()';
 }
 
 
@@ -186,7 +186,7 @@ class _OnSetup implements UrlLauncherEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetup);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetup);
 }
 
 
@@ -195,7 +195,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'UrlLauncherEvent.onSetup()';
+    return 'UrlLauncherEvent.onSetup()';
 }
 
 
@@ -223,16 +223,18 @@ _$OnLaunchUrlCopyWith<_OnLaunchUrl> get copyWith => __$OnLaunchUrlCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnLaunchUrl&&(identical(other.url, url) || other.url == url));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnLaunchUrl&&(identical(other.url, url) || other.url == url));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,url);
+int get hashCode {
+    return Object.hash(runtimeType,url);
+}
 
 @override
 String toString() {
-  return 'UrlLauncherEvent.onLaunchUrl(url: $url)';
+    return 'UrlLauncherEvent.onLaunchUrl(url: $url)';
 }
 
 
@@ -279,7 +281,7 @@ mixin _$UrlLauncherState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UrlLauncherState);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is UrlLauncherState);
 }
 
 
@@ -288,7 +290,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'UrlLauncherState()';
+    return 'UrlLauncherState()';
 }
 
 
@@ -438,7 +440,7 @@ class _UrlLauncherState implements UrlLauncherState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UrlLauncherState);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _UrlLauncherState);
 }
 
 
@@ -447,7 +449,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'UrlLauncherState()';
+    return 'UrlLauncherState()';
 }
 
 
