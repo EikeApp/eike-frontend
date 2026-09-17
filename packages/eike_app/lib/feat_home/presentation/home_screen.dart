@@ -53,7 +53,8 @@ class HomeScreen extends StatelessWidget {
                   }
 
                   return ListView.separated(
-                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
                     padding: EikeTheme.pagePadding,
                     itemCount: state.tips.length + 1,
                     itemBuilder: (context, index) {
@@ -166,47 +167,48 @@ class _TipCardState extends State<_TipCard> {
             ),
           ),
           Text(widget.tip.description),
-          Column(
-            spacing: EikeTheme.verticalComponentSpacingSmall,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Das mache ich:',
-                style: TextTheme.of(context).titleSmall,
-              ),
-              TextFormField(
-                controller: textController,
-                minLines: 2,
-                maxLines: null,
-                decoration: InputDecoration(
-                  hintText: 'Schreib deine Idee hier auf...',
-                  suffixIcon: const Icon(Icons.edit_outlined),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 12,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
-                      color: ColorScheme.of(context).outlineVariant,
+          if (widget.tip.question case TipQuestion question)
+            Column(
+              spacing: EikeTheme.verticalComponentSpacingSmall,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  question,
+                  style: TextTheme.of(context).titleSmall,
+                ),
+                TextFormField(
+                  controller: textController,
+                  minLines: 2,
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    hintText: 'Schreib deine Idee hier auf...',
+                    suffixIcon: const Icon(Icons.edit_outlined),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
                     ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
-                      color: ColorScheme.of(context).outlineVariant,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: ColorScheme.of(context).outlineVariant,
+                      ),
                     ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
-                      color: ColorScheme.of(context).primary,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: ColorScheme.of(context).outlineVariant,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: ColorScheme.of(context).primary,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
         ],
       ),
     );

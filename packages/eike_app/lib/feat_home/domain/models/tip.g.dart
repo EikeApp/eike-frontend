@@ -19,6 +19,7 @@ _Tip _$TipFromJson(Map<String, dynamic> json) => _Tip(
   position: (json['position'] as num).toInt(),
   title: json['title'] as String,
   description: json['description'] as String,
+  question: json['question'] as String?,
   image: TipImage.fromJson(json['icon'] as Map<String, dynamic>),
 );
 
@@ -27,5 +28,6 @@ Map<String, dynamic> _$TipToJson(_Tip instance) => <String, dynamic>{
   'position': instance.position,
   'title': instance.title,
   'description': instance.description,
+  'question': instance.question,
   'icon': instance.image,
 };

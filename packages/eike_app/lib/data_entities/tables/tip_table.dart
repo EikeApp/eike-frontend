@@ -8,6 +8,8 @@ extension type const TipTitle(String value) implements String {}
 
 extension type const TipDescription(String value) implements String {}
 
+extension type const TipQuestion(String value) implements String {}
+
 extension type const TipImagePath(String value) implements String {}
 
 extension type const TipImageDescription(String value) implements String {}
@@ -20,6 +22,8 @@ class TipTable extends Table {
   IntColumn get position => integer().map(const TipPositionConverter())();
   TextColumn get title => text().map(const TipTitleConverter())();
   TextColumn get description => text().map(const TipDescriptionConverter())();
+  TextColumn get question =>
+      text().nullable().map(const TipQuestionConverter())();
   TextColumn get imagePath => text().map(const TipImagePathConverter())();
   TextColumn get imageDescription =>
       text().map(const TipImageDescriptionConverter())();
@@ -81,6 +85,20 @@ class TipDescriptionConverter implements TypeConverter<TipDescription, String> {
 
   @override
   String toSql(TipDescription value) {
+    return value;
+  }
+}
+
+class TipQuestionConverter implements TypeConverter<TipQuestion, String> {
+  const TipQuestionConverter();
+
+  @override
+  TipQuestion fromSql(String fromDb) {
+    return TipQuestion(fromDb);
+  }
+
+  @override
+  String toSql(TipQuestion value) {
     return value;
   }
 }

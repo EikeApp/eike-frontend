@@ -26,16 +26,21 @@ $HomeStateCopyWith<HomeState> get copyWith => _$HomeStateCopyWithImpl<HomeState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeState&&const DeepCollectionEquality().equals(other.tips, tips)&&(identical(other.hasError, hasError) || other.hasError == hasError)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
+  final _this = this as HomeState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeState&&const DeepCollectionEquality().equals(other.tips, _this.tips)&&(identical(other.hasError, _this.hasError) || other.hasError == _this.hasError)&&(identical(other.isLoading, _this.isLoading) || other.isLoading == _this.isLoading));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(tips),hasError,isLoading);
+int get hashCode {
+  final _this = this as HomeState;
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.tips),_this.hasError,_this.isLoading);
+}
 
 @override
 String toString() {
-  return 'HomeState(tips: $tips, hasError: $hasError, isLoading: $isLoading)';
+  final _this = this as HomeState;
+  return 'HomeState(tips: ${_this.tips}, hasError: ${_this.hasError}, isLoading: ${_this.isLoading})';
 }
 
 
@@ -226,16 +231,18 @@ _$HomeStateCopyWith<_HomeState> get copyWith => __$HomeStateCopyWithImpl<_HomeSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeState&&const DeepCollectionEquality().equals(other._tips, _tips)&&(identical(other.hasError, hasError) || other.hasError == hasError)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeState&&const DeepCollectionEquality().equals(other.tips, _tips)&&(identical(other.hasError, hasError) || other.hasError == hasError)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_tips),hasError,isLoading);
+int get hashCode {
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_tips),hasError,isLoading);
+}
 
 @override
 String toString() {
-  return 'HomeState(tips: $tips, hasError: $hasError, isLoading: $isLoading)';
+    return 'HomeState(tips: $tips, hasError: $hasError, isLoading: $isLoading)';
 }
 
 
@@ -284,7 +291,7 @@ mixin _$HomeEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeEvent);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeEvent);
 }
 
 
@@ -293,7 +300,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'HomeEvent()';
+    return 'HomeEvent()';
 }
 
 
@@ -449,7 +456,7 @@ class _OnSetup implements HomeEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetup);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetup);
 }
 
 
@@ -458,7 +465,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'HomeEvent.onSetup()';
+    return 'HomeEvent.onSetup()';
 }
 
 
@@ -487,16 +494,18 @@ _$OnUserNoteChangedCopyWith<_OnUserNoteChanged> get copyWith => __$OnUserNoteCha
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnUserNoteChanged&&(identical(other.tipId, tipId) || other.tipId == tipId)&&(identical(other.userNote, userNote) || other.userNote == userNote));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnUserNoteChanged&&(identical(other.tipId, tipId) || other.tipId == tipId)&&(identical(other.userNote, userNote) || other.userNote == userNote));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,tipId,userNote);
+int get hashCode {
+    return Object.hash(runtimeType,tipId,userNote);
+}
 
 @override
 String toString() {
-  return 'HomeEvent.onUserNoteChanged(tipId: $tipId, userNote: $userNote)';
+    return 'HomeEvent.onUserNoteChanged(tipId: $tipId, userNote: $userNote)';
 }
 
 

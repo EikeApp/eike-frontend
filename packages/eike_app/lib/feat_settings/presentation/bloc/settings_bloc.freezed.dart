@@ -26,16 +26,21 @@ $SettingsStateCopyWith<SettingsState> get copyWith => _$SettingsStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SettingsState&&(identical(other.isAppLockEnabled, isAppLockEnabled) || other.isAppLockEnabled == isAppLockEnabled)&&(identical(other.appInfo, appInfo) || other.appInfo == appInfo));
+  final _this = this as SettingsState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SettingsState&&(identical(other.isAppLockEnabled, _this.isAppLockEnabled) || other.isAppLockEnabled == _this.isAppLockEnabled)&&(identical(other.appInfo, _this.appInfo) || other.appInfo == _this.appInfo));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isAppLockEnabled,appInfo);
+int get hashCode {
+  final _this = this as SettingsState;
+  return Object.hash(runtimeType,_this.isAppLockEnabled,_this.appInfo);
+}
 
 @override
 String toString() {
-  return 'SettingsState(isAppLockEnabled: $isAppLockEnabled, appInfo: $appInfo)';
+  final _this = this as SettingsState;
+  return 'SettingsState(isAppLockEnabled: ${_this.isAppLockEnabled}, appInfo: ${_this.appInfo})';
 }
 
 
@@ -218,16 +223,18 @@ _$SettingsStateCopyWith<_SettingsState> get copyWith => __$SettingsStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SettingsState&&(identical(other.isAppLockEnabled, isAppLockEnabled) || other.isAppLockEnabled == isAppLockEnabled)&&(identical(other.appInfo, appInfo) || other.appInfo == appInfo));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SettingsState&&(identical(other.isAppLockEnabled, isAppLockEnabled) || other.isAppLockEnabled == isAppLockEnabled)&&(identical(other.appInfo, appInfo) || other.appInfo == appInfo));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isAppLockEnabled,appInfo);
+int get hashCode {
+    return Object.hash(runtimeType,isAppLockEnabled,appInfo);
+}
 
 @override
 String toString() {
-  return 'SettingsState(isAppLockEnabled: $isAppLockEnabled, appInfo: $appInfo)';
+    return 'SettingsState(isAppLockEnabled: $isAppLockEnabled, appInfo: $appInfo)';
 }
 
 
@@ -275,7 +282,7 @@ mixin _$SettingsEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SettingsEvent);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is SettingsEvent);
 }
 
 
@@ -284,7 +291,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'SettingsEvent()';
+    return 'SettingsEvent()';
 }
 
 
@@ -452,7 +459,7 @@ class _OnSetup implements SettingsEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetup);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetup);
 }
 
 
@@ -461,7 +468,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'SettingsEvent.onSetup()';
+    return 'SettingsEvent.onSetup()';
 }
 
 
@@ -484,7 +491,7 @@ class _OnUpsertTeamContact implements SettingsEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnUpsertTeamContact);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnUpsertTeamContact);
 }
 
 
@@ -493,7 +500,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'SettingsEvent.onUpsertTeamContact()';
+    return 'SettingsEvent.onUpsertTeamContact()';
 }
 
 
@@ -516,7 +523,7 @@ class _OnCleanupLocalStorage implements SettingsEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnCleanupLocalStorage);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnCleanupLocalStorage);
 }
 
 
@@ -525,7 +532,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'SettingsEvent.onCleanupLocalStorage()';
+    return 'SettingsEvent.onCleanupLocalStorage()';
 }
 
 
@@ -553,16 +560,18 @@ _$OnSetIsAppLockEnabledCopyWith<_OnSetIsAppLockEnabled> get copyWith => __$OnSet
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetIsAppLockEnabled&&(identical(other.isEnabled, isEnabled) || other.isEnabled == isEnabled));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetIsAppLockEnabled&&(identical(other.isEnabled, isEnabled) || other.isEnabled == isEnabled));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isEnabled);
+int get hashCode {
+    return Object.hash(runtimeType,isEnabled);
+}
 
 @override
 String toString() {
-  return 'SettingsEvent.onSetIsAppLockEnabled(isEnabled: $isEnabled)';
+    return 'SettingsEvent.onSetIsAppLockEnabled(isEnabled: $isEnabled)';
 }
 
 

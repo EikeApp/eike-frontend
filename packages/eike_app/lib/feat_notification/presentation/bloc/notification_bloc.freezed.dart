@@ -21,7 +21,7 @@ mixin _$NotificationEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationEvent);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationEvent);
 }
 
 
@@ -30,7 +30,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'NotificationEvent()';
+    return 'NotificationEvent()';
 }
 
 
@@ -198,7 +198,7 @@ class _OnSetup implements NotificationEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetup);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetup);
 }
 
 
@@ -207,7 +207,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'NotificationEvent.onSetup()';
+    return 'NotificationEvent.onSetup()';
 }
 
 
@@ -230,7 +230,7 @@ class _OnCloseNotifications implements NotificationEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnCloseNotifications);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnCloseNotifications);
 }
 
 
@@ -239,7 +239,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'NotificationEvent.onCloseNotifications()';
+    return 'NotificationEvent.onCloseNotifications()';
 }
 
 
@@ -262,7 +262,7 @@ class _OnShowPreviousNotification implements NotificationEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnShowPreviousNotification);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnShowPreviousNotification);
 }
 
 
@@ -271,7 +271,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'NotificationEvent.onShowPreviousNotification()';
+    return 'NotificationEvent.onShowPreviousNotification()';
 }
 
 
@@ -294,7 +294,7 @@ class _OnShowNextNotification implements NotificationEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnShowNextNotification);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnShowNextNotification);
 }
 
 
@@ -303,7 +303,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'NotificationEvent.onShowNextNotification()';
+    return 'NotificationEvent.onShowNextNotification()';
 }
 
 
@@ -321,7 +321,7 @@ mixin _$NotificationPresentationEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationPresentationEvent);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationPresentationEvent);
 }
 
 
@@ -330,7 +330,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'NotificationPresentationEvent()';
+    return 'NotificationPresentationEvent()';
 }
 
 
@@ -480,7 +480,7 @@ class _OnShowNotification implements NotificationPresentationEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnShowNotification);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnShowNotification);
 }
 
 
@@ -489,7 +489,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'NotificationPresentationEvent.onShowNotification()';
+    return 'NotificationPresentationEvent.onShowNotification()';
 }
 
 
@@ -512,16 +512,21 @@ $NotificationStateCopyWith<NotificationState> get copyWith => _$NotificationStat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationState&&const DeepCollectionEquality().equals(other.notifications, notifications)&&(identical(other.currentNotificationIndex, currentNotificationIndex) || other.currentNotificationIndex == currentNotificationIndex));
+  final _this = this as NotificationState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationState&&const DeepCollectionEquality().equals(other.notifications, _this.notifications)&&(identical(other.currentNotificationIndex, _this.currentNotificationIndex) || other.currentNotificationIndex == _this.currentNotificationIndex));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(notifications),currentNotificationIndex);
+int get hashCode {
+  final _this = this as NotificationState;
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.notifications),_this.currentNotificationIndex);
+}
 
 @override
 String toString() {
-  return 'NotificationState(notifications: $notifications, currentNotificationIndex: $currentNotificationIndex)';
+  final _this = this as NotificationState;
+  return 'NotificationState(notifications: ${_this.notifications}, currentNotificationIndex: ${_this.currentNotificationIndex})';
 }
 
 
@@ -710,16 +715,18 @@ _$NotificationStateCopyWith<_NotificationState> get copyWith => __$NotificationS
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationState&&const DeepCollectionEquality().equals(other._notifications, _notifications)&&(identical(other.currentNotificationIndex, currentNotificationIndex) || other.currentNotificationIndex == currentNotificationIndex));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationState&&const DeepCollectionEquality().equals(other.notifications, _notifications)&&(identical(other.currentNotificationIndex, currentNotificationIndex) || other.currentNotificationIndex == currentNotificationIndex));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_notifications),currentNotificationIndex);
+int get hashCode {
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_notifications),currentNotificationIndex);
+}
 
 @override
 String toString() {
-  return 'NotificationState(notifications: $notifications, currentNotificationIndex: $currentNotificationIndex)';
+    return 'NotificationState(notifications: $notifications, currentNotificationIndex: $currentNotificationIndex)';
 }
 
 

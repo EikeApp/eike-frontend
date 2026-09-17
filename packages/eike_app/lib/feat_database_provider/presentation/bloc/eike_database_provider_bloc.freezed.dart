@@ -21,7 +21,7 @@ mixin _$EikeDatabaseProviderEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is EikeDatabaseProviderEvent);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is EikeDatabaseProviderEvent);
 }
 
 
@@ -30,7 +30,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'EikeDatabaseProviderEvent()';
+    return 'EikeDatabaseProviderEvent()';
 }
 
 
@@ -180,7 +180,7 @@ class _OnSetup implements EikeDatabaseProviderEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetup);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetup);
 }
 
 
@@ -189,7 +189,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'EikeDatabaseProviderEvent.onSetup()';
+    return 'EikeDatabaseProviderEvent.onSetup()';
 }
 
 
@@ -212,16 +212,21 @@ $EikeDatabaseProviderStateCopyWith<EikeDatabaseProviderState> get copyWith => _$
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is EikeDatabaseProviderState&&(identical(other.database, database) || other.database == database)&&(identical(other.hasError, hasError) || other.hasError == hasError)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
+  final _this = this as EikeDatabaseProviderState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is EikeDatabaseProviderState&&(identical(other.database, _this.database) || other.database == _this.database)&&(identical(other.hasError, _this.hasError) || other.hasError == _this.hasError)&&(identical(other.isLoading, _this.isLoading) || other.isLoading == _this.isLoading));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,database,hasError,isLoading);
+int get hashCode {
+  final _this = this as EikeDatabaseProviderState;
+  return Object.hash(runtimeType,_this.database,_this.hasError,_this.isLoading);
+}
 
 @override
 String toString() {
-  return 'EikeDatabaseProviderState(database: $database, hasError: $hasError, isLoading: $isLoading)';
+  final _this = this as EikeDatabaseProviderState;
+  return 'EikeDatabaseProviderState(database: ${_this.database}, hasError: ${_this.hasError}, isLoading: ${_this.isLoading})';
 }
 
 
@@ -406,16 +411,18 @@ _$EikeDatabaseProviderStateCopyWith<_EikeDatabaseProviderState> get copyWith => 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EikeDatabaseProviderState&&(identical(other.database, database) || other.database == database)&&(identical(other.hasError, hasError) || other.hasError == hasError)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _EikeDatabaseProviderState&&(identical(other.database, database) || other.database == database)&&(identical(other.hasError, hasError) || other.hasError == hasError)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,database,hasError,isLoading);
+int get hashCode {
+    return Object.hash(runtimeType,database,hasError,isLoading);
+}
 
 @override
 String toString() {
-  return 'EikeDatabaseProviderState(database: $database, hasError: $hasError, isLoading: $isLoading)';
+    return 'EikeDatabaseProviderState(database: $database, hasError: $hasError, isLoading: $isLoading)';
 }
 
 

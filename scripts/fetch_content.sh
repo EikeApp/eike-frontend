@@ -26,9 +26,6 @@ curl --fail --show-error --location --retry 3 \
 echo "Unzipping ..."
 unzip -q "${ZIP_FILE}" -d "${WORK_DIR}"
 
-# Don't assume GitHub's auto-generated folder name (e.g. it changes if the
-# tag ever gets a "v" prefix) - just take whatever single directory the
-# archive extracted to.
 EXTRACTED_DIR="$(find "${WORK_DIR}" -mindepth 1 -maxdepth 1 -type d)"
 
 if [[ -z "${EXTRACTED_DIR}" ]]; then
@@ -44,8 +41,6 @@ for entry in "7-things" "data.yaml"; do
   fi
 done
 
-# Only touch the real target directory once we know we have everything we
-# need - if anything above fails, the existing content stays untouched.
 echo "Installing content ..."
 rm -rf "${TARGET_DIR}"
 mkdir -p "${TARGET_DIR}"

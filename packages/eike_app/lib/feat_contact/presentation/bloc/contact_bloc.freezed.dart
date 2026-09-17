@@ -21,7 +21,7 @@ mixin _$ContactEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ContactEvent);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is ContactEvent);
 }
 
 
@@ -30,7 +30,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ContactEvent()';
+    return 'ContactEvent()';
 }
 
 
@@ -186,7 +186,7 @@ class _OnSetup implements ContactEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetup);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetup);
 }
 
 
@@ -195,7 +195,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ContactEvent.onSetup()';
+    return 'ContactEvent.onSetup()';
 }
 
 
@@ -225,16 +225,18 @@ _$OnSetTeamContactDataCopyWith<_OnSetTeamContactData> get copyWith => __$OnSetTe
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetTeamContactData&&(identical(other.teamName, teamName) || other.teamName == teamName)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.email, email) || other.email == email));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetTeamContactData&&(identical(other.teamName, teamName) || other.teamName == teamName)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.email, email) || other.email == email));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,teamName,phoneNumber,email);
+int get hashCode {
+    return Object.hash(runtimeType,teamName,phoneNumber,email);
+}
 
 @override
 String toString() {
-  return 'ContactEvent.onSetTeamContactData(teamName: $teamName, phoneNumber: $phoneNumber, email: $email)';
+    return 'ContactEvent.onSetTeamContactData(teamName: $teamName, phoneNumber: $phoneNumber, email: $email)';
 }
 
 
@@ -288,16 +290,21 @@ $ContactStateCopyWith<ContactState> get copyWith => _$ContactStateCopyWithImpl<C
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ContactState&&const DeepCollectionEquality().equals(other.teamContact, teamContact));
+  final _this = this as ContactState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ContactState&&const DeepCollectionEquality().equals(other.teamContact, _this.teamContact));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(teamContact));
+int get hashCode {
+  final _this = this as ContactState;
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.teamContact));
+}
 
 @override
 String toString() {
-  return 'ContactState(teamContact: $teamContact)';
+  final _this = this as ContactState;
+  return 'ContactState(teamContact: ${_this.teamContact})';
 }
 
 
@@ -478,16 +485,18 @@ _$ContactStateCopyWith<_ContactState> get copyWith => __$ContactStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ContactState&&const DeepCollectionEquality().equals(other.teamContact, teamContact));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ContactState&&const DeepCollectionEquality().equals(other.teamContact, teamContact));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(teamContact));
+int get hashCode {
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(teamContact));
+}
 
 @override
 String toString() {
-  return 'ContactState(teamContact: $teamContact)';
+    return 'ContactState(teamContact: $teamContact)';
 }
 
 

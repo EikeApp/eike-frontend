@@ -21,7 +21,7 @@ mixin _$AppProtectionState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppProtectionState);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is AppProtectionState);
 }
 
 
@@ -30,7 +30,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'AppProtectionState()';
+    return 'AppProtectionState()';
 }
 
 
@@ -192,7 +192,7 @@ class _Initial implements AppProtectionState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Initial);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Initial);
 }
 
 
@@ -201,7 +201,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'AppProtectionState.initial()';
+    return 'AppProtectionState.initial()';
 }
 
 
@@ -224,7 +224,7 @@ class _Unlocked implements AppProtectionState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Unlocked);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Unlocked);
 }
 
 
@@ -233,7 +233,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'AppProtectionState.unlocked()';
+    return 'AppProtectionState.unlocked()';
 }
 
 
@@ -262,16 +262,18 @@ _$LockedCopyWith<_Locked> get copyWith => __$LockedCopyWithImpl<_Locked>(this, _
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Locked&&(identical(other.isAuthenticating, isAuthenticating) || other.isAuthenticating == isAuthenticating)&&(identical(other.errorText, errorText) || other.errorText == errorText));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Locked&&(identical(other.isAuthenticating, isAuthenticating) || other.isAuthenticating == isAuthenticating)&&(identical(other.errorText, errorText) || other.errorText == errorText));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isAuthenticating,errorText);
+int get hashCode {
+    return Object.hash(runtimeType,isAuthenticating,errorText);
+}
 
 @override
 String toString() {
-  return 'AppProtectionState.locked(isAuthenticating: $isAuthenticating, errorText: $errorText)';
+    return 'AppProtectionState.locked(isAuthenticating: $isAuthenticating, errorText: $errorText)';
 }
 
 
@@ -319,7 +321,7 @@ mixin _$AppProtectionEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppProtectionEvent);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is AppProtectionEvent);
 }
 
 
@@ -328,7 +330,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'AppProtectionEvent()';
+    return 'AppProtectionEvent()';
 }
 
 
@@ -490,7 +492,7 @@ class _OnSetup implements AppProtectionEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetup);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetup);
 }
 
 
@@ -499,7 +501,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'AppProtectionEvent.onSetup()';
+    return 'AppProtectionEvent.onSetup()';
 }
 
 
@@ -522,7 +524,7 @@ class _OnAppPaused implements AppProtectionEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnAppPaused);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnAppPaused);
 }
 
 
@@ -531,7 +533,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'AppProtectionEvent.onAppPaused()';
+    return 'AppProtectionEvent.onAppPaused()';
 }
 
 
@@ -554,7 +556,7 @@ class _OnAuthRequested implements AppProtectionEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnAuthRequested);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnAuthRequested);
 }
 
 
@@ -563,7 +565,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'AppProtectionEvent.onAuthRequested()';
+    return 'AppProtectionEvent.onAuthRequested()';
 }
 
 

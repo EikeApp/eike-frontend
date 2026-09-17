@@ -21,7 +21,7 @@ mixin _$SplashScreenEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SplashScreenEvent);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is SplashScreenEvent);
 }
 
 
@@ -30,7 +30,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'SplashScreenEvent()';
+    return 'SplashScreenEvent()';
 }
 
 
@@ -192,7 +192,7 @@ class _OnSetup implements SplashScreenEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetup);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetup);
 }
 
 
@@ -201,7 +201,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'SplashScreenEvent.onSetup()';
+    return 'SplashScreenEvent.onSetup()';
 }
 
 
@@ -224,7 +224,7 @@ class _OnTransitionStarted implements SplashScreenEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnTransitionStarted);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnTransitionStarted);
 }
 
 
@@ -233,7 +233,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'SplashScreenEvent.onTransitionStarted()';
+    return 'SplashScreenEvent.onTransitionStarted()';
 }
 
 
@@ -256,7 +256,7 @@ class _OnTransitionCompleted implements SplashScreenEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnTransitionCompleted);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnTransitionCompleted);
 }
 
 
@@ -265,7 +265,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'SplashScreenEvent.onTransitionCompleted()';
+    return 'SplashScreenEvent.onTransitionCompleted()';
 }
 
 
@@ -283,7 +283,7 @@ mixin _$SplashScreenState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SplashScreenState);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is SplashScreenState);
 }
 
 
@@ -292,7 +292,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'SplashScreenState()';
+    return 'SplashScreenState()';
 }
 
 
@@ -454,7 +454,7 @@ class _Splash implements SplashScreenState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Splash);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Splash);
 }
 
 
@@ -463,7 +463,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'SplashScreenState.splash()';
+    return 'SplashScreenState.splash()';
 }
 
 
@@ -486,7 +486,7 @@ class _Transitioning implements SplashScreenState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Transitioning);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Transitioning);
 }
 
 
@@ -495,7 +495,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'SplashScreenState.transitioning()';
+    return 'SplashScreenState.transitioning()';
 }
 
 
@@ -518,7 +518,7 @@ class _Ready implements SplashScreenState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Ready);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Ready);
 }
 
 
@@ -527,7 +527,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'SplashScreenState.ready()';
+    return 'SplashScreenState.ready()';
 }
 
 
