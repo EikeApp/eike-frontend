@@ -53,8 +53,7 @@ class HomeScreen extends StatelessWidget {
                   }
 
                   return ListView.separated(
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    keyboardDismissBehavior: .onDrag,
                     padding: EikeTheme.pagePadding,
                     itemCount: state.tips.length + 1,
                     itemBuilder: (context, index) {
