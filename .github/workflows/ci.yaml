@@ -24,7 +24,18 @@ jobs:
         with:
           flutter-version: "3.47.4"
           cache: true
+      - name: Resolve content version
+        id: content-version
+        working-directory: ${{ github.workspace }}
+        run: echo "version=$(grep -m1 '^VERSION=' Makefile | cut -d= -f2)" >> "$GITHUB_OUTPUT"
+      - name: Cache content
+        id: cache-content
+        uses: actions/cache@v4
+        with:
+          path: packages/eike_app/assets/content
+          key: eike-content-${{ steps.content-version.outputs.version }}
       - name: Fetch content
+        if: steps.cache-content.outputs.cache-hit != 'true'
         working-directory: ${{ github.workspace }}
         run: make fetch-content
       - run: flutter pub get
@@ -41,7 +52,18 @@ jobs:
         with:
           flutter-version: "3.47.4"
           cache: true
+      - name: Resolve content version
+        id: content-version
+        working-directory: ${{ github.workspace }}
+        run: echo "version=$(grep -m1 '^VERSION=' Makefile | cut -d= -f2)" >> "$GITHUB_OUTPUT"
+      - name: Cache content
+        id: cache-content
+        uses: actions/cache@v4
+        with:
+          path: packages/eike_app/assets/content
+          key: eike-content-${{ steps.content-version.outputs.version }}
       - name: Fetch content
+        if: steps.cache-content.outputs.cache-hit != 'true'
         working-directory: ${{ github.workspace }}
         run: make fetch-content
       - run: flutter pub get
@@ -61,7 +83,18 @@ jobs:
         with:
           flutter-version: "3.47.4"
           cache: true
+      - name: Resolve content version
+        id: content-version
+        working-directory: ${{ github.workspace }}
+        run: echo "version=$(grep -m1 '^VERSION=' Makefile | cut -d= -f2)" >> "$GITHUB_OUTPUT"
+      - name: Cache content
+        id: cache-content
+        uses: actions/cache@v4
+        with:
+          path: packages/eike_app/assets/content
+          key: eike-content-${{ steps.content-version.outputs.version }}
       - name: Fetch content
+        if: steps.cache-content.outputs.cache-hit != 'true'
         working-directory: ${{ github.workspace }}
         run: make fetch-content
       - run: flutter pub get
@@ -81,7 +114,18 @@ jobs:
         with:
           flutter-version: "3.47.4"
           cache: true
+      - name: Resolve content version
+        id: content-version
+        working-directory: ${{ github.workspace }}
+        run: echo "version=$(grep -m1 '^VERSION=' Makefile | cut -d= -f2)" >> "$GITHUB_OUTPUT"
+      - name: Cache content
+        id: cache-content
+        uses: actions/cache@v4
+        with:
+          path: packages/eike_app/assets/content
+          key: eike-content-${{ steps.content-version.outputs.version }}
       - name: Fetch content
+        if: steps.cache-content.outputs.cache-hit != 'true'
         working-directory: ${{ github.workspace }}
         run: make fetch-content
       - run: flutter pub get
