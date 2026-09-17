@@ -54,6 +54,7 @@ Insertable<TipEntity> _createUpdatedEntity(Tip dto, TipEntity existingEntity) {
     position: Value(TipPosition(dto.position)),
     title: Value(TipTitle(dto.title)),
     description: Value(TipDescription(dto.description)),
+    question: Value.absentIfNull(dto.question?.asQuestion()),
     imagePath: Value(TipImagePath(dto.image.imagePath)),
     imageDescription: Value(TipImageDescription(dto.image.alt)),
     userNote: Value(TipUserNote(existingEntity.userNote)), // Keep the user note
@@ -66,8 +67,15 @@ Insertable<TipEntity> _createInsertEntity(Tip dto) {
     position: Value(TipPosition(dto.position)),
     title: Value(TipTitle(dto.title)),
     description: Value(TipDescription(dto.description)),
+    question: Value.absentIfNull(dto.question?.asQuestion()),
     imagePath: Value(TipImagePath(dto.image.imagePath)),
     imageDescription: Value(TipImageDescription(dto.image.alt)),
     userNote: Value(TipUserNote('')),
   );
+}
+
+extension on String {
+  TipQuestion asQuestion() {
+    return TipQuestion(this);
+  }
 }

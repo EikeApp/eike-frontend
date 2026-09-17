@@ -342,6 +342,15 @@ class $TipTableTable extends TipTable
     requiredDuringInsert: true,
   ).withConverter<TipDescription>($TipTableTable.$converterdescription);
   @override
+  late final GeneratedColumnWithTypeConverter<TipQuestion?, String> question =
+      GeneratedColumn<String>(
+        'question',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<TipQuestion?>($TipTableTable.$converterquestionn);
+  @override
   late final GeneratedColumnWithTypeConverter<TipImagePath, String> imagePath =
       GeneratedColumn<String>(
         'image_path',
@@ -377,6 +386,7 @@ class $TipTableTable extends TipTable
     position,
     title,
     description,
+    question,
     imagePath,
     imageDescription,
     userNote,
@@ -416,6 +426,12 @@ class $TipTableTable extends TipTable
           data['${effectivePrefix}description'],
         )!,
       ),
+      question: $TipTableTable.$converterquestionn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}question'],
+        ),
+      ),
       imagePath: $TipTableTable.$converterimagePath.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.string,
@@ -449,6 +465,10 @@ class $TipTableTable extends TipTable
       const TipTitleConverter();
   static TypeConverter<TipDescription, String> $converterdescription =
       const TipDescriptionConverter();
+  static TypeConverter<TipQuestion, String> $converterquestion =
+      const TipQuestionConverter();
+  static TypeConverter<TipQuestion?, String?> $converterquestionn =
+      NullAwareTypeConverter.wrap($converterquestion);
   static TypeConverter<TipImagePath, String> $converterimagePath =
       const TipImagePathConverter();
   static TypeConverter<TipImageDescription, String> $converterimageDescription =
@@ -462,6 +482,7 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
   final TipPosition position;
   final TipTitle title;
   final TipDescription description;
+  final TipQuestion? question;
   final TipImagePath imagePath;
   final TipImageDescription imageDescription;
   final TipUserNote userNote;
@@ -470,6 +491,7 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
     required this.position,
     required this.title,
     required this.description,
+    this.question,
     required this.imagePath,
     required this.imageDescription,
     required this.userNote,
@@ -493,6 +515,11 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
     {
       map['description'] = Variable<String>(
         $TipTableTable.$converterdescription.toSql(description),
+      );
+    }
+    if (!nullToAbsent || question != null) {
+      map['question'] = Variable<String>(
+        $TipTableTable.$converterquestionn.toSql(question),
       );
     }
     {
@@ -519,6 +546,9 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
       position: Value(position),
       title: Value(title),
       description: Value(description),
+      question: question == null && nullToAbsent
+          ? const Value.absent()
+          : Value(question),
       imagePath: Value(imagePath),
       imageDescription: Value(imageDescription),
       userNote: Value(userNote),
@@ -535,6 +565,7 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
       position: serializer.fromJson<TipPosition>(json['position']),
       title: serializer.fromJson<TipTitle>(json['title']),
       description: serializer.fromJson<TipDescription>(json['description']),
+      question: serializer.fromJson<TipQuestion?>(json['question']),
       imagePath: serializer.fromJson<TipImagePath>(json['imagePath']),
       imageDescription: serializer.fromJson<TipImageDescription>(
         json['imageDescription'],
@@ -550,6 +581,7 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
       'position': serializer.toJson<TipPosition>(position),
       'title': serializer.toJson<TipTitle>(title),
       'description': serializer.toJson<TipDescription>(description),
+      'question': serializer.toJson<TipQuestion?>(question),
       'imagePath': serializer.toJson<TipImagePath>(imagePath),
       'imageDescription': serializer.toJson<TipImageDescription>(
         imageDescription,
@@ -563,6 +595,7 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
     TipPosition? position,
     TipTitle? title,
     TipDescription? description,
+    Value<TipQuestion?> question = const Value.absent(),
     TipImagePath? imagePath,
     TipImageDescription? imageDescription,
     TipUserNote? userNote,
@@ -571,6 +604,7 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
     position: position ?? this.position,
     title: title ?? this.title,
     description: description ?? this.description,
+    question: question.present ? question.value : this.question,
     imagePath: imagePath ?? this.imagePath,
     imageDescription: imageDescription ?? this.imageDescription,
     userNote: userNote ?? this.userNote,
@@ -583,6 +617,7 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
       description: data.description.present
           ? data.description.value
           : this.description,
+      question: data.question.present ? data.question.value : this.question,
       imagePath: data.imagePath.present ? data.imagePath.value : this.imagePath,
       imageDescription: data.imageDescription.present
           ? data.imageDescription.value
@@ -598,6 +633,7 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
           ..write('position: $position, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
+          ..write('question: $question, ')
           ..write('imagePath: $imagePath, ')
           ..write('imageDescription: $imageDescription, ')
           ..write('userNote: $userNote')
@@ -611,6 +647,7 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
     position,
     title,
     description,
+    question,
     imagePath,
     imageDescription,
     userNote,
@@ -623,6 +660,7 @@ class TipEntity extends DataClass implements Insertable<TipEntity> {
           other.position == this.position &&
           other.title == this.title &&
           other.description == this.description &&
+          other.question == this.question &&
           other.imagePath == this.imagePath &&
           other.imageDescription == this.imageDescription &&
           other.userNote == this.userNote);
@@ -633,6 +671,7 @@ class TipTableCompanion extends UpdateCompanion<TipEntity> {
   final Value<TipPosition> position;
   final Value<TipTitle> title;
   final Value<TipDescription> description;
+  final Value<TipQuestion?> question;
   final Value<TipImagePath> imagePath;
   final Value<TipImageDescription> imageDescription;
   final Value<TipUserNote> userNote;
@@ -641,6 +680,7 @@ class TipTableCompanion extends UpdateCompanion<TipEntity> {
     this.position = const Value.absent(),
     this.title = const Value.absent(),
     this.description = const Value.absent(),
+    this.question = const Value.absent(),
     this.imagePath = const Value.absent(),
     this.imageDescription = const Value.absent(),
     this.userNote = const Value.absent(),
@@ -650,6 +690,7 @@ class TipTableCompanion extends UpdateCompanion<TipEntity> {
     required TipPosition position,
     required TipTitle title,
     required TipDescription description,
+    this.question = const Value.absent(),
     required TipImagePath imagePath,
     required TipImageDescription imageDescription,
     required TipUserNote userNote,
@@ -664,6 +705,7 @@ class TipTableCompanion extends UpdateCompanion<TipEntity> {
     Expression<int>? position,
     Expression<String>? title,
     Expression<String>? description,
+    Expression<String>? question,
     Expression<String>? imagePath,
     Expression<String>? imageDescription,
     Expression<String>? userNote,
@@ -673,6 +715,7 @@ class TipTableCompanion extends UpdateCompanion<TipEntity> {
       if (position != null) 'position': position,
       if (title != null) 'title': title,
       if (description != null) 'description': description,
+      if (question != null) 'question': question,
       if (imagePath != null) 'image_path': imagePath,
       if (imageDescription != null) 'image_description': imageDescription,
       if (userNote != null) 'user_note': userNote,
@@ -684,6 +727,7 @@ class TipTableCompanion extends UpdateCompanion<TipEntity> {
     Value<TipPosition>? position,
     Value<TipTitle>? title,
     Value<TipDescription>? description,
+    Value<TipQuestion?>? question,
     Value<TipImagePath>? imagePath,
     Value<TipImageDescription>? imageDescription,
     Value<TipUserNote>? userNote,
@@ -693,6 +737,7 @@ class TipTableCompanion extends UpdateCompanion<TipEntity> {
       position: position ?? this.position,
       title: title ?? this.title,
       description: description ?? this.description,
+      question: question ?? this.question,
       imagePath: imagePath ?? this.imagePath,
       imageDescription: imageDescription ?? this.imageDescription,
       userNote: userNote ?? this.userNote,
@@ -720,6 +765,11 @@ class TipTableCompanion extends UpdateCompanion<TipEntity> {
         $TipTableTable.$converterdescription.toSql(description.value),
       );
     }
+    if (question.present) {
+      map['question'] = Variable<String>(
+        $TipTableTable.$converterquestionn.toSql(question.value),
+      );
+    }
     if (imagePath.present) {
       map['image_path'] = Variable<String>(
         $TipTableTable.$converterimagePath.toSql(imagePath.value),
@@ -745,6 +795,7 @@ class TipTableCompanion extends UpdateCompanion<TipEntity> {
           ..write('position: $position, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
+          ..write('question: $question, ')
           ..write('imagePath: $imagePath, ')
           ..write('imageDescription: $imageDescription, ')
           ..write('userNote: $userNote')
@@ -935,7 +986,16 @@ class $$TeamContactTableTableTableManager
                 email: email,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$TeamContactTableTable, TeamContactEntity>(table),
+                  BaseReferences<
+                    _$EikeDatabase,
+                    $TeamContactTableTable,
+                    TeamContactEntity
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -968,6 +1028,7 @@ typedef $$TipTableTableCreateCompanionBuilder = TipTableCompanion Function({
   required TipPosition position,
   required TipTitle title,
   required TipDescription description,
+  Value<TipQuestion?> question,
   required TipImagePath imagePath,
   required TipImageDescription imageDescription,
   required TipUserNote userNote,
@@ -977,6 +1038,7 @@ typedef $$TipTableTableUpdateCompanionBuilder = TipTableCompanion Function({
   Value<TipPosition> position,
   Value<TipTitle> title,
   Value<TipDescription> description,
+  Value<TipQuestion?> question,
   Value<TipImagePath> imagePath,
   Value<TipImageDescription> imageDescription,
   Value<TipUserNote> userNote,
@@ -1012,6 +1074,12 @@ class $$TipTableTableFilterComposer
   ColumnWithTypeConverterFilters<TipDescription, TipDescription, String>
   get description => $composableBuilder(
     column: $table.description,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<TipQuestion?, TipQuestion, String>
+  get question => $composableBuilder(
+    column: $table.question,
     builder: (column) => ColumnWithTypeConverterFilters(column),
   );
 
@@ -1067,6 +1135,11 @@ class $$TipTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get question => $composableBuilder(
+    column: $table.question,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get imagePath => $composableBuilder(
     column: $table.imagePath,
     builder: (column) => ColumnOrderings(column),
@@ -1106,6 +1179,9 @@ class $$TipTableTableAnnotationComposer
         column: $table.description,
         builder: (column) => column,
       );
+
+  GeneratedColumnWithTypeConverter<TipQuestion?, String> get question =>
+      $composableBuilder(column: $table.question, builder: (column) => column);
 
   GeneratedColumnWithTypeConverter<TipImagePath, String> get imagePath =>
       $composableBuilder(column: $table.imagePath, builder: (column) => column);
@@ -1155,6 +1231,7 @@ class $$TipTableTableTableManager
                 Value<TipPosition> position = const Value.absent(),
                 Value<TipTitle> title = const Value.absent(),
                 Value<TipDescription> description = const Value.absent(),
+                Value<TipQuestion?> question = const Value.absent(),
                 Value<TipImagePath> imagePath = const Value.absent(),
                 Value<TipImageDescription> imageDescription =
                     const Value.absent(),
@@ -1164,6 +1241,7 @@ class $$TipTableTableTableManager
                 position: position,
                 title: title,
                 description: description,
+                question: question,
                 imagePath: imagePath,
                 imageDescription: imageDescription,
                 userNote: userNote,
@@ -1174,6 +1252,7 @@ class $$TipTableTableTableManager
                 required TipPosition position,
                 required TipTitle title,
                 required TipDescription description,
+                Value<TipQuestion?> question = const Value.absent(),
                 required TipImagePath imagePath,
                 required TipImageDescription imageDescription,
                 required TipUserNote userNote,
@@ -1182,12 +1261,22 @@ class $$TipTableTableTableManager
                 position: position,
                 title: title,
                 description: description,
+                question: question,
                 imagePath: imagePath,
                 imageDescription: imageDescription,
                 userNote: userNote,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$TipTableTable, TipEntity>(table),
+                  BaseReferences<_$EikeDatabase, $TipTableTable, TipEntity>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),

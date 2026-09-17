@@ -29,16 +29,21 @@ $TipImageCopyWith<TipImage> get copyWith => _$TipImageCopyWithImpl<TipImage>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TipImage&&(identical(other.imagePath, imagePath) || other.imagePath == imagePath)&&(identical(other.alt, alt) || other.alt == alt));
+  final _this = this as TipImage;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TipImage&&(identical(other.imagePath, _this.imagePath) || other.imagePath == _this.imagePath)&&(identical(other.alt, _this.alt) || other.alt == _this.alt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,imagePath,alt);
+int get hashCode {
+  final _this = this as TipImage;
+  return Object.hash(runtimeType,_this.imagePath,_this.alt);
+}
 
 @override
 String toString() {
-  return 'TipImage(imagePath: $imagePath, alt: $alt)';
+  final _this = this as TipImage;
+  return 'TipImage(imagePath: ${_this.imagePath}, alt: ${_this.alt})';
 }
 
 
@@ -224,16 +229,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TipImage&&(identical(other.imagePath, imagePath) || other.imagePath == imagePath)&&(identical(other.alt, alt) || other.alt == alt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TipImage&&(identical(other.imagePath, imagePath) || other.imagePath == imagePath)&&(identical(other.alt, alt) || other.alt == alt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,imagePath,alt);
+int get hashCode {
+    return Object.hash(runtimeType,imagePath,alt);
+}
 
 @override
 String toString() {
-  return 'TipImage(imagePath: $imagePath, alt: $alt)';
+    return 'TipImage(imagePath: $imagePath, alt: $alt)';
 }
 
 
@@ -276,7 +283,7 @@ as String,
 /// @nodoc
 mixin _$Tip {
 
- int get id; int get position; String get title; String get description;@JsonKey(name: 'icon') TipImage get image;
+@JsonKey(name: 'id') int get id;@JsonKey(name: 'position') int get position;@JsonKey(name: 'title') String get title;@JsonKey(name: 'description') String get description;@JsonKey(name: 'question') String? get question;@JsonKey(name: 'icon') TipImage get image;
 /// Create a copy of Tip
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -289,16 +296,21 @@ $TipCopyWith<Tip> get copyWith => _$TipCopyWithImpl<Tip>(this as Tip, _$identity
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Tip&&(identical(other.id, id) || other.id == id)&&(identical(other.position, position) || other.position == position)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.image, image) || other.image == image));
+  final _this = this as Tip;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Tip&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.position, _this.position) || other.position == _this.position)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.description, _this.description) || other.description == _this.description)&&(identical(other.question, _this.question) || other.question == _this.question)&&(identical(other.image, _this.image) || other.image == _this.image));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,position,title,description,image);
+int get hashCode {
+  final _this = this as Tip;
+  return Object.hash(runtimeType,_this.id,_this.position,_this.title,_this.description,_this.question,_this.image);
+}
 
 @override
 String toString() {
-  return 'Tip(id: $id, position: $position, title: $title, description: $description, image: $image)';
+  final _this = this as Tip;
+  return 'Tip(id: ${_this.id}, position: ${_this.position}, title: ${_this.title}, description: ${_this.description}, question: ${_this.question}, image: ${_this.image})';
 }
 
 
@@ -309,7 +321,7 @@ abstract mixin class $TipCopyWith<$Res>  {
   factory $TipCopyWith(Tip value, $Res Function(Tip) _then) = _$TipCopyWithImpl;
 @useResult
 $Res call({
- int id, int position, String title, String description,@JsonKey(name: 'icon') TipImage image
+@JsonKey(name: 'id') int id,@JsonKey(name: 'position') int position,@JsonKey(name: 'title') String title,@JsonKey(name: 'description') String description,@JsonKey(name: 'question') String? question,@JsonKey(name: 'icon') TipImage image
 });
 
 
@@ -326,13 +338,14 @@ class _$TipCopyWithImpl<$Res>
 
 /// Create a copy of Tip
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? position = null,Object? title = null,Object? description = null,Object? image = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? position = null,Object? title = null,Object? description = null,Object? question = freezed,Object? image = null,}) {
   return _then(Tip(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,position: null == position ? _self.position : position // ignore: cast_nullable_to_non_nullable
 as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as String,question: freezed == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
+as String?,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
 as TipImage,
   ));
 }
@@ -424,10 +437,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int position,  String title,  String description, @JsonKey(name: 'icon')  TipImage image)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'position')  int position, @JsonKey(name: 'title')  String title, @JsonKey(name: 'description')  String description, @JsonKey(name: 'question')  String? question, @JsonKey(name: 'icon')  TipImage image)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Tip() when $default != null:
-return $default(_that.id,_that.position,_that.title,_that.description,_that.image);case _:
+return $default(_that.id,_that.position,_that.title,_that.description,_that.question,_that.image);case _:
   return orElse();
 
 }
@@ -445,10 +458,10 @@ return $default(_that.id,_that.position,_that.title,_that.description,_that.imag
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int position,  String title,  String description, @JsonKey(name: 'icon')  TipImage image)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'position')  int position, @JsonKey(name: 'title')  String title, @JsonKey(name: 'description')  String description, @JsonKey(name: 'question')  String? question, @JsonKey(name: 'icon')  TipImage image)  $default,) {final _that = this;
 switch (_that) {
 case _Tip():
-return $default(_that.id,_that.position,_that.title,_that.description,_that.image);}
+return $default(_that.id,_that.position,_that.title,_that.description,_that.question,_that.image);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -462,10 +475,10 @@ return $default(_that.id,_that.position,_that.title,_that.description,_that.imag
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int position,  String title,  String description, @JsonKey(name: 'icon')  TipImage image)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'position')  int position, @JsonKey(name: 'title')  String title, @JsonKey(name: 'description')  String description, @JsonKey(name: 'question')  String? question, @JsonKey(name: 'icon')  TipImage image)?  $default,) {final _that = this;
 switch (_that) {
 case _Tip() when $default != null:
-return $default(_that.id,_that.position,_that.title,_that.description,_that.image);case _:
+return $default(_that.id,_that.position,_that.title,_that.description,_that.question,_that.image);case _:
   return null;
 
 }
@@ -477,13 +490,14 @@ return $default(_that.id,_that.position,_that.title,_that.description,_that.imag
 @JsonSerializable()
 
 class _Tip implements Tip {
-  const _Tip({required this.id, required this.position, required this.title, required this.description, @JsonKey(name: 'icon') required this.image});
+  const _Tip({@JsonKey(name: 'id') required this.id, @JsonKey(name: 'position') required this.position, @JsonKey(name: 'title') required this.title, @JsonKey(name: 'description') required this.description, @JsonKey(name: 'question') required this.question, @JsonKey(name: 'icon') required this.image});
   factory _Tip.fromJson(Map<String, dynamic> json) => _$TipFromJson(json);
 
-@override final  int id;
-@override final  int position;
-@override final  String title;
-@override final  String description;
+@override@JsonKey(name: 'id') final  int id;
+@override@JsonKey(name: 'position') final  int position;
+@override@JsonKey(name: 'title') final  String title;
+@override@JsonKey(name: 'description') final  String description;
+@override@JsonKey(name: 'question') final  String? question;
 @override@JsonKey(name: 'icon') final  TipImage image;
 
 /// Create a copy of Tip
@@ -499,16 +513,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Tip&&(identical(other.id, id) || other.id == id)&&(identical(other.position, position) || other.position == position)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.image, image) || other.image == image));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Tip&&(identical(other.id, id) || other.id == id)&&(identical(other.position, position) || other.position == position)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.question, question) || other.question == question)&&(identical(other.image, image) || other.image == image));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,position,title,description,image);
+int get hashCode {
+    return Object.hash(runtimeType,id,position,title,description,question,image);
+}
 
 @override
 String toString() {
-  return 'Tip(id: $id, position: $position, title: $title, description: $description, image: $image)';
+    return 'Tip(id: $id, position: $position, title: $title, description: $description, question: $question, image: $image)';
 }
 
 
@@ -519,7 +535,7 @@ abstract mixin class _$TipCopyWith<$Res> implements $TipCopyWith<$Res> {
   factory _$TipCopyWith(_Tip value, $Res Function(_Tip) _then) = __$TipCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int position, String title, String description,@JsonKey(name: 'icon') TipImage image
+@JsonKey(name: 'id') int id,@JsonKey(name: 'position') int position,@JsonKey(name: 'title') String title,@JsonKey(name: 'description') String description,@JsonKey(name: 'question') String? question,@JsonKey(name: 'icon') TipImage image
 });
 
 
@@ -536,13 +552,14 @@ class __$TipCopyWithImpl<$Res>
 
 /// Create a copy of Tip
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? position = null,Object? title = null,Object? description = null,Object? image = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? position = null,Object? title = null,Object? description = null,Object? question = freezed,Object? image = null,}) {
   return _then(_Tip(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,position: null == position ? _self.position : position // ignore: cast_nullable_to_non_nullable
 as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as String,question: freezed == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
+as String?,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
 as TipImage,
   ));
 }

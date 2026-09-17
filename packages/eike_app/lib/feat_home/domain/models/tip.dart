@@ -17,10 +17,11 @@ sealed class TipImage with _$TipImage {
 @freezed
 sealed class Tip with _$Tip {
   const factory Tip({
-    required int id,
-    required int position,
-    required String title,
-    required String description,
+    @JsonKey(name: 'id') required int id,
+    @JsonKey(name: 'position') required int position,
+    @JsonKey(name: 'title') required String title,
+    @JsonKey(name: 'description') required String description,
+    @JsonKey(name: 'question') required String? question,
     @JsonKey(name: 'icon') required TipImage image,
   }) = _Tip;
 
