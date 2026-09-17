@@ -20,6 +20,7 @@ class _FakeHomeDatasource implements HomeDatasource {
         position: 1,
         title: 'Tip',
         description: 'Desc',
+        question: 'Question',
         image: TipImage(imagePath: 'ImgPath', alt: 'Alt'),
       ),
     ];
@@ -37,6 +38,7 @@ void main() {
             id INTEGER NOT NULL,
             title TEXT NOT NULL,
             description TEXT NOT NULL,
+            question TEXT,
             image_path TEXT NOT NULL,
             image_description TEXT NOT NULL,
             user_note TEXT NOT NULL,
@@ -44,21 +46,18 @@ void main() {
           )
         ''');
         raw.execute(
-          "INSERT INTO tip_table VALUES (0, 'Old', 'Old', 'p', 'd', '')",
+          "INSERT INTO tip_table VALUES (0, 'Old', 'Old', 'Old', 'p', 'd', '')",
         );
         raw.execute('PRAGMA user_version = 1');
 
         final database = EikeDatabase(NativeDatabase.opened(raw));
         addTearDown(database.close);
 
-        // Opening (and the first query touching TipTable) must not throw
-        // "no such column: position" anymore.
         await expectLater(
           database.tipTable.select().get(),
-          completion(isEmpty), // wiped, not migrated column-by-column
+          completion(isEmpty),
         );
 
-        // And the app is fully usable again afterwards.
         final repository = HomeRepositoryImpl(
           HomeDao(database),
           const _FakeHomeDatasource(),
