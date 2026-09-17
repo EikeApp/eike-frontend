@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env bash
 
 set -euo pipefail
 
@@ -10,7 +10,7 @@ if [[ -z "${VERSION}" ]]; then
   exit 1
 fi
 
-SCRIPT_DIR="${0:A:h}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 TARGET_DIR="${SCRIPT_DIR}/../packages/eike_app/assets/content"
 REPO_URL="https://github.com/EikeApp/eike-content"
 
