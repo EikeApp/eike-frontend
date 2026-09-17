@@ -20,8 +20,32 @@ env:
   GRADLE_OPTS: --enable-native-access=ALL-UNNAMED
 
 jobs:
+  fetch-content:
+    name: Fetch content
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve content version
+        id: content-version
+        run: echo "version=$(grep -m1 '^VERSION=' Makefile | cut -d= -f2)" >> "$GITHUB_OUTPUT"
+      - name: Cache content
+        id: cache-content
+        uses: actions/cache@v4
+        with:
+          path: packages/eike_app/assets/content
+          key: eike-content-${{ steps.content-version.outputs.version }}
+      - name: Fetch content
+        if: steps.cache-content.outputs.cache-hit != 'true'
+        run: make fetch-content
+      - uses: actions/upload-artifact@v4
+        with:
+          name: eike-content
+          path: packages/eike_app/assets/content
+          retention-days: 1
+
   validate:
     name: Validate & Test
+    needs: fetch-content
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,6 +55,11 @@ jobs:
         with:
           flutter-version: "3.47.4"
           cache: true
+      - name: Download content
+        uses: actions/download-artifact@v4
+        with:
+          name: eike-content
+          path: packages/eike_app/assets/content
       - run: |
           cd packages/eike_app
           flutter pub get
@@ -65,6 +94,11 @@ jobs:
         with:
           flutter-version: "3.47.4"
           cache: true
+      - name: Download content
+        uses: actions/download-artifact@v4
+        with:
+          name: eike-content
+          path: packages/eike_app/assets/content
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > packages/eike_app/android/app/release.keystore
@@ -101,6 +135,11 @@ jobs:
         with:
           flutter-version: "3.47.4"
           cache: true
+      - name: Download content
+        uses: actions/download-artifact@v4
+        with:
+          name: eike-content
+          path: packages/eike_app/assets/content
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > packages/eike_app/android/app/release.keystore
@@ -138,6 +177,12 @@ jobs:
         with:
           flutter-version: "3.47.4"
           cache: true
+
+      - name: Download content
+        uses: actions/download-artifact@v4
+        with:
+          name: eike-content
+          path: packages/eike_app/assets/content
 
       - name: Install Certificate
         uses: apple-actions/import-codesign-certs@v6
