@@ -24,7 +24,7 @@ jobs:
     name: Fetch content
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Resolve content version
         id: content-version
         run: echo "version=$(grep -m1 '^VERSION=' Makefile | cut -d= -f2)" >> "$GITHUB_OUTPUT"
@@ -48,7 +48,7 @@ jobs:
     needs: fetch-content
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - uses: subosito/flutter-action@v2
@@ -89,7 +89,7 @@ jobs:
     needs: validate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.47.4"
@@ -130,7 +130,7 @@ jobs:
     needs: validate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.47.4"
@@ -172,7 +172,7 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.47.4"
@@ -226,7 +226,7 @@ jobs:
       - build-ios
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Create Tag
