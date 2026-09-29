@@ -51,7 +51,7 @@ jobs:
           flutter-version: "3.47.4"
           cache: true
       - name: Download content
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: eike-content
           path: packages/eike_app/assets/content
@@ -70,7 +70,7 @@ jobs:
           flutter-version: "3.47.4"
           cache: true
       - name: Download content
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: eike-content
           path: packages/eike_app/assets/content
@@ -92,7 +92,7 @@ jobs:
           flutter-version: "3.47.4"
           cache: true
       - name: Download content
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: eike-content
           path: packages/eike_app/assets/content
@@ -114,7 +114,7 @@ jobs:
           flutter-version: "3.47.4"
           cache: true
       - name: Download content
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: eike-content
           path: packages/eike_app/assets/content
