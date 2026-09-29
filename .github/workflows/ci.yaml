@@ -27,7 +27,7 @@ jobs:
         run: echo "version=$(grep -m1 '^VERSION=' Makefile | cut -d= -f2)" >> "$GITHUB_OUTPUT"
       - name: Cache content
         id: cache-content
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: packages/eike_app/assets/content
           key: eike-content-${{ steps.content-version.outputs.version }}
