@@ -35,7 +35,7 @@ jobs:
         if: steps.cache-content.outputs.cache-hit != 'true'
         working-directory: ${{ github.workspace }}
         run: make fetch-content
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: eike-content
           path: packages/eike_app/assets/content
@@ -76,7 +76,7 @@ jobs:
           path: packages/eike_app/assets/content
       - run: flutter pub get
       - run: flutter build apk --release
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: android-apk
           path: packages/eike_app/build/app/outputs/flutter-apk/app-release.apk
@@ -98,7 +98,7 @@ jobs:
           path: packages/eike_app/assets/content
       - run: flutter pub get
       - run: flutter build appbundle --release
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: android-appbundle
           path: packages/eike_app/build/app/outputs/bundle/app-release.aab
@@ -124,7 +124,7 @@ jobs:
           mkdir -p Payload
           cp -R build/ios/iphoneos/Runner.app Payload/
           zip -r app-release-unsigned.ipa Payload
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ios-ipa
           path: packages/eike_app/app-release-unsigned.ipa
