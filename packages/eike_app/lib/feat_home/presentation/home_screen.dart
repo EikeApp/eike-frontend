@@ -63,7 +63,7 @@ class HomeScreen extends StatelessWidget {
                         );
                       }
 
-                      return _TipCard(
+                      return _TipCard2(
                         tip: state.tips[index],
                       );
                     },
@@ -208,6 +208,108 @@ class _TipCardState extends State<_TipCard> {
                 ),
               ],
             ),
+        ],
+      ),
+    );
+  }
+}
+
+class const _TipCard2({required final TipEntity tip}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Row(
+      crossAxisAlignment: .start,
+        children: [
+          SizedBox(
+            width: 100,
+            child: Stack(
+              children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: .only(
+                      topLeft: .circular(10),
+                      topRight: .circular(50),
+                      bottomLeft: .circular(50),
+                      bottomRight: .circular(50),
+                    ),
+                    color: context.colors.primary,
+                  ),
+                ),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset(
+                      'assets/images/tip-icon-bg-x2.png',
+                      fit: .cover,
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Image.asset(
+                      'assets/content/${tip.imagePath}',
+                      fit: .contain,
+                      semanticLabel: tip.imageDescription,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 5,
+                  top: 5,
+                  child: Text(
+                    tip.position.toString(),
+                    style: context.textTheme.titleLarge?.copyWith(
+                      color: context.colors.onPrimary,
+                      fontWeight: .w800,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Flexible(
+            child: Padding(
+              padding: EikeTheme.cardPadding,
+              child: Row(
+                spacing: EikeTheme.horizontalComponentSpacingMedium,
+                children: [
+                  // Container(
+                  //   alignment: .center,
+                  //   width: 40,
+                  //   height: 40,
+                  //   decoration: BoxDecoration(
+                  //     shape: .circle,
+                  //     color: context.colors.tertiaryContainer,
+                  //   ),
+                  //   child: Text(
+                  //     tip.position.toString(),
+                  //     style: context.textTheme.titleMedium?.copyWith(
+                  //       color: context.colors.onTertiaryContainer,
+                  //     ),
+                  //   ),
+                  // ),
+                  Flexible(
+                    child: Column(
+                      spacing: 10,
+                      crossAxisAlignment: .start,
+                      children: [
+                        Text(tip.title, style: context.textTheme.titleMedium),
+                        Text(
+                          tip.description,
+                          maxLines: 2,
+                          overflow: .ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
