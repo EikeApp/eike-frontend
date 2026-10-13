@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:eike_app/data_entities/tables/tip_table.dart';
-import 'package:eike_app/feat_home/domain/repositories/home_repository.dart';
+import 'package:eike_app/feat_tip_detail/domain/repositories/tip_detail_repository.dart';
 import 'package:use_in_case/use_in_case.dart';
 
 typedef UpdateUserNoteInput = ({
@@ -11,7 +11,7 @@ typedef UpdateUserNoteInput = ({
 
 class UpdateUserNoteInteractor
     implements ParameterizedInteractor<UpdateUserNoteInput> {
-  final HomeRepository repository;
+  final TipDetailRepository repository;
   const UpdateUserNoteInteractor(this.repository);
 
   @override

@@ -1,15 +1,21 @@
 import 'package:eike_app/data_database/eike_database.dart';
-import 'package:eike_app/data_entities/tables/tip_table.dart';
 import 'package:eike_app/feat_home/data/daos/home_dao.dart';
 import 'package:eike_app/feat_home/data/datasources/asset_home_datasource.dart';
 import 'package:eike_app/feat_home/data/repositories/home_repository_impl.dart';
+import 'package:eike_app/feat_tip_detail/presentation/tip_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eike_app/service_design/components/eike_app_bar.dart';
-import 'package:eike_app/service_design/components/eike_titled_card.dart';
 import 'package:eike_app/service_design/theming/eike_theme.dart';
 
 import 'bloc/home_bloc.dart';
+
+enum _TipDetailPresentation {
+  fullscreenDialog,
+  bottomSheet,
+}
+
+const _tipDetailPresentation = _TipDetailPresentation.bottomSheet;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -83,132 +89,123 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// TODO(Felix): Refactor BlockSemantics on this tip card so it does not get read entirely
-// as soon as the focus is on the card. Instead, only the title should be read and the rest
-// of the content should be read when the user navigates through the card with a screen reader.
-class _TipCard extends StatefulWidget {
-  const _TipCard({required this.tip});
+class const _TipCard({
+  required final TipEntity tip,
+}) extends StatelessWidget {
+  void _openTip(BuildContext context) {
+    final detail = TipDetailScreen(tipId: tip.id);
 
-  final TipEntity tip;
-
-  @override
-  State<_TipCard> createState() => _TipCardState();
-}
-
-class _TipCardState extends State<_TipCard> {
-  late final textController = TextEditingController(text: tip.userNote)
-    ..addListener(_onChangeListener);
-
-  TipEntity get tip => widget.tip;
-
-  @override
-  void dispose() {
-    textController.dispose();
-    super.dispose();
-  }
-
-  void _onChangeListener() {
-    BlocProvider.of<HomeBloc>(context).add(
-      HomeEvent.onUserNoteChanged(
-        tip.id,
-        TipUserNote(textController.text),
-      ),
-    );
+    switch (_tipDetailPresentation) {
+      case .fullscreenDialog:
+        showDialog<void>(
+          context: context,
+          builder: (context) => Dialog.fullscreen(child: detail),
+        );
+      case .bottomSheet:
+        showModalBottomSheet<void>(
+          context: context,
+          // Cover the bottom navigation bar, just like the dialog does.
+          useRootNavigator: true,
+          isScrollControlled: true,
+          useSafeArea: true,
+          clipBehavior: .antiAlias,
+          builder: (context) {
+            return FractionallySizedBox(heightFactor: 0.9, child: detail);
+          },
+        );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return EikeTitledCard(
-      leading: Container(
-        width: 36,
-        height: 36,
-        decoration: BoxDecoration(
-          color: context.colors.secondaryContainer,
-          shape: BoxShape.circle,
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          '${widget.tip.position}',
-          style: context.textTheme.titleMedium?.copyWith(
-            color: context.colors.onSecondaryContainer,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      title: widget.tip.title,
-      child: Column(
-        spacing: EikeTheme.verticalComponentSpacingMedium,
-        children: [
-          Center(
-            child: SizedBox.square(
-              dimension: 250,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Positioned.fill(
-                    child: Image.asset(
-                      'assets/images/tip-icon-bg-x2.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Image.asset(
-                        'assets/content/${widget.tip.imagePath}',
-                        fit: BoxFit.contain,
-                        semanticLabel: widget.tip.imageDescription,
+    return Card(
+      clipBehavior: .antiAlias,
+      child: InkWell(
+        onTap: () => _openTip(context),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: .stretch,
+            children: [
+              Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: EikeTheme.cardPadding,
+                  child: Row(
+                    spacing: EikeTheme.horizontalComponentSpacingMedium,
+                    children: [
+                      Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          color: context.colors.secondaryContainer,
+                          shape: BoxShape.circle,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          '${tip.position}',
+                          style: context.textTheme.titleMedium?.copyWith(
+                            color: context.colors.onSecondaryContainer,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                    ),
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: .start,
+                          mainAxisAlignment: .center,
+                          children: [
+                            Text(
+                              tip.title,
+                              style: context.textTheme.titleSmall?.copyWith(
+                                color: context.colors.primary,
+                              ),
+                            ),
+                            Text(
+                              tip.description,
+                              style: context.textTheme.bodySmall,
+                              maxLines: 2,
+                              overflow: .ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+              Expanded(
+                flex: 1,
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: ClipRect(
+                        child: Transform.scale(
+                          scale: 1.5,
+                          child: Image.asset(
+                            'assets/images/tip-icon-bg-x2.png',
+                            fit: .cover,
+                            excludeFromSemantics: true,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned.fill(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Image.asset(
+                          'assets/content/${tip.imagePath}',
+                          fit: .contain,
+                          // The figure is described on the detail screen.
+                          excludeFromSemantics: true,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          Text(widget.tip.description),
-          if (widget.tip.question case TipQuestion question)
-            Column(
-              spacing: EikeTheme.verticalComponentSpacingSmall,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  question,
-                  style: TextTheme.of(context).titleSmall,
-                ),
-                TextFormField(
-                  controller: textController,
-                  minLines: 2,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    hintText: 'Schreib deine Idee hier auf...',
-                    suffixIcon: const Icon(Icons.edit_outlined),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 12,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(
-                        color: ColorScheme.of(context).outlineVariant,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(
-                        color: ColorScheme.of(context).outlineVariant,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(
-                        color: ColorScheme.of(context).primary,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-        ],
+        ),
       ),
     );
   }
