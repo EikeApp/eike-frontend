@@ -1,5 +1,4 @@
 import 'package:eike_app/data_database/eike_database.dart';
-import 'package:eike_app/data_entities/tables/tip_table.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:eike_app/feat_home/data/daos/home_dao.dart';
@@ -63,22 +62,6 @@ void main() {
       final secondTips = await database.tipTable.select().get();
 
       expect(firstTips, orderedEquals(secondTips));
-    });
-
-    test('should update user note', () async {
-      await repository.syncTips();
-      final tip1 = await database.tipTable.select().get().then(
-        (tips) => tips.first,
-      );
-
-      const updatedUserNote = TipUserNote('Updated_Tip');
-
-      await repository.updateUserNote(tip1.id, updatedUserNote);
-      final tipQuery = database.tipTable.select()
-        ..where((table) => table.id.equalsValue(tip1.id));
-      final newTip = await tipQuery.getSingle();
-
-      expect(newTip.userNote, equals(updatedUserNote));
     });
   });
 }

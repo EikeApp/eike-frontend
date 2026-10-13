@@ -39,13 +39,6 @@ class HomeDao extends DatabaseAccessor<EikeDatabase> with _$HomeDaoMixin {
   Stream<List<TipEntity>> observeTips() {
     return select(tipTable).watch();
   }
-
-  Future<void> updateUserNote(TipId tipId, TipUserNote userNote) {
-    final updateQuery = update(tipTable)
-      ..where((table) => table.id.equalsValue(tipId));
-
-    return updateQuery.write(TipTableCompanion(userNote: Value(userNote)));
-  }
 }
 
 Insertable<TipEntity> _createUpdatedEntity(Tip dto, TipEntity existingEntity) {
