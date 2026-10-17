@@ -49,7 +49,7 @@ so setzen wir den Wert auf 4. Größere Storys müssen kleiner geschnitten werde
 
 ## Releases
 
-Releases werden via workflow-dispatch erstellt.
+Releases werden via [workflow-dispatch](https://github.com/EikeApp/eike-frontend/actions/workflows/release.yml) erstellt.
 
 ## Entwicklung
 
