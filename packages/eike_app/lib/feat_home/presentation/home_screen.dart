@@ -10,13 +10,6 @@ import 'package:eike_app/service_design/theming/eike_theme.dart';
 
 import 'bloc/home_bloc.dart';
 
-enum _TipDetailPresentation {
-  fullscreenDialog,
-  bottomSheet,
-}
-
-const _tipDetailPresentation = _TipDetailPresentation.bottomSheet;
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -36,51 +29,46 @@ class HomeScreen extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             appBar: EikeAppBar(title: 'Meine 7 Sachen'),
-            body: GestureDetector(
-              onTap: () => FocusScope.of(context).unfocus(),
-              behavior: HitTestBehavior.opaque,
-              child: Builder(
-                builder: (context) {
-                  if (state.isLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+            body: Builder(
+              builder: (context) {
+                if (state.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-                  if (state.hasError) {
-                    return Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Text(
-                          'Die Inhalte konnten nicht geladen werden. Bitte versuche es später erneut.',
-                          style: TextTheme.of(context).bodyMedium,
-                          textAlign: TextAlign.center,
-                        ),
+                if (state.hasError) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Text(
+                        'Die Inhalte konnten nicht geladen werden. Bitte versuche es später erneut.',
+                        style: TextTheme.of(context).bodyMedium,
+                        textAlign: TextAlign.center,
                       ),
-                    );
-                  }
-
-                  return ListView.separated(
-                    keyboardDismissBehavior: .onDrag,
-                    padding: EikeTheme.pagePadding,
-                    itemCount: state.tips.length + 1,
-                    itemBuilder: (context, index) {
-                      if (index == state.tips.length) {
-                        return SizedBox(
-                          height: MediaQuery.paddingOf(context).bottom,
-                        );
-                      }
-
-                      return _TipCard(
-                        tip: state.tips[index],
-                      );
-                    },
-                    separatorBuilder: (_, _) {
-                      return SizedBox(
-                        height: EikeTheme.verticalComponentSpacingMedium,
-                      );
-                    },
+                    ),
                   );
-                },
-              ),
+                }
+
+                return ListView.separated(
+                  padding: EikeTheme.pagePadding,
+                  itemCount: state.tips.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == state.tips.length) {
+                      return SizedBox(
+                        height: MediaQuery.paddingOf(context).bottom,
+                      );
+                    }
+
+                    return _TipCard(
+                      tip: state.tips[index],
+                    );
+                  },
+                  separatorBuilder: (_, _) {
+                    return SizedBox(
+                      height: EikeTheme.verticalComponentSpacingMedium,
+                    );
+                  },
+                );
+              },
             ),
           );
         },
@@ -93,27 +81,20 @@ class const _TipCard({
   required final TipEntity tip,
 }) extends StatelessWidget {
   void _openTip(BuildContext context) {
-    final detail = TipDetailScreen(tipId: tip.id);
-
-    switch (_tipDetailPresentation) {
-      case .fullscreenDialog:
-        showDialog<void>(
-          context: context,
-          builder: (context) => Dialog.fullscreen(child: detail),
+    showModalBottomSheet<void>(
+      context: context,
+      // Cover the bottom navigation bar.
+      useRootNavigator: true,
+      isScrollControlled: true,
+      useSafeArea: true,
+      clipBehavior: .antiAlias,
+      builder: (context) {
+        return FractionallySizedBox(
+          heightFactor: 0.9,
+          child: TipDetailScreen(tipId: tip.id),
         );
-      case .bottomSheet:
-        showModalBottomSheet<void>(
-          context: context,
-          // Cover the bottom navigation bar, just like the dialog does.
-          useRootNavigator: true,
-          isScrollControlled: true,
-          useSafeArea: true,
-          clipBehavior: .antiAlias,
-          builder: (context) {
-            return FractionallySizedBox(heightFactor: 0.9, child: detail);
-          },
-        );
-    }
+      },
+    );
   }
 
   @override
