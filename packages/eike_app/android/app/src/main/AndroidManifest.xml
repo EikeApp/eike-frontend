@@ -54,5 +54,4 @@
             <data android:scheme="mailto" />
         </intent>
     </queries>
-    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
 </manifest>

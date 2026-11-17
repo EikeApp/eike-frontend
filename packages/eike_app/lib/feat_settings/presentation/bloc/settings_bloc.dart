@@ -12,9 +12,6 @@ import 'package:eike_app/service_app_info/domain/repositories/app_info_repositor
 import 'package:eike_app/service_app_info/domain/usecases/interactors/get_app_info_interactor.dart';
 import 'package:eike_app/service_bloc/contracts/eike_bloc.dart';
 import 'package:eike_app/service_logging/logging_interactor.dart';
-import 'package:eike_app/service_settings/domain/repositories/eike_settings_repository.dart';
-import 'package:eike_app/service_settings/domain/usecases/observers/is_app_lock_enabled_observer.dart';
-import 'package:eike_app/service_settings/domain/usecases/interactors/set_is_app_lock_enabled_interactor.dart';
 import 'package:use_in_case/use_in_case.dart';
 
 part 'settings_bloc.freezed.dart';
@@ -23,22 +20,13 @@ part 'settings_event.dart';
 
 class SettingsBloc extends EikeBloc<SettingsEvent, SettingsState> {
   final CleanupLocalStorageInteractor cleanupLocalStorage;
-  final IsAppLockEnabledObserver isAppLockEnabledObserver;
-  final SetIsAppLockEnabledInteractor setIsAppLockEnabled;
   final GetAppInfoInteractor getAppInfo;
 
   SettingsBloc(
     SettingsRepository repository,
-    EikeSettingsRepository eikeSettingsRepository,
     NotificationRepository notificationRepository,
     AppInfoRepository appInfoRepository,
   ) : cleanupLocalStorage = CleanupLocalStorageInteractor(repository),
-      isAppLockEnabledObserver = IsAppLockEnabledObserver(
-        eikeSettingsRepository,
-      ),
-      setIsAppLockEnabled = SetIsAppLockEnabledInteractor(
-        eikeSettingsRepository,
-      ),
       getAppInfo = GetAppInfoInteractor(appInfoRepository),
       super(
         SettingsState.initial(),
@@ -46,22 +34,14 @@ class SettingsBloc extends EikeBloc<SettingsEvent, SettingsState> {
       ) {
     on<_OnSetup>(_onSetup);
     on<_OnCleanupLocalStorage>(_onCleanupLocalStorage);
-    on<_OnSetIsAppLockEnabled>(_onSetIsAppLockEnabled);
   }
 
-  FutureOr<void> _onSetup(_OnSetup event, Emitter<SettingsState> emit) async {
-    await getAppInfo
+  FutureOr<void> _onSetup(_OnSetup event, Emitter<SettingsState> emit) {
+    return getAppInfo
         .logger()
         .intercept(submitError)
         .after((appInfo) => emit(state.copyWith(appInfo: appInfo)))
         .run(unit);
-
-    return emit.forEach(
-      isAppLockEnabledObserver.observe(),
-      onData: (isAppLockEnabled) {
-        return state.copyWith(isAppLockEnabled: isAppLockEnabled);
-      },
-    );
   }
 
   FutureOr<void> _onCleanupLocalStorage(
@@ -69,15 +49,5 @@ class SettingsBloc extends EikeBloc<SettingsEvent, SettingsState> {
     Emitter<SettingsState> emit,
   ) {
     return cleanupLocalStorage.logger().intercept(submitError).run(unit);
-  }
-
-  FutureOr<void> _onSetIsAppLockEnabled(
-    _OnSetIsAppLockEnabled event,
-    Emitter<SettingsState> emit,
-  ) {
-    return setIsAppLockEnabled
-        .logger()
-        .intercept(submitError)
-        .run(event.isEnabled);
   }
 }

@@ -6,29 +6,16 @@ import 'package:drift/native.dart';
 import 'package:eike_app/feat_settings/data/daos/settings_dao.dart';
 import 'package:eike_app/feat_settings/data/repositories/settings_repository_impl.dart';
 import 'package:eike_app/feat_settings/domain/repositories/settings_repository.dart';
-import 'package:rx_shared_preferences/rx_shared_preferences.dart';
-import 'package:eike_app/service_settings/data/repositories/eike_settings_repository_impl.dart';
-import 'package:eike_app/service_settings/domain/repositories/eike_settings_repository.dart';
 import 'package:test/test.dart';
 
 void main() {
   group(SettingsRepository, () {
     late EikeDatabase database;
-    late EikeSettingsRepository eikeSettingsRepository;
     late SettingsRepository settingsRepository;
 
     setUp(() {
-      SharedPreferences.setMockInitialValues({});
-
       database = EikeDatabase(NativeDatabase.memory());
-      eikeSettingsRepository = EikeSettingsRepositoryImpl(
-        RxSharedPreferences.getInstance(),
-      );
-
-      settingsRepository = SettingsRepositoryImpl(
-        SettingsDao(database),
-        eikeSettingsRepository,
-      );
+      settingsRepository = SettingsRepositoryImpl(SettingsDao(database));
     });
 
     tearDown(() async {
@@ -36,7 +23,7 @@ void main() {
     });
 
     test(
-      'should clear all tables and reset all settings on cleanupLocalStorage',
+      'should clear all tables on cleanupLocalStorage',
       () async {
         for (var i = 0; i < 10; ++i) {
           await database

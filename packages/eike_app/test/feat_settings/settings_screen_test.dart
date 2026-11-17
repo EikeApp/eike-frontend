@@ -7,12 +7,10 @@ import 'package:eike_app/feat_notification/domain/repositories/notification_repo
 import 'package:eike_app/feat_settings/presentation/settings_screen.dart';
 import 'package:eike_app/service_app_info/domain/models/app_info.dart';
 import 'package:eike_app/service_app_info/domain/repositories/app_info_repository.dart';
-import 'package:eike_app/service_settings/domain/repositories/eike_settings_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rxdart/rxdart.dart';
 
 class _FakeNotificationRepository implements NotificationRepository {
   final emittedNotifications = <EikeNotification>[];
@@ -29,33 +27,6 @@ class _FakeNotificationRepository implements NotificationRepository {
   Stream<EikeNotification> observeNotification() => const Stream.empty();
 }
 
-// Real EikeSettingsRepositoryImpl is backed by RxSharedPreferences, a
-// global singleton whose internal housekeeping timers don't play well with
-// flutter_test's strict "no pending timers" invariant. A small in-memory
-// fake sidesteps that entirely and is all the UI logic under test needs.
-class _FakeEikeSettingsRepository implements EikeSettingsRepository {
-  final _isAppLockEnabled = BehaviorSubject.seeded(false);
-
-  // Reads the current value directly instead of subscribing via the
-  // stream — SettingsBloc already holds the one long-lived subscription
-  // this fake needs; adding a second one (e.g. via `.first`) just to read
-  // the current value in a test triggered a hang on widget disposal.
-  bool get isAppLockEnabled => _isAppLockEnabled.value;
-
-  @override
-  Future<void> setAppLockEnabled(bool isEnabled) async {
-    _isAppLockEnabled.add(isEnabled);
-  }
-
-  @override
-  Stream<bool> observeIsAppLockEnabled() => _isAppLockEnabled.stream;
-
-  @override
-  Future<void> resetAllSettings() async {
-    _isAppLockEnabled.add(false);
-  }
-}
-
 class _FakeAppInfoRepository implements AppInfoRepository {
   @override
   Future<AppInfo> getAppInfo() async {
@@ -66,11 +37,9 @@ class _FakeAppInfoRepository implements AppInfoRepository {
 void main() {
   group(SettingsScreen, () {
     late EikeDatabase database;
-    late _FakeEikeSettingsRepository eikeSettingsRepository;
 
     setUp(() {
       database = EikeDatabase(NativeDatabase.memory());
-      eikeSettingsRepository = _FakeEikeSettingsRepository();
     });
 
     tearDown(() => database.close());
@@ -80,9 +49,6 @@ void main() {
         MultiRepositoryProvider(
           providers: [
             RepositoryProvider<EikeDatabase>.value(value: database),
-            RepositoryProvider<EikeSettingsRepository>.value(
-              value: eikeSettingsRepository,
-            ),
             RepositoryProvider<NotificationRepository>(
               create: (_) => _FakeNotificationRepository(),
             ),
@@ -160,21 +126,6 @@ void main() {
         await disposeSettingsScreen(tester);
       },
     );
-
-    testWidgets('should toggle app lock through the switch', (tester) async {
-      await pumpSettingsScreen(tester);
-      await tester.pumpAndSettle();
-
-      expect(tester.widget<Switch>(find.byType(Switch)).value, isFalse);
-
-      await tester.tap(find.byType(Switch));
-      await tester.pumpAndSettle();
-
-      expect(tester.widget<Switch>(find.byType(Switch)).value, isTrue);
-      expect(eikeSettingsRepository.isAppLockEnabled, isTrue);
-
-      await disposeSettingsScreen(tester);
-    });
 
     testWidgets(
       'should show the app version and copy it to the clipboard on tap',
