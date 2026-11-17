@@ -26,7 +26,6 @@ dependencies:
   path: ^1.9.0
   path_provider: ^2.1.6
   provider: ^6.1.5+1
-  local_auth: ^3.0.1
   shared_preferences: ^2.5.4
   url_launcher: ^6.3.2
   flutter_svg: ^2.2.3
@@ -38,7 +37,6 @@ dependencies:
   use_in_case: ^1.4.3
   dartz: ^0.10.1
   logger: ^2.6.2
-  rx_shared_preferences: ^4.0.0
   rxdart: ^0.28.0
   meta: ^1.18.0
   flutter_html: ^3.0.0

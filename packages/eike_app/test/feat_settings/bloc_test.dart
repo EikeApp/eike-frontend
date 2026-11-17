@@ -5,9 +5,6 @@ import 'package:eike_app/feat_settings/domain/repositories/settings_repository.d
 import 'package:eike_app/feat_settings/presentation/bloc/settings_bloc.dart';
 import 'package:eike_app/service_app_info/domain/models/app_info.dart';
 import 'package:eike_app/service_app_info/domain/repositories/app_info_repository.dart';
-import 'package:rx_shared_preferences/rx_shared_preferences.dart';
-import 'package:eike_app/service_settings/data/repositories/eike_settings_repository_impl.dart';
-import 'package:eike_app/service_settings/domain/repositories/eike_settings_repository.dart';
 import 'package:test/test.dart';
 
 class _FakeSettingsRepository implements SettingsRepository {
@@ -44,61 +41,26 @@ class _FakeNotificationRepository implements NotificationRepository {
 void main() {
   group(SettingsBloc, () {
     late _FakeSettingsRepository settingsRepository;
-    late EikeSettingsRepository eikeSettingsRepository;
     late _FakeNotificationRepository notificationRepo;
 
     setUp(() {
-      SharedPreferences.setMockInitialValues({});
-
       settingsRepository = _FakeSettingsRepository();
-      eikeSettingsRepository = EikeSettingsRepositoryImpl(
-        RxSharedPreferences.getInstance(),
-      );
       notificationRepo = _FakeNotificationRepository();
     });
 
     SettingsBloc buildBloc() => SettingsBloc(
       settingsRepository,
-      eikeSettingsRepository,
       notificationRepo,
       _FakeAppInfoRepository(),
     );
 
     blocTest<SettingsBloc, SettingsState>(
-      'should reflect the persisted app lock setting and app info on setup',
-      setUp: () => eikeSettingsRepository.setAppLockEnabled(true),
+      'should load the app info on setup',
       build: buildBloc,
       act: (bloc) => bloc.add(const SettingsEvent.onSetup()),
       expect: () => [
-        const SettingsState(
-          isAppLockEnabled: false,
-          appInfo: _FakeAppInfoRepository.appInfo,
-        ),
-        const SettingsState(
-          isAppLockEnabled: true,
-          appInfo: _FakeAppInfoRepository.appInfo,
-        ),
+        const SettingsState(appInfo: _FakeAppInfoRepository.appInfo),
       ],
-    );
-
-    // Toggling doesn't emit a new SettingsState directly — the switch
-    // only reflects the change reactively, through the subscription
-    // `onSetup` establishes (already covered end-to-end by the "should
-    // toggle app lock through the switch" widget test). At the bloc
-    // level, what matters in isolation is that the write actually reaches
-    // the repository.
-    blocTest<SettingsBloc, SettingsState>(
-      'should persist the app lock setting when toggled',
-      build: buildBloc,
-      act: (bloc) =>
-          bloc.add(const SettingsEvent.onSetIsAppLockEnabled(true)),
-      expect: () => [],
-      verify: (_) async {
-        expect(
-          await eikeSettingsRepository.observeIsAppLockEnabled().first,
-          isTrue,
-        );
-      },
     );
 
     blocTest<SettingsBloc, SettingsState>(

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SettingsState {
 
- bool get isAppLockEnabled; AppInfo? get appInfo;
+ AppInfo? get appInfo;
 /// Create a copy of SettingsState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,20 +27,20 @@ $SettingsStateCopyWith<SettingsState> get copyWith => _$SettingsStateCopyWithImp
 @override
 bool operator ==(Object other) {
   final _this = this as SettingsState;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SettingsState&&(identical(other.isAppLockEnabled, _this.isAppLockEnabled) || other.isAppLockEnabled == _this.isAppLockEnabled)&&(identical(other.appInfo, _this.appInfo) || other.appInfo == _this.appInfo));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SettingsState&&(identical(other.appInfo, _this.appInfo) || other.appInfo == _this.appInfo));
 }
 
 
 @override
 int get hashCode {
   final _this = this as SettingsState;
-  return Object.hash(runtimeType,_this.isAppLockEnabled,_this.appInfo);
+  return Object.hash(runtimeType,_this.appInfo);
 }
 
 @override
 String toString() {
   final _this = this as SettingsState;
-  return 'SettingsState(isAppLockEnabled: ${_this.isAppLockEnabled}, appInfo: ${_this.appInfo})';
+  return 'SettingsState(appInfo: ${_this.appInfo})';
 }
 
 
@@ -51,7 +51,7 @@ abstract mixin class $SettingsStateCopyWith<$Res>  {
   factory $SettingsStateCopyWith(SettingsState value, $Res Function(SettingsState) _then) = _$SettingsStateCopyWithImpl;
 @useResult
 $Res call({
- bool isAppLockEnabled, AppInfo? appInfo
+ AppInfo? appInfo
 });
 
 
@@ -68,10 +68,9 @@ class _$SettingsStateCopyWithImpl<$Res>
 
 /// Create a copy of SettingsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isAppLockEnabled = null,Object? appInfo = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? appInfo = freezed,}) {
   return _then(SettingsState(
-isAppLockEnabled: null == isAppLockEnabled ? _self.isAppLockEnabled : isAppLockEnabled // ignore: cast_nullable_to_non_nullable
-as bool,appInfo: freezed == appInfo ? _self.appInfo : appInfo // ignore: cast_nullable_to_non_nullable
+appInfo: freezed == appInfo ? _self.appInfo : appInfo // ignore: cast_nullable_to_non_nullable
 as AppInfo?,
   ));
 }
@@ -154,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isAppLockEnabled,  AppInfo? appInfo)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AppInfo? appInfo)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SettingsState() when $default != null:
-return $default(_that.isAppLockEnabled,_that.appInfo);case _:
+return $default(_that.appInfo);case _:
   return orElse();
 
 }
@@ -175,10 +174,10 @@ return $default(_that.isAppLockEnabled,_that.appInfo);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isAppLockEnabled,  AppInfo? appInfo)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AppInfo? appInfo)  $default,) {final _that = this;
 switch (_that) {
 case _SettingsState():
-return $default(_that.isAppLockEnabled,_that.appInfo);}
+return $default(_that.appInfo);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -192,10 +191,10 @@ return $default(_that.isAppLockEnabled,_that.appInfo);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isAppLockEnabled,  AppInfo? appInfo)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AppInfo? appInfo)?  $default,) {final _that = this;
 switch (_that) {
 case _SettingsState() when $default != null:
-return $default(_that.isAppLockEnabled,_that.appInfo);case _:
+return $default(_that.appInfo);case _:
   return null;
 
 }
@@ -207,10 +206,9 @@ return $default(_that.isAppLockEnabled,_that.appInfo);case _:
 
 
 class _SettingsState implements SettingsState {
-  const _SettingsState({required this.isAppLockEnabled, this.appInfo});
+  const _SettingsState({this.appInfo});
   
 
-@override final  bool isAppLockEnabled;
 @override final  AppInfo? appInfo;
 
 /// Create a copy of SettingsState
@@ -223,18 +221,18 @@ _$SettingsStateCopyWith<_SettingsState> get copyWith => __$SettingsStateCopyWith
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SettingsState&&(identical(other.isAppLockEnabled, isAppLockEnabled) || other.isAppLockEnabled == isAppLockEnabled)&&(identical(other.appInfo, appInfo) || other.appInfo == appInfo));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SettingsState&&(identical(other.appInfo, appInfo) || other.appInfo == appInfo));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,isAppLockEnabled,appInfo);
+    return Object.hash(runtimeType,appInfo);
 }
 
 @override
 String toString() {
-    return 'SettingsState(isAppLockEnabled: $isAppLockEnabled, appInfo: $appInfo)';
+    return 'SettingsState(appInfo: $appInfo)';
 }
 
 
@@ -245,7 +243,7 @@ abstract mixin class _$SettingsStateCopyWith<$Res> implements $SettingsStateCopy
   factory _$SettingsStateCopyWith(_SettingsState value, $Res Function(_SettingsState) _then) = __$SettingsStateCopyWithImpl;
 @override @useResult
 $Res call({
- bool isAppLockEnabled, AppInfo? appInfo
+ AppInfo? appInfo
 });
 
 
@@ -262,10 +260,9 @@ class __$SettingsStateCopyWithImpl<$Res>
 
 /// Create a copy of SettingsState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isAppLockEnabled = null,Object? appInfo = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? appInfo = freezed,}) {
   return _then(_SettingsState(
-isAppLockEnabled: null == isAppLockEnabled ? _self.isAppLockEnabled : isAppLockEnabled // ignore: cast_nullable_to_non_nullable
-as bool,appInfo: freezed == appInfo ? _self.appInfo : appInfo // ignore: cast_nullable_to_non_nullable
+appInfo: freezed == appInfo ? _self.appInfo : appInfo // ignore: cast_nullable_to_non_nullable
 as AppInfo?,
   ));
 }
@@ -317,14 +314,13 @@ extension SettingsEventPatterns on SettingsEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _OnSetup value)?  onSetup,TResult Function( _OnUpsertTeamContact value)?  onUpsertTeamContact,TResult Function( _OnCleanupLocalStorage value)?  onCleanupLocalStorage,TResult Function( _OnSetIsAppLockEnabled value)?  onSetIsAppLockEnabled,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _OnSetup value)?  onSetup,TResult Function( _OnUpsertTeamContact value)?  onUpsertTeamContact,TResult Function( _OnCleanupLocalStorage value)?  onCleanupLocalStorage,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _OnSetup() when onSetup != null:
 return onSetup(_that);case _OnUpsertTeamContact() when onUpsertTeamContact != null:
 return onUpsertTeamContact(_that);case _OnCleanupLocalStorage() when onCleanupLocalStorage != null:
-return onCleanupLocalStorage(_that);case _OnSetIsAppLockEnabled() when onSetIsAppLockEnabled != null:
-return onSetIsAppLockEnabled(_that);case _:
+return onCleanupLocalStorage(_that);case _:
   return orElse();
 
 }
@@ -342,14 +338,13 @@ return onSetIsAppLockEnabled(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _OnSetup value)  onSetup,required TResult Function( _OnUpsertTeamContact value)  onUpsertTeamContact,required TResult Function( _OnCleanupLocalStorage value)  onCleanupLocalStorage,required TResult Function( _OnSetIsAppLockEnabled value)  onSetIsAppLockEnabled,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _OnSetup value)  onSetup,required TResult Function( _OnUpsertTeamContact value)  onUpsertTeamContact,required TResult Function( _OnCleanupLocalStorage value)  onCleanupLocalStorage,}){
 final _that = this;
 switch (_that) {
 case _OnSetup():
 return onSetup(_that);case _OnUpsertTeamContact():
 return onUpsertTeamContact(_that);case _OnCleanupLocalStorage():
-return onCleanupLocalStorage(_that);case _OnSetIsAppLockEnabled():
-return onSetIsAppLockEnabled(_that);}
+return onCleanupLocalStorage(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -363,14 +358,13 @@ return onSetIsAppLockEnabled(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _OnSetup value)?  onSetup,TResult? Function( _OnUpsertTeamContact value)?  onUpsertTeamContact,TResult? Function( _OnCleanupLocalStorage value)?  onCleanupLocalStorage,TResult? Function( _OnSetIsAppLockEnabled value)?  onSetIsAppLockEnabled,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _OnSetup value)?  onSetup,TResult? Function( _OnUpsertTeamContact value)?  onUpsertTeamContact,TResult? Function( _OnCleanupLocalStorage value)?  onCleanupLocalStorage,}){
 final _that = this;
 switch (_that) {
 case _OnSetup() when onSetup != null:
 return onSetup(_that);case _OnUpsertTeamContact() when onUpsertTeamContact != null:
 return onUpsertTeamContact(_that);case _OnCleanupLocalStorage() when onCleanupLocalStorage != null:
-return onCleanupLocalStorage(_that);case _OnSetIsAppLockEnabled() when onSetIsAppLockEnabled != null:
-return onSetIsAppLockEnabled(_that);case _:
+return onCleanupLocalStorage(_that);case _:
   return null;
 
 }
@@ -387,13 +381,12 @@ return onSetIsAppLockEnabled(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  onSetup,TResult Function()?  onUpsertTeamContact,TResult Function()?  onCleanupLocalStorage,TResult Function( bool isEnabled)?  onSetIsAppLockEnabled,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  onSetup,TResult Function()?  onUpsertTeamContact,TResult Function()?  onCleanupLocalStorage,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OnSetup() when onSetup != null:
 return onSetup();case _OnUpsertTeamContact() when onUpsertTeamContact != null:
 return onUpsertTeamContact();case _OnCleanupLocalStorage() when onCleanupLocalStorage != null:
-return onCleanupLocalStorage();case _OnSetIsAppLockEnabled() when onSetIsAppLockEnabled != null:
-return onSetIsAppLockEnabled(_that.isEnabled);case _:
+return onCleanupLocalStorage();case _:
   return orElse();
 
 }
@@ -411,13 +404,12 @@ return onSetIsAppLockEnabled(_that.isEnabled);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  onSetup,required TResult Function()  onUpsertTeamContact,required TResult Function()  onCleanupLocalStorage,required TResult Function( bool isEnabled)  onSetIsAppLockEnabled,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  onSetup,required TResult Function()  onUpsertTeamContact,required TResult Function()  onCleanupLocalStorage,}) {final _that = this;
 switch (_that) {
 case _OnSetup():
 return onSetup();case _OnUpsertTeamContact():
 return onUpsertTeamContact();case _OnCleanupLocalStorage():
-return onCleanupLocalStorage();case _OnSetIsAppLockEnabled():
-return onSetIsAppLockEnabled(_that.isEnabled);}
+return onCleanupLocalStorage();}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -431,13 +423,12 @@ return onSetIsAppLockEnabled(_that.isEnabled);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  onSetup,TResult? Function()?  onUpsertTeamContact,TResult? Function()?  onCleanupLocalStorage,TResult? Function( bool isEnabled)?  onSetIsAppLockEnabled,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  onSetup,TResult? Function()?  onUpsertTeamContact,TResult? Function()?  onCleanupLocalStorage,}) {final _that = this;
 switch (_that) {
 case _OnSetup() when onSetup != null:
 return onSetup();case _OnUpsertTeamContact() when onUpsertTeamContact != null:
 return onUpsertTeamContact();case _OnCleanupLocalStorage() when onCleanupLocalStorage != null:
-return onCleanupLocalStorage();case _OnSetIsAppLockEnabled() when onSetIsAppLockEnabled != null:
-return onSetIsAppLockEnabled(_that.isEnabled);case _:
+return onCleanupLocalStorage();case _:
   return null;
 
 }
@@ -540,73 +531,5 @@ String toString() {
 
 
 
-
-/// @nodoc
-
-
-class _OnSetIsAppLockEnabled implements SettingsEvent {
-  const _OnSetIsAppLockEnabled(this.isEnabled);
-  
-
- final  bool isEnabled;
-
-/// Create a copy of SettingsEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$OnSetIsAppLockEnabledCopyWith<_OnSetIsAppLockEnabled> get copyWith => __$OnSetIsAppLockEnabledCopyWithImpl<_OnSetIsAppLockEnabled>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnSetIsAppLockEnabled&&(identical(other.isEnabled, isEnabled) || other.isEnabled == isEnabled));
-}
-
-
-@override
-int get hashCode {
-    return Object.hash(runtimeType,isEnabled);
-}
-
-@override
-String toString() {
-    return 'SettingsEvent.onSetIsAppLockEnabled(isEnabled: $isEnabled)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$OnSetIsAppLockEnabledCopyWith<$Res> implements $SettingsEventCopyWith<$Res> {
-  factory _$OnSetIsAppLockEnabledCopyWith(_OnSetIsAppLockEnabled value, $Res Function(_OnSetIsAppLockEnabled) _then) = __$OnSetIsAppLockEnabledCopyWithImpl;
-@useResult
-$Res call({
- bool isEnabled
-});
-
-
-
-
-}
-/// @nodoc
-class __$OnSetIsAppLockEnabledCopyWithImpl<$Res>
-    implements _$OnSetIsAppLockEnabledCopyWith<$Res> {
-  __$OnSetIsAppLockEnabledCopyWithImpl(this._self, this._then);
-
-  final _OnSetIsAppLockEnabled _self;
-  final $Res Function(_OnSetIsAppLockEnabled) _then;
-
-/// Create a copy of SettingsEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? isEnabled = null,}) {
-  return _then(_OnSetIsAppLockEnabled(
-null == isEnabled ? _self.isEnabled : isEnabled // ignore: cast_nullable_to_non_nullable
-as bool,
-  ));
-}
-
-
-}
 
 // dart format on
