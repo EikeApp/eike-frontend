@@ -24,9 +24,7 @@ class SettingsScreen extends StatelessWidget {
         return SettingsBloc(
           SettingsRepositoryImpl(
             SettingsDao(RepositoryProvider.of(context)),
-            RepositoryProvider.of(context),
           ),
-          RepositoryProvider.of(context),
           RepositoryProvider.of(context),
           RepositoryProvider.of<AppInfoRepository>(context),
         )..add(const SettingsEvent.onSetup());
@@ -78,33 +76,6 @@ class _Scaffold extends StatelessWidget {
                       style: TextStyle(color: context.colors.primary),
                     ),
                   ),
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'App-Sperre',
-                            style: context.textTheme.titleMedium?.copyWith(
-                              color: context.colors.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text("Biometrische Authentifizierung"),
-                        ],
-                      ),
-                    ),
-                    Switch(
-                      value: state.isAppLockEnabled,
-                      onChanged: (isEnabled) {
-                        BlocProvider.of<SettingsBloc>(context).add(
-                          SettingsEvent.onSetIsAppLockEnabled(isEnabled),
-                        );
-                      },
-                    ),
-                  ],
                 ),
                 Row(
                   children: [
@@ -272,4 +243,3 @@ class _CleanupStorageConfirmationDialog extends StatelessWidget {
     );
   }
 }
-

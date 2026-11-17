@@ -47,7 +47,7 @@ const String _privacyHtml = '''
   <h2>Datenverarbeitung in dieser App</h2>
 
   <h3>Grundsatz</h3>
-  <p>Alle Daten werden lokal auf dem Gerät gespeichert. Es findet in der aktuellen Implementierung keine Übertragung an Server/Cloud statt. Biometrie wird nicht von der App gespeichert. Die App nutzt nur die vom Betriebssystem bereitgestellte Authentifizierung.</p>
+  <p>Alle Daten werden lokal auf dem Gerät gespeichert. Es findet in der aktuellen Implementierung keine Übertragung an Server/Cloud statt.</p>
 
   <h3>Vorsätze</h3>
   <p><strong>Beschreibung:</strong> Nutzende der App können eigene Verhaltensvorsätze in Textform in Freitextfelder schreiben. Die Angabe von Daten sind freiwillig.</p>
@@ -89,7 +89,6 @@ const String _privacyHtml = '''
   <p><strong>Welche Daten?</strong></p>
   <ul>
     <li>Technischer Schlüssel zur Entschlüsselung der lokalen Datenbank</li>
-    <li>Einstellung, ob eine optionale App-Sperre aktiviert ist (ja/nein)</li>
   </ul>
   <p><strong>Technische Umsetzung (Package)</strong></p>
   <ul><li>flutter_secure_storage: https://pub.dev/packages/flutter_secure_storage</li></ul>
@@ -102,17 +101,6 @@ const String _privacyHtml = '''
   <ul><li>Ein einfacher Marker/Schalter (keine Inhaltsdaten, keine Notizen, keine Kontaktdaten)</li></ul>
   <p><strong>Technische Umsetzung (Package)</strong></p>
   <ul><li>shared_preferences: https://pub.dev/packages/shared_preferences</li></ul>
-
-  <h3>4) Biometrische Authentifizierung</h3>
-  <p><strong>Zweck</strong></p>
-  <ul><li>Entsperren der App über die vom Betriebssystem bereitgestellte Authentifizierung</li></ul>
-  <p><strong>Technische Umsetzung (Package)</strong></p>
-  <ul><li>local_auth: https://pub.dev/packages/local_auth</li></ul>
-  <p><strong>Wichtig</strong></p>
-  <ul>
-    <li>Die App erhebt oder speichert keine biometrischen Daten (z. B. Face ID/Fingerprint)</li>
-    <li>Die biometrische Verarbeitung erfolgt ausschließlich im Betriebssystem innerhalb der jeweiligen Sicherheitsumgebung</li>
-  </ul>
 
   <h2>Löschkonzept</h2>
   <p>In der App gibt es „Alle Daten löschen": entfernt die in Drift gespeicherten Inhalte (Kontaktdaten + Tipps/Notizen).</p>

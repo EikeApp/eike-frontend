@@ -257,14 +257,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
-  dart_either:
-    dependency: transitive
-    description:
-      name: dart_either
-      sha256: "928895b8266ac5906eb4e2993fead563a73b17fc86eec6b40172100d56ca2507"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   dart_style:
     dependency: transitive
     description:
@@ -289,14 +281,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.1"
-  disposebag:
-    dependency: transitive
-    description:
-      name: disposebag
-      sha256: c38be345780e0e4a4690b25b7c76b7d7d0cb39ec1c1f7895fe5e72f3630e3b78
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.5.1"
   drift:
     dependency: "direct main"
     description:
@@ -420,14 +404,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.8"
-  flutter_plugin_android_lifecycle:
-    dependency: transitive
-    description:
-      name: flutter_plugin_android_lifecycle
-      sha256: "3854fe5e3bff0b113c658f260b90c95dea17c92db0f2addeac2e343dd9969785"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.35"
   flutter_secure_storage:
     dependency: "direct main"
     description:
@@ -702,46 +678,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
-  local_auth:
-    dependency: "direct main"
-    description:
-      name: local_auth
-      sha256: ecf24edf2283c509ecd217e3595f6f71034b68888d28ad1dae6bfa0857b816ac
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.2"
-  local_auth_android:
-    dependency: transitive
-    description:
-      name: local_auth_android
-      sha256: "76c389998fe95cff4352644776ab5775f24ddd58f179dbf3df1b9c268cbbadc4"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.0"
-  local_auth_darwin:
-    dependency: transitive
-    description:
-      name: local_auth_darwin
-      sha256: b1b2d938cc3511512e552d92e782e055b8dc29c83e21c59e6ecfc6bd79ab0744
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.4"
-  local_auth_platform_interface:
-    dependency: transitive
-    description:
-      name: local_auth_platform_interface
-      sha256: f98b8e388588583d3f781f6806e4f4c9f9e189d898d27f0c249b93a1973dd122
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
-  local_auth_windows:
-    dependency: transitive
-    description:
-      name: local_auth_windows
-      sha256: d72b8a441e5e6a679902f87c51529fcce65f442d77598484cf35454c3d733eda
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.2"
   logger:
     dependency: "direct main"
     description:
@@ -1014,22 +950,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
-  rx_shared_preferences:
-    dependency: "direct main"
-    description:
-      name: rx_shared_preferences
-      sha256: "4414a3988f58addf6cfe7932c3eb7589604010fd2d3466964abf2c2cfdf1f6ed"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.0"
-  rx_storage:
-    dependency: transitive
-    description:
-      name: rx_storage
-      sha256: "06c73a6960eb49b410e26d55fcdec0a2c098314ddf6940dc2d499290ea8a930f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   rxdart:
     dependency: "direct main"
     description:
@@ -1038,14 +958,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.28.0"
-  rxdart_ext:
-    dependency: transitive
-    description:
-      name: rxdart_ext
-      sha256: "95df7e8b13140e2c3fdb3b943569a51f18090e82aaaf6ca6e8e6437e434a6fb0"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.0"
   shared_preferences:
     dependency: "direct main"
     description:

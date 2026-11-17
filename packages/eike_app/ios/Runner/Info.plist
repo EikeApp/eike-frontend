@@ -33,8 +33,6 @@
 		</array>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
-		<key>NSFaceIDUsageDescription</key>
-		<string>Wir nutzen Face ID, um die App zu entsperren.</string>
 		<key>UIApplicationSceneManifest</key>
 		<dict>
 			<key>UIApplicationSupportsMultipleScenes</key>
