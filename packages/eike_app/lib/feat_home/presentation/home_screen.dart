@@ -131,23 +131,11 @@ class const _TipCard({
                         ),
                       ),
                       Flexible(
-                        child: Column(
-                          crossAxisAlignment: .start,
-                          mainAxisAlignment: .center,
-                          children: [
-                            Text(
-                              tip.title,
-                              style: context.textTheme.titleSmall?.copyWith(
-                                color: context.colors.primary,
-                              ),
-                            ),
-                            Text(
-                              tip.description,
-                              style: context.textTheme.bodySmall,
-                              maxLines: 2,
-                              overflow: .ellipsis,
-                            ),
-                          ],
+                        child: Text(
+                          tip.title,
+                          style: context.textTheme.titleSmall?.copyWith(
+                            color: context.colors.primary,
+                          ),
                         ),
                       ),
                     ],
