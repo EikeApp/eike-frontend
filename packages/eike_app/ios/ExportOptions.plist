@@ -10,7 +10,7 @@
 	<string>manual</string>
 	<key>provisioningProfiles</key>
 	<dict>
-		<key>de.df-psnv.eike</key>
+		<key>app.eike</key>
 		<string>EikeApp Provisioning Profile</string>
 	</dict>
 	<key>uploadBitcode</key>

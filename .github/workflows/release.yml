@@ -193,7 +193,7 @@ jobs:
       - name: Install Provisioning Profile
         uses: apple-actions/download-provisioning-profiles@v7
         with:
-          bundle-id: de.df-psnv.eike
+          bundle-id: app.eike
           profile-type: "IOS_APP_STORE"
           issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           api-key-id: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
@@ -276,7 +276,7 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
-          packageName: de.dfpsnv.eike
+          packageName: app.eike
           releaseFiles: artifacts/app-release.aab
           track: internal
           status: completed

@@ -1,4 +1,4 @@
-package de.dfpsnv.eike
+package app.eike
 
 import io.flutter.embedding.android.FlutterActivity
 

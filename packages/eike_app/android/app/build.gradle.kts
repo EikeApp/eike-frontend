@@ -20,7 +20,7 @@ fun prop(name: String): String? = keystoreProperties.getProperty(name)
 val hasSigning = listOf("keyAlias", "keyPassword", "storeFile", "storePassword").all { prop(it) != null }
 
 android {
-    namespace = "de.dfpsnv.eike"
+    namespace = "app.eike"
     // flutter_secure_storage requires compileSdk 37; flutter.compileSdkVersion
     // currently resolves to 36, so it is overridden explicitly here.
     compileSdk = 37
@@ -32,7 +32,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "de.dfpsnv.eike"
+        applicationId = "app.eike"
         // minSdk = flutter.minSdkVersion
         // targetSdk = flutter.targetSdkVersion
         minSdk = 24
