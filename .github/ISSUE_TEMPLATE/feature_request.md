@@ -1,26 +1,13 @@
 ---
 name: Funktionalität anfragen
 about: Schlage eine Idee für dieses Projekt vor.
-title: ''
-assignees: ''
+title: ""
+assignees: ""
 ---
-
-<details>
-<summary>Aufgaben des Product-Owners</summary>
-
-# Definition of Ready (DoR) v1
-
-- [ ] Story mit Stakeholdern abstimmen
-- [ ] *Wert* (Nutz-, Kunden- und Wissens-Wert) mit *Stakeholder* abstimmen 
-- [ ] Notwendige Designs für die Devs ausreichend definieren
-- [ ] Quality Attribute Scenarios (QAS) abstimmen
-- [ ] *Größe* (Aufwand, Komplexität) mit *DEVs* abstimmen
-
-</details>
 
 # Story
 
-Als *Anforderer* möchte ich *Wert* um *Begründung*.
+Als _Anforderer_ möchte ich _Wert_ um _Begründung_.
 
 # Technische Details
 
