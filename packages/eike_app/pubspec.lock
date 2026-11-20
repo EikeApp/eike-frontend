@@ -1287,10 +1287,10 @@ packages:
     dependency: "direct main"
     description:
       name: use_in_case
-      sha256: "1706517fbd071e1151a24af4b4861cbd3f901d01823d67561ddcfb98c454b8f4"
+      sha256: "704e2cf300b54a85167aab589e952f8bc91b87d7686dad3d9297cf9aa038c99c"
       url: "https://pub.dev"
     source: hosted
-    version: "1.4.3"
+    version: "3.0.0"
   vector_graphics:
     dependency: transitive
     description:
