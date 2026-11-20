@@ -261,49 +261,49 @@ jobs:
             artifacts/app-release.apk
             artifacts/*.ipa
 
-#   deploy-android:
-#     name: Deploy to Google Play (internal)
-#     needs:
-#       - release
-#       - build-appbundle
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/download-artifact@v4
-#         with:
-#           name: release-aab
-#           path: artifacts
-#       - name: Upload to Google Play
-#         uses: r0adkll/upload-google-play@v1
-#         with:
-#           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
-#           packageName: app.eike
-#           releaseFiles: artifacts/app-release.aab
-#           track: internal
-#           status: completed
-#
-#   deploy-ios:
-#     name: Deploy to TestFlight
-#     needs:
-#       - release
-#       - build-ios
-#     runs-on: macos-latest
-#     steps:
-#       - uses: actions/download-artifact@v4
-#         with:
-#           name: release-ipa
-#           path: artifacts
-#       - name: Resolve IPA path
-#         id: ipa
-#         run: echo "path=$(ls artifacts/*.ipa)" >> "$GITHUB_OUTPUT"
-#       - name: Upload to TestFlight
-#         uses: apple-actions/upload-testflight-build@v5
-#         with:
-#           app-path: ${{ steps.ipa.outputs.path }}
-#           issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-#           api-key-id: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
-#           api-private-key: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
-#           # NOTE(Felix): Our App Store Connect API key only has the
-#           # "Developer" role, which isn't enough to query build processing
-#           # state (needs "App Manager"). The upload itself still succeeds -
-#           # skip waiting until the key gets rotated with the right role.
-#           wait-for-processing: "false"
+  deploy-android:
+    name: Deploy to Google Play (internal)
+    needs:
+      - release
+      - build-appbundle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-aab
+          path: artifacts
+      - name: Upload to Google Play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: app.eike
+          releaseFiles: artifacts/app-release.aab
+          track: internal
+          status: completed
+
+  deploy-ios:
+    name: Deploy to TestFlight
+    needs:
+      - release
+      - build-ios
+    runs-on: macos-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-ipa
+          path: artifacts
+      - name: Resolve IPA path
+        id: ipa
+        run: echo "path=$(ls artifacts/*.ipa)" >> "$GITHUB_OUTPUT"
+      - name: Upload to TestFlight
+        uses: apple-actions/upload-testflight-build@v5
+        with:
+          app-path: ${{ steps.ipa.outputs.path }}
+          issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          api-key-id: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          api-private-key: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          # NOTE(Felix): Our App Store Connect API key only has the
+          # "Developer" role, which isn't enough to query build processing
+          # state (needs "App Manager"). The upload itself still succeeds -
+          # skip waiting until the key gets rotated with the right role.
+          wait-for-processing: "false"
