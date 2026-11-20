@@ -5,6 +5,10 @@
 Unsere Vision ist es, Einsatzkräften Informationen und Unterstützung bei der Vorbereitung und Verarbeitung von
 belastenden Einsätzen zu geben.
 
+## Technischer Support
+
+Falls du Fragen zu der Verwendung von EIKE hast, schreibe uns gern eine E-Mail an [eikeapp@df-psnv.de](mailto:eikeapp@df-psnv.de).
+
 ### Missionen
 
 #### Mission 1
