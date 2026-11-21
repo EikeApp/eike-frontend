@@ -5,7 +5,7 @@ import 'package:eike_app/feat_notification/data/repositories/notification_reposi
 import 'package:eike_app/feat_notification/domain/models/eike_notification.dart';
 import 'package:eike_app/feat_notification/domain/repositories/notification_repository.dart';
 import 'package:eike_app/feat_notification/presentation/bloc/notification_bloc.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eike_app/service_design/theming/eike_theme.dart';
 

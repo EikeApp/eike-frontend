@@ -3,7 +3,7 @@ import 'package:eike_app/data_database/eike_database.dart';
 import 'package:eike_app/feat_contact/presentation/contact_screen.dart';
 import 'package:eike_app/feat_notification/domain/models/eike_notification.dart';
 import 'package:eike_app/feat_notification/domain/repositories/notification_repository.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 

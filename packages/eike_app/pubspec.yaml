@@ -44,6 +44,8 @@ dependencies:
   flutter_native_splash: ^2.4.8
   flutter_animate: ^4.5.2
   package_info_plus: ^10.2.1
+  material_ui: ^1.11.1
+  cupertino_ui: ^1.1.7
 dev_dependencies:
   flutter_test:
     sdk: flutter

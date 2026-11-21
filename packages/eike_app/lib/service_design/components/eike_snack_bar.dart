@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:eike_app/service_design/theming/eike_theme.dart';
 
 /// Shows snack bars styled consistently with the app's "Marken-Chip"

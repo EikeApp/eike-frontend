@@ -1,6 +1,6 @@
 import 'package:eike_app/feat_splash/presentation/bloc/splash_screen_bloc.dart';
 import 'package:eike_app/service_design/theming/eike_theme.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:eike_app/service_design/theming/generated/eike_color_scheme.dart.dart';
 
 abstract final class EikeTheme {
