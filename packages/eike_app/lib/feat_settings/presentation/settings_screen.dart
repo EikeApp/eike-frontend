@@ -6,7 +6,7 @@ import 'package:eike_app/feat_settings/data/repositories/settings_repository_imp
 import 'package:eike_app/feat_settings/presentation/bloc/settings_bloc.dart';
 import 'package:eike_app/service_app_info/domain/repositories/app_info_repository.dart';
 import 'package:eike_app/service_design/components/eike_snack_bar.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';

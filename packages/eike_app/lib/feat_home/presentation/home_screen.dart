@@ -3,7 +3,7 @@ import 'package:eike_app/feat_home/data/daos/home_dao.dart';
 import 'package:eike_app/feat_home/data/datasources/asset_home_datasource.dart';
 import 'package:eike_app/feat_home/data/repositories/home_repository_impl.dart';
 import 'package:eike_app/feat_tip_detail/presentation/tip_detail_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eike_app/service_design/components/eike_app_bar.dart';
 import 'package:eike_app/service_design/theming/eike_theme.dart';

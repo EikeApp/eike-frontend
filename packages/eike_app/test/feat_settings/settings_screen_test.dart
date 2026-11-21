@@ -7,7 +7,7 @@ import 'package:eike_app/feat_notification/domain/repositories/notification_repo
 import 'package:eike_app/feat_settings/presentation/settings_screen.dart';
 import 'package:eike_app/service_app_info/domain/models/app_info.dart';
 import 'package:eike_app/service_app_info/domain/repositories/app_info_repository.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';

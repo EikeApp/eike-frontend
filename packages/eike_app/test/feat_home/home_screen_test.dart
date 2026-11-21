@@ -5,7 +5,7 @@ import 'package:eike_app/feat_tip_detail/presentation/tip_detail_screen.dart';
 import 'package:eike_app/feat_navigation/app_router.dart';
 import 'package:eike_app/feat_notification/domain/models/eike_notification.dart';
 import 'package:eike_app/feat_notification/domain/repositories/notification_repository.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';

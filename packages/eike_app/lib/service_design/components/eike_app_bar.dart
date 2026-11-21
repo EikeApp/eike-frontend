@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class EikeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const EikeAppBar({required this.title, this.leading, super.key});

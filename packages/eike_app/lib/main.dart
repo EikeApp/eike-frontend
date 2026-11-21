@@ -3,16 +3,18 @@ import 'package:eike_app/feat_navigation/app_router.dart';
 import 'package:eike_app/feat_notification/presentation/widgets/notification_dialog_provider.dart';
 import 'package:eike_app/feat_splash/presentation/animated_splash_screen.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart'
+    show GlobalWidgetsLocalizations;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:eike_app/service_app_info/data/repositories/app_info_repository_impl.dart';
 import 'package:eike_app/service_app_info/domain/repositories/app_info_repository.dart';
 import 'package:eike_app/service_design/theming/eike_theme.dart';
 import 'package:eike_app/service_logging/eike_logger.dart';
 import 'package:eike_app/service_url_launcher/presentation/url_launcher_provider.dart';
+import 'package:cupertino_ui/cupertino_ui.dart' show GlobalCupertinoLocalizations;
+import 'package:material_ui/material_ui.dart';
 
 Future<void> main() async {
   LicenseRegistry.addLicense(() async* {
