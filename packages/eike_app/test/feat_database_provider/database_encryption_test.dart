@@ -34,7 +34,7 @@ void main() {
     // pubspec.yaml. On a plain SQLite build `PRAGMA cipher` returns no rows and
     // `PRAGMA key` is a silent no-op, which would store user data in plaintext.
     final db = sqlite3.open(dbPath);
-    addTearDown(db.dispose);
+    addTearDown(db.close);
 
     expect(db.select('PRAGMA cipher;'), isNotEmpty);
   });
@@ -44,10 +44,10 @@ void main() {
     _unlock(db, key);
     db.execute('CREATE TABLE notes (body TEXT NOT NULL);');
     db.execute("INSERT INTO notes (body) VALUES ('a private note');");
-    db.dispose();
+    db.close();
 
     final reopened = sqlite3.open(dbPath);
-    addTearDown(reopened.dispose);
+    addTearDown(reopened.close);
     _unlock(reopened, key);
 
     expect(
@@ -61,7 +61,7 @@ void main() {
     _unlock(db, key);
     db.execute('CREATE TABLE notes (body TEXT NOT NULL);');
     db.execute("INSERT INTO notes (body) VALUES ('a private note');");
-    db.dispose();
+    db.close();
 
     final bytes = File(dbPath).readAsBytesSync();
 
@@ -81,10 +81,10 @@ void main() {
     final db = sqlite3.open(dbPath);
     _unlock(db, key);
     db.execute('CREATE TABLE notes (body TEXT NOT NULL);');
-    db.dispose();
+    db.close();
 
     final reopened = sqlite3.open(dbPath);
-    addTearDown(reopened.dispose);
+    addTearDown(reopened.close);
     _unlock(reopened, 'd3Jvbmcga2V5');
 
     expect(
@@ -97,10 +97,10 @@ void main() {
     final db = sqlite3.open(dbPath);
     _unlock(db, key);
     db.execute('CREATE TABLE notes (body TEXT NOT NULL);');
-    db.dispose();
+    db.close();
 
     final reopened = sqlite3.open(dbPath);
-    addTearDown(reopened.dispose);
+    addTearDown(reopened.close);
 
     expect(
       () => reopened.select('SELECT * FROM notes;'),
