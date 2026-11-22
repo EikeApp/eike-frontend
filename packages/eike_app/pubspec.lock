@@ -297,15 +297,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.35.0"
-  encrypted_drift:
-    dependency: "direct main"
-    description:
-      path: "extras/encryption"
-      ref: HEAD
-      resolved-ref: "9676564c67ebd0b8a462f38fee94d3b2757957f3"
-      url: "https://github.com/simolus3/drift.git"
-    source: git
-    version: "1.1.0"
   fake_async:
     dependency: transitive
     description:
@@ -1091,30 +1082,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.2"
-  sqflite_common:
-    dependency: transitive
-    description:
-      name: sqflite_common
-      sha256: "077e38e82c099534146a2fb31b608c2a3a4489a0f21d9af6b2f5c87b566a1ea0"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.5.13"
-  sqflite_sqlcipher:
-    dependency: transitive
-    description:
-      name: sqflite_sqlcipher
-      sha256: "50d05fe0495ed96a85503d9850a49c0936502f44fdba96f403c97e4c9c7043e7"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.4.1"
-  sqlcipher_flutter_libs:
-    dependency: "direct main"
-    description:
-      name: sqlcipher_flutter_libs
-      sha256: "38d62d659d2fb8739bf25a42c9a350d1fdd6c29a5a61f13a946778ec75d27929"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.0+eol"
   sqlite3:
     dependency: "direct main"
     description:
@@ -1163,14 +1130,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.1"
-  synchronized:
-    dependency: transitive
-    description:
-      name: synchronized
-      sha256: "397b146f97613b83d84bdccb439bc8d0f3aebb6c1d14a9641e6f24201c490b2d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.4.2"
   term_glyph:
     dependency: transitive
     description:
