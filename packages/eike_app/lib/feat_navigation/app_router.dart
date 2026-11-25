@@ -19,7 +19,7 @@ final eikeRouter = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/home',
+              path: EikeRoute.home.path,
               name: EikeRoute.home.name,
               builder: (context, state) => const HomeScreen(),
             ),
@@ -28,7 +28,7 @@ final eikeRouter = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/contact',
+              path: EikeRoute.contact.path,
               name: EikeRoute.contact.name,
               builder: (context, state) => const ContactScreen(),
             ),
@@ -37,22 +37,22 @@ final eikeRouter = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/settings',
+              path: EikeRoute.settings.path,
               name: EikeRoute.settings.name,
               builder: (context, state) => const SettingsScreen(),
               routes: [
                 GoRoute(
-                  path: 'privacy-policy',
+                  path: EikeRoute.privacyPolicy.path,
                   name: EikeRoute.privacyPolicy.name,
                   builder: (context, state) => const PrivacyPolicyScreen(),
                 ),
                 GoRoute(
-                  path: 'licenses',
+                  path: EikeRoute.licenses.path,
                   name: EikeRoute.licenses.name,
                   builder: (context, state) => const LicensesScreen(),
                 ),
                 GoRoute(
-                  path: 'imprint',
+                  path: EikeRoute.imprint.path,
                   name: EikeRoute.imprint.name,
                   builder: (context, state) => const ImprintScreen(),
                 ),

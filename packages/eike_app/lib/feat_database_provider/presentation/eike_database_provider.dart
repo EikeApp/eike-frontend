@@ -1,4 +1,3 @@
-import 'package:eike_app/data_database/eike_database.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -40,25 +39,23 @@ class const _Wrapper({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if (state.database case EikeDatabase database) {
-      return RepositoryProvider.value(
+    return switch (state) {
+      EikeDatabaseProviderState(:final database?) => RepositoryProvider.value(
         value: database,
         child: child,
-      );
-    } else if (state.isLoading) {
-      return const Scaffold(
+      ),
+      EikeDatabaseProviderState(isLoading: true) => const Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
         ),
-      );
-    } else {
-      return const Scaffold(
+      ),
+      _ => const Scaffold(
         body: Center(
           child: Text(
             'Es ist ein Fehler beim öffnen der Datenbank aufgetreten.',
           ),
         ),
-      );
-    }
+      ),
+    };
   }
 }
