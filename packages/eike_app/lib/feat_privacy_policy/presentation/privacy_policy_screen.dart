@@ -39,8 +39,8 @@ const String _privacyHtml = '''
   <h2>Verantwortlicher gem. Art. 4 Nr. 7 DSGVO und Behördlicher Datenschutzbeauftragter</h2>
   <p>
     Deutscher Fachverband für Psychosoziale Notfallversorgung (DF-PSNV) e.V.<br>
-    P.-H.-Eggers-Straße 22<br>
-    24768 Rendsburg<br>
+    Postfach 1254<br>
+    22934 Bargteheide<br>
     Deutschland
   </p>
 
