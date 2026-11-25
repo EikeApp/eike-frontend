@@ -72,6 +72,8 @@ flutter:
     - assets/content/
     - assets/content/7-things/
     - assets/fonts/Roboto/OFL.txt
+    - assets/licenses/EUPL-1.2.de.html
+    - assets/licenses/CC-BY-NC-ND-4.0.de.html
     - assets/images/
 
   fonts:

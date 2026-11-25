@@ -129,7 +129,9 @@ class _Scaffold extends StatelessWidget {
                     ],
                   ),
                 ),
-                Text("Open-Source-Bibliotheken, die diese App ermöglichen"),
+                Text(
+                  "Lizenzinformationen zu Quellcode, Inhalten und Bibliotheken",
+                ),
                 TextButton.icon(
                   onPressed: () {
                     context.pushNamed(EikeRoute.licenses.name);

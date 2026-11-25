@@ -4,7 +4,6 @@ tags:
   - smoke
 ---
 - launchApp:
-    clearState: true
     stopApp: true
 
 # Prüfe, dass der Home-Screen vorhanden ist
@@ -14,18 +13,18 @@ tags:
 
 # Prüfe, dass BottomNavBar da ist (über Icon oder Tap-Test)
 - tapOn:
-    point: "50%,95%" # Kontakt-Tab (Mitte unten)
+    point: "50%,92%" # Kontakt-Tab oberhalb der System-Gestenleiste
 
 # Prüfe, dass der Kontakt-Screen vorhanden ist
-- assertVisible: "Kontakt" # Sollte jetzt im AppBar stehen
-- assertVisible: "Akute Krise?"
-- assertVisible: "Notfall-Kontakte"
+- assertVisible: "Kontakte"
+- assertVisible: "(?s).*Akute Krise.*"
+- assertVisible: "(?s).*Notfall - Kontakte.*"
+- assertVisible: "(?s).*Dein Einsatznachsorgeteam.*"
 - takeScreenshot: "contact/contact_screen"
 
 # Prüfe, dass der Einstellungen-Screen vorhanden ist
 - tapOn:
-    point: "85%,95%" # Einstellungen-Tab
-- assertVisible: "Einstellungen"
-- assertVisible: "Einsatznachsorgeteam"
-- assertVisible: "Datenschutz & Sicherheit"
+    point: "85%,92%" # Einstellungen-Tab
+- assertVisible: "Settings"
+- assertVisible: "(?s).*Datenschutz & Sicherheit.*"
 - takeScreenshot: "settings/settings_screen"

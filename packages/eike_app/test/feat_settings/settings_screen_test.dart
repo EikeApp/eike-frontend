@@ -2,6 +2,9 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:eike_app/data_database/eike_database.dart';
 import 'package:eike_app/data_entities/tables/team_contacts_table.dart';
+import 'package:eike_app/feat_licenses/presentation/licenses_screen.dart';
+import 'package:eike_app/feat_navigation/app_router.dart';
+import 'package:eike_app/feat_navigation/eike_routes.dart';
 import 'package:eike_app/feat_notification/domain/models/eike_notification.dart';
 import 'package:eike_app/feat_notification/domain/repositories/notification_repository.dart';
 import 'package:eike_app/feat_settings/presentation/settings_screen.dart';
@@ -11,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 
 class _FakeNotificationRepository implements NotificationRepository {
   final emittedNotifications = <EikeNotification>[];
@@ -44,7 +48,7 @@ void main() {
 
     tearDown(() => database.close());
 
-    Future<void> pumpSettingsScreen(WidgetTester tester) {
+    Future<void> pumpSettingsScreen(WidgetTester tester, {GoRouter? router}) {
       return tester.pumpWidget(
         MultiRepositoryProvider(
           providers: [
@@ -56,7 +60,9 @@ void main() {
               create: (_) => _FakeAppInfoRepository(),
             ),
           ],
-          child: const MaterialApp(home: SettingsScreen()),
+          child: router == null
+              ? const MaterialApp(home: SettingsScreen())
+              : MaterialApp.router(routerConfig: router),
         ),
       );
     }
@@ -68,6 +74,52 @@ void main() {
       await tester.pumpWidget(const SizedBox());
       await tester.pumpAndSettle();
     }
+
+    testWidgets('opens the license overview from settings and navigates back', (
+      tester,
+    ) async {
+      addTearDown(eikeRouter.dispose);
+      eikeRouter.goNamed(EikeRoute.settings.name);
+      await pumpSettingsScreen(tester, router: eikeRouter);
+      await tester.pumpAndSettle();
+
+      await tester.scrollUntilVisible(
+        find.text('Lizenzen'),
+        250,
+        scrollable: find.byType(Scrollable),
+      );
+      await Scrollable.ensureVisible(
+        tester.element(find.text('Lizenzen')),
+        alignment: 0.5,
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Lizenzen'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(LicensesScreen), findsOneWidget);
+      expect(
+        GoRouterState.of(tester.element(find.byType(LicensesScreen))).name,
+        EikeRoute.licenses.name,
+      );
+      expect(find.text('Lizenz: EUPL 1.2'), findsOneWidget);
+      await tester.scrollUntilVisible(
+        find.text('Lizenz: CC BY-NC-ND 4.0'),
+        250,
+        scrollable: find.byType(Scrollable),
+      );
+      expect(find.text('Lizenz: CC BY-NC-ND 4.0'), findsOneWidget);
+
+      await tester.tap(find.byType(BackButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(LicensesScreen), findsNothing);
+      expect(find.byType(SettingsScreen), findsOneWidget);
+      expect(
+        GoRouterState.of(tester.element(find.byType(SettingsScreen))).name,
+        EikeRoute.settings.name,
+      );
+
+      await disposeSettingsScreen(tester);
+    });
 
     testWidgets(
       'should not delete data when the confirmation dialog is cancelled',
