@@ -18,20 +18,15 @@ part 'settings_bloc.freezed.dart';
 part 'settings_state.dart';
 part 'settings_event.dart';
 
-class SettingsBloc extends EikeBloc<SettingsEvent, SettingsState> {
-  final CleanupLocalStorageInteractor cleanupLocalStorage;
-  final GetAppInfoInteractor getAppInfo;
+class SettingsBloc(
+  SettingsRepository repository,
+  NotificationRepository notificationRepository,
+  AppInfoRepository appInfoRepository,
+) extends EikeBloc<SettingsEvent, SettingsState> {
+  final cleanupLocalStorage = CleanupLocalStorageInteractor(repository);
+  final getAppInfo = GetAppInfoInteractor(appInfoRepository);
 
-  SettingsBloc(
-    SettingsRepository repository,
-    NotificationRepository notificationRepository,
-    AppInfoRepository appInfoRepository,
-  ) : cleanupLocalStorage = CleanupLocalStorageInteractor(repository),
-      getAppInfo = GetAppInfoInteractor(appInfoRepository),
-      super(
-        SettingsState.initial(),
-        notificationRepository,
-      ) {
+  this : super(.initial(), notificationRepository) {
     on<_OnSetup>(_onSetup);
     on<_OnCleanupLocalStorage>(_onCleanupLocalStorage);
   }

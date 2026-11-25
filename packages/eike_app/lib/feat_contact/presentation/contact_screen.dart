@@ -11,9 +11,7 @@ import 'package:eike_app/service_design/components/eike_titled_card.dart';
 import 'package:eike_app/service_design/theming/eike_theme.dart';
 import 'package:eike_app/service_url_launcher/presentation/bloc/url_launcher_bloc.dart';
 
-class ContactScreen extends StatelessWidget {
-  const ContactScreen({super.key});
-
+class const ContactScreen({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -21,7 +19,7 @@ class ContactScreen extends StatelessWidget {
         return ContactBloc(
           ContactRepositoryImpl(ContactDao(RepositoryProvider.of(context))),
           RepositoryProvider.of(context),
-        )..add(const ContactEvent.onSetup());
+        )..add(const .onSetup());
       },
       child: BlocBuilder<ContactBloc, ContactState>(
         builder: (context, state) {
@@ -32,11 +30,9 @@ class ContactScreen extends StatelessWidget {
   }
 }
 
-class _Scaffold extends StatelessWidget {
-  const _Scaffold({required this.state});
-
-  final ContactState state;
-
+class const _Scaffold({
+  required final ContactState state,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,17 +54,11 @@ class _Scaffold extends StatelessWidget {
   }
 }
 
-class _EinsatznachsorgeteamCard extends StatelessWidget {
-  const _EinsatznachsorgeteamCard({
-    required this.teamName,
-    required this.phone,
-    required this.email,
-  });
-
-  final TeamContactTeamName? teamName;
-  final TeamContactPhone? phone;
-  final TeamContactEmail? email;
-
+class const _EinsatznachsorgeteamCard({
+  required final TeamContactTeamName? teamName,
+  required final TeamContactPhone? phone,
+  required final TeamContactEmail? email,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return EikeTitledCard(
@@ -81,7 +71,7 @@ class _EinsatznachsorgeteamCard extends StatelessWidget {
         onPressed: () => unawaited(
           _showEinsatznachsorgeteamEditDialog(context),
         ),
-        icon: Icon(Icons.edit),
+        icon: const Icon(Icons.edit),
       ),
       child: Column(
         spacing: EikeTheme.verticalComponentSpacingMedium,
@@ -95,7 +85,7 @@ class _EinsatznachsorgeteamCard extends StatelessWidget {
             child: Padding(
               padding: EikeTheme.cardPadding,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: .center,
                 children: [
                   Text(
                     teamName?.isNotEmpty == true
@@ -103,7 +93,7 @@ class _EinsatznachsorgeteamCard extends StatelessWidget {
                         : "Team",
                     style: context.textTheme.titleLarge?.copyWith(
                       color: context.colors.primary,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: .bold,
                     ),
                   ),
                   const SizedBox(
@@ -119,7 +109,7 @@ class _EinsatznachsorgeteamCard extends StatelessWidget {
                               : (phone?.value ?? ''),
                           style: (phone == null || phone?.isEmpty == true)
                               ? context.textTheme.labelLarge?.copyWith(
-                                  fontStyle: FontStyle.italic,
+                                  fontStyle: .italic,
                                 )
                               : context.textTheme.bodyLarge,
                         ),
@@ -132,13 +122,13 @@ class _EinsatznachsorgeteamCard extends StatelessWidget {
                                   BlocProvider.of<UrlLauncherBloc>(
                                     context,
                                   ).add(
-                                    UrlLauncherEvent.onLaunchUrl(
+                                    .onLaunchUrl(
                                       Uri(scheme: 'tel', path: phone.value),
                                     ),
                                   );
                                 }
                               },
-                        icon: Icon(Icons.phone_rounded),
+                        icon: const Icon(Icons.phone_rounded),
                       ),
                     ],
                   ),
@@ -152,7 +142,7 @@ class _EinsatznachsorgeteamCard extends StatelessWidget {
                               : (email?.value ?? ''),
                           style: (email == null || email?.isEmpty == true)
                               ? context.textTheme.labelLarge?.copyWith(
-                                  fontStyle: FontStyle.italic,
+                                  fontStyle: .italic,
                                 )
                               : context.textTheme.bodyLarge,
                         ),
@@ -165,7 +155,7 @@ class _EinsatznachsorgeteamCard extends StatelessWidget {
                                   BlocProvider.of<UrlLauncherBloc>(
                                     context,
                                   ).add(
-                                    UrlLauncherEvent.onLaunchUrl(
+                                    .onLaunchUrl(
                                       Uri(
                                         scheme: 'mailto',
                                         path: email.value,
@@ -174,7 +164,7 @@ class _EinsatznachsorgeteamCard extends StatelessWidget {
                                   );
                                 }
                               },
-                        icon: Icon(Icons.email_rounded),
+                        icon: const Icon(Icons.email_rounded),
                       ),
                     ],
                   ),
@@ -188,9 +178,7 @@ class _EinsatznachsorgeteamCard extends StatelessWidget {
   }
 }
 
-class _NotfallKontakteCard extends StatelessWidget {
-  const _NotfallKontakteCard();
-
+class const _NotfallKontakteCard() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return EikeTitledCard(
@@ -203,14 +191,14 @@ class _NotfallKontakteCard extends StatelessWidget {
         spacing: EikeTheme.verticalComponentSpacingMedium,
         children: [
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: .start,
             spacing: EikeTheme.verticalComponentSpacingSmall,
             children: [
               Text(
                 "Akute Krise?",
                 style: context.textTheme.bodyLarge?.copyWith(
                   color: context.colors.primary,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: .bold,
                 ),
               ),
               Text(
@@ -220,43 +208,43 @@ class _NotfallKontakteCard extends StatelessWidget {
             ],
           ),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: .start,
             children: [
               Text(
                 "Notruf",
                 style: context.textTheme.bodyLarge?.copyWith(
                   color: context.colors.primary,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: .bold,
                 ),
               ),
-              Text("Bei akuter Gefahr"),
+              const Text("Bei akuter Gefahr"),
               const SizedBox(height: EikeTheme.verticalComponentSpacingSmall),
               FilledButton.tonalIcon(
                 onPressed: () {
                   BlocProvider.of<UrlLauncherBloc>(
                     context,
                   ).add(
-                    UrlLauncherEvent.onLaunchUrl(
+                    .onLaunchUrl(
                       Uri(scheme: 'tel', path: '112'),
                     ),
                   );
                 },
-                icon: Icon(Icons.phone_outlined),
-                label: Center(child: Text("112")),
+                icon: const Icon(Icons.phone_outlined),
+                label: const Center(child: Text("112")),
               ),
             ],
           ),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: .start,
             children: [
               Text(
                 "Telefonseelsorge",
                 style: context.textTheme.bodyLarge?.copyWith(
                   color: context.colors.primary,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: .bold,
                 ),
               ),
-              Text("24/7 Kostenlos und vertraulich"),
+              const Text("24/7 Kostenlos und vertraulich"),
               const SizedBox(height: EikeTheme.verticalComponentSpacingSmall),
 
               FilledButton.tonalIcon(
@@ -264,13 +252,13 @@ class _NotfallKontakteCard extends StatelessWidget {
                   BlocProvider.of<UrlLauncherBloc>(
                     context,
                   ).add(
-                    UrlLauncherEvent.onLaunchUrl(
+                    .onLaunchUrl(
                       Uri(scheme: 'tel', path: '08001110111'),
                     ),
                   );
                 },
-                icon: Icon(Icons.phone_outlined),
-                label: Center(child: Text("0800 111 0 111")),
+                icon: const Icon(Icons.phone_outlined),
+                label: const Center(child: Text("0800 111 0 111")),
               ),
             ],
           ),
@@ -300,17 +288,11 @@ Future<void> _showEinsatznachsorgeteamEditDialog(BuildContext context) async {
   );
 }
 
-class _EinsatznachsorgeteamEditDialog extends StatefulWidget {
-  const _EinsatznachsorgeteamEditDialog({
-    required this.initialTeamName,
-    required this.initialPhone,
-    required this.initialEmail,
-  });
-
-  final TeamContactTeamName? initialTeamName;
-  final TeamContactPhone? initialPhone;
-  final TeamContactEmail? initialEmail;
-
+class const _EinsatznachsorgeteamEditDialog({
+  required final TeamContactTeamName? initialTeamName,
+  required final TeamContactPhone? initialPhone,
+  required final TeamContactEmail? initialEmail,
+}) extends StatefulWidget {
   @override
   State<_EinsatznachsorgeteamEditDialog> createState() =>
       _EinsatznachsorgeteamEditDialogState();
@@ -349,18 +331,18 @@ class _EinsatznachsorgeteamEditDialogState
       ),
       content: SingleChildScrollView(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: .min,
           spacing: EikeTheme.verticalComponentSpacingMedium,
           children: [
-            Text(
+            const Text(
               "Hier kannst du die Kontaktdaten deines Einsatznachsorgeteams anpassen.",
             ),
             TextField(
               controller: _teamNameController,
-              textInputAction: TextInputAction.next,
+              textInputAction: .next,
               decoration: InputDecoration(
                 labelText: "Team Name",
-                prefixIcon: Icon(Icons.people_rounded),
+                prefixIcon: const Icon(Icons.people_rounded),
                 suffixIcon: ValueListenableBuilder(
                   valueListenable: _teamNameController,
                   builder: (context, value, child) {
@@ -374,18 +356,18 @@ class _EinsatznachsorgeteamEditDialogState
                     onPressed: () {
                       _teamNameController.clear();
                     },
-                    icon: Icon(Icons.close_rounded),
+                    icon: const Icon(Icons.close_rounded),
                   ),
                 ),
               ),
             ),
             TextField(
               controller: _phoneController,
-              textInputAction: TextInputAction.next,
-              keyboardType: TextInputType.phone,
+              textInputAction: .next,
+              keyboardType: .phone,
               decoration: InputDecoration(
                 labelText: "Telefonnummer",
-                prefixIcon: Icon(Icons.phone_rounded),
+                prefixIcon: const Icon(Icons.phone_rounded),
                 suffixIcon: ValueListenableBuilder(
                   valueListenable: _phoneController,
                   builder: (context, value, child) {
@@ -399,17 +381,17 @@ class _EinsatznachsorgeteamEditDialogState
                     onPressed: () {
                       _phoneController.clear();
                     },
-                    icon: Icon(Icons.close_rounded),
+                    icon: const Icon(Icons.close_rounded),
                   ),
                 ),
               ),
             ),
             TextField(
               controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: .emailAddress,
               decoration: InputDecoration(
                 labelText: "Email",
-                prefixIcon: Icon(Icons.email_rounded),
+                prefixIcon: const Icon(Icons.email_rounded),
                 suffixIcon: ValueListenableBuilder(
                   valueListenable: _phoneController,
                   builder: (context, value, child) {
@@ -423,7 +405,7 @@ class _EinsatznachsorgeteamEditDialogState
                     onPressed: () {
                       _emailController.clear();
                     },
-                    icon: Icon(Icons.close_rounded),
+                    icon: const Icon(Icons.close_rounded),
                   ),
                 ),
               ),
@@ -436,12 +418,12 @@ class _EinsatznachsorgeteamEditDialogState
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text("Abbrechen"),
+          child: const Text("Abbrechen"),
         ),
         FilledButton.tonal(
           onPressed: () {
             BlocProvider.of<ContactBloc>(context).add(
-              ContactEvent.onSetTeamContactData(
+              .onSetTeamContactData(
                 teamName: TeamContactTeamName(_teamNameController.text),
                 phoneNumber: TeamContactPhone(_phoneController.text),
                 email: TeamContactEmail(_emailController.text),
@@ -450,7 +432,7 @@ class _EinsatznachsorgeteamEditDialogState
 
             Navigator.of(context).pop();
           },
-          child: Text("speichern"),
+          child: const Text("speichern"),
         ),
       ],
     );

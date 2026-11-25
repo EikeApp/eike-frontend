@@ -1,10 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 
-class LicensesScreen extends StatelessWidget {
-  const LicensesScreen({super.key});
-
+class const LicensesScreen({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return LicensePage();
+    return const LicensePage();
   }
 }

@@ -1,14 +1,11 @@
-import 'package:eike_app/feat_notification/domain/models/eike_notification.dart';
 import 'package:eike_app/feat_notification/domain/repositories/notification_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class EikeBloc<State, Event> extends Bloc<State, Event> {
-  EikeBloc(
-    super.initialState,
-    this.repository,
-  );
-  final NotificationRepository repository;
+class EikeBloc<State, Event>(
+  super.initialState,
+  final NotificationRepository repository,
+) extends Bloc<State, Event> {
   void submitError(Exception error) {
-    repository.emitNotification(EikeNotification.error(error.toString()));
+    repository.emitNotification(.error(error.toString()));
   }
 }

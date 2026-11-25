@@ -2,11 +2,10 @@ import 'package:eike_app/service_design/theming/eike_theme.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 
-class MainScaffold extends StatelessWidget {
-  const MainScaffold({super.key, required this.navigationShell});
-
-  final StatefulNavigationShell navigationShell;
-
+class const MainScaffold({
+  super.key,
+  required final StatefulNavigationShell navigationShell,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,16 +22,11 @@ class MainScaffold extends StatelessWidget {
   }
 }
 
-class CustomBottomNavBar extends StatelessWidget {
-  final int selectedIndex;
-  final ValueChanged<int> onItemSelected;
-
-  const CustomBottomNavBar({
-    super.key,
-    required this.selectedIndex,
-    required this.onItemSelected,
-  });
-
+class const CustomBottomNavBar({
+  super.key,
+  required final int selectedIndex,
+  required final ValueChanged<int> onItemSelected,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -48,7 +42,7 @@ class CustomBottomNavBar extends StatelessWidget {
             color: context.colors.surfaceContainerLowest,
             elevation: 2,
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: .stretch,
               children: [
                 Flexible(
                   child: _DestinationItem(
@@ -86,21 +80,13 @@ class CustomBottomNavBar extends StatelessWidget {
   }
 }
 
-class _DestinationItem extends StatelessWidget {
-  const _DestinationItem({
-    required this.title,
-    required this.icon,
-    required this.selectedIcon,
-    required this.isSelected,
-    required this.onClick,
-  });
-
-  final String title;
-  final IconData icon;
-  final IconData selectedIcon;
-  final bool isSelected;
-  final VoidCallback onClick;
-
+class const _DestinationItem({
+  required final String title,
+  required final IconData icon,
+  required final IconData selectedIcon,
+  required final bool isSelected,
+  required final VoidCallback onClick,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IntrinsicHeight(
@@ -118,7 +104,7 @@ class _DestinationItem extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 spacing: EikeTheme.horizontalComponentSpacingSmall * 0.5,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: .center,
                 children: [
                   Icon(
                     isSelected ? selectedIcon : icon,
@@ -134,7 +120,7 @@ class _DestinationItem extends StatelessWidget {
                                 style: TextStyle(color: context.colors.primary),
                               ),
                             )
-                          : SizedBox.shrink(),
+                          : const SizedBox.shrink(),
                     ),
                   ),
                 ],

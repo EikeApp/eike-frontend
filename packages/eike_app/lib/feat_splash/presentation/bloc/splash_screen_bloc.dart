@@ -7,14 +7,14 @@ part 'splash_screen_bloc.freezed.dart';
 part 'splash_screen_event.dart';
 part 'splash_screen_state.dart';
 
-class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
+class SplashScreenBloc() extends Bloc<SplashScreenEvent, SplashScreenState> {
   static const splashDuration = Duration(milliseconds: 2500);
   static const transitionDuration = Duration(milliseconds: 200);
 
   Timer? _splashTimer;
   Timer? _transitionTimer;
 
-  SplashScreenBloc() : super(const SplashScreenState.splash()) {
+  this : super(const .splash()) {
     on<_OnSetup>(_onSetup);
     on<_OnTransitionStarted>(_onTransitionStarted);
     on<_OnTransitionCompleted>(_onTransitionCompleted);
@@ -23,7 +23,7 @@ class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
   FutureOr<void> _onSetup(_OnSetup event, Emitter<SplashScreenState> emit) {
     _splashTimer = Timer(
       splashDuration,
-      () => add(const SplashScreenEvent.onTransitionStarted()),
+      () => add(const .onTransitionStarted()),
     );
   }
 
@@ -31,10 +31,10 @@ class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
     _OnTransitionStarted event,
     Emitter<SplashScreenState> emit,
   ) {
-    emit(const SplashScreenState.transitioning());
+    emit(const .transitioning());
     _transitionTimer = Timer(
       transitionDuration,
-      () => add(const SplashScreenEvent.onTransitionCompleted()),
+      () => add(const .onTransitionCompleted()),
     );
   }
 
@@ -42,7 +42,7 @@ class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
     _OnTransitionCompleted event,
     Emitter<SplashScreenState> emit,
   ) {
-    emit(const SplashScreenState.ready());
+    emit(const .ready());
   }
 
   @override

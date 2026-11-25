@@ -16,10 +16,10 @@ void main() {
         addTearDown(tester.view.reset);
 
         await tester.pumpWidget(
-          MediaQuery(
-            data: const MediaQueryData(textScaler: TextScaler.linear(3.0)),
+          const MediaQuery(
+            data: MediaQueryData(textScaler: TextScaler.linear(3.0)),
             child: MaterialApp(
-              home: AnimatedSplashScreen(app: const SizedBox.shrink()),
+              home: AnimatedSplashScreen(app: SizedBox.shrink()),
             ),
           ),
         );

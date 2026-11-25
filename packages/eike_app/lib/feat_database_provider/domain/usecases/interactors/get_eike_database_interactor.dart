@@ -6,10 +6,9 @@ import 'package:use_in_case/use_in_case.dart';
 
 import '../../repositories/eike_database_provider_repository.dart';
 
-class GetEikeDatabaseInteractor implements ResultInteractor<EikeDatabase> {
-  final EikeDatabaseProviderRepository repository;
-  const GetEikeDatabaseInteractor(this.repository);
-
+class const GetEikeDatabaseInteractor(
+  final EikeDatabaseProviderRepository repository,
+) implements ResultInteractor<EikeDatabase> {
   @override
   FutureOr<EikeDatabase> getOrThrow(Unit input) {
     return repository.getDatabaseInstance();

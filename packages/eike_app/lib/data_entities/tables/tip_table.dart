@@ -1,20 +1,20 @@
 import 'package:drift/drift.dart';
 
-extension type const TipId(int value) implements int {}
+extension type const TipId(int value) implements int;
 
-extension type const TipPosition(int value) implements int {}
+extension type const TipPosition(int value) implements int;
 
-extension type const TipTitle(String value) implements String {}
+extension type const TipTitle(String value) implements String;
 
-extension type const TipDescription(String value) implements String {}
+extension type const TipDescription(String value) implements String;
 
-extension type const TipQuestion(String value) implements String {}
+extension type const TipQuestion(String value) implements String;
 
-extension type const TipImagePath(String value) implements String {}
+extension type const TipImagePath(String value) implements String;
 
-extension type const TipImageDescription(String value) implements String {}
+extension type const TipImageDescription(String value) implements String;
 
-extension type const TipUserNote(String value) implements String {}
+extension type const TipUserNote(String value) implements String;
 
 @DataClassName('TipEntity')
 class TipTable extends Table {
@@ -33,9 +33,7 @@ class TipTable extends Table {
   Set<Column> get primaryKey => {id};
 }
 
-class TipIdConverter implements TypeConverter<TipId, int> {
-  const TipIdConverter();
-
+class const TipIdConverter() implements TypeConverter<TipId, int> {
   @override
   TipId fromSql(int fromDb) {
     return TipId(fromDb);
@@ -47,9 +45,7 @@ class TipIdConverter implements TypeConverter<TipId, int> {
   }
 }
 
-class TipPositionConverter implements TypeConverter<TipPosition, int> {
-  const TipPositionConverter();
-
+class const TipPositionConverter() implements TypeConverter<TipPosition, int> {
   @override
   TipPosition fromSql(int fromDb) {
     return TipPosition(fromDb);
@@ -61,9 +57,7 @@ class TipPositionConverter implements TypeConverter<TipPosition, int> {
   }
 }
 
-class TipTitleConverter implements TypeConverter<TipTitle, String> {
-  const TipTitleConverter();
-
+class const TipTitleConverter() implements TypeConverter<TipTitle, String> {
   @override
   TipTitle fromSql(String fromDb) {
     return TipTitle(fromDb);
@@ -75,9 +69,8 @@ class TipTitleConverter implements TypeConverter<TipTitle, String> {
   }
 }
 
-class TipDescriptionConverter implements TypeConverter<TipDescription, String> {
-  const TipDescriptionConverter();
-
+class const TipDescriptionConverter()
+    implements TypeConverter<TipDescription, String> {
   @override
   TipDescription fromSql(String fromDb) {
     return TipDescription(fromDb);
@@ -89,9 +82,8 @@ class TipDescriptionConverter implements TypeConverter<TipDescription, String> {
   }
 }
 
-class TipQuestionConverter implements TypeConverter<TipQuestion, String> {
-  const TipQuestionConverter();
-
+class const TipQuestionConverter()
+    implements TypeConverter<TipQuestion, String> {
   @override
   TipQuestion fromSql(String fromDb) {
     return TipQuestion(fromDb);
@@ -103,9 +95,8 @@ class TipQuestionConverter implements TypeConverter<TipQuestion, String> {
   }
 }
 
-class TipImagePathConverter implements TypeConverter<TipImagePath, String> {
-  const TipImagePathConverter();
-
+class const TipImagePathConverter()
+    implements TypeConverter<TipImagePath, String> {
   @override
   TipImagePath fromSql(String fromDb) {
     return TipImagePath(fromDb);
@@ -117,10 +108,8 @@ class TipImagePathConverter implements TypeConverter<TipImagePath, String> {
   }
 }
 
-class TipImageDescriptionConverter
+class const TipImageDescriptionConverter()
     implements TypeConverter<TipImageDescription, String> {
-  const TipImageDescriptionConverter();
-
   @override
   TipImageDescription fromSql(String fromDb) {
     return TipImageDescription(fromDb);
@@ -132,9 +121,8 @@ class TipImageDescriptionConverter
   }
 }
 
-class TipUserNoteConverter implements TypeConverter<TipUserNote, String> {
-  const TipUserNoteConverter();
-
+class const TipUserNoteConverter()
+    implements TypeConverter<TipUserNote, String> {
   @override
   TipUserNote fromSql(String fromDb) {
     return TipUserNote(fromDb);

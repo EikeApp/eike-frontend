@@ -9,11 +9,8 @@ typedef UpdateUserNoteInput = ({
   TipUserNote userNote,
 });
 
-class UpdateUserNoteInteractor
+class const UpdateUserNoteInteractor(final TipDetailRepository repository)
     implements ParameterizedInteractor<UpdateUserNoteInput> {
-  final TipDetailRepository repository;
-  const UpdateUserNoteInteractor(this.repository);
-
   @override
   FutureOr<void> getOrThrow(UpdateUserNoteInput input) {
     return repository.updateUserNote(input.tipId, input.userNote);

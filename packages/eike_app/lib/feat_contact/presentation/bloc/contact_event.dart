@@ -2,8 +2,8 @@ part of 'contact_bloc.dart';
 
 @freezed
 sealed class ContactEvent with _$ContactEvent {
-  const factory ContactEvent.onSetup() = _OnSetup;
-  const factory ContactEvent.onSetTeamContactData({
+  const factory onSetup() = _OnSetup;
+  const factory onSetTeamContactData({
     required TeamContactTeamName teamName,
     required TeamContactPhone phoneNumber,
     required TeamContactEmail email,

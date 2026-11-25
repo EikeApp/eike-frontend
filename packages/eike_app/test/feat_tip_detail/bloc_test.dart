@@ -52,7 +52,7 @@ void main() {
       return TipDetailBloc(tipId, repository, _FakeNotificationRepository());
     }
 
-    final tip = TipEntity(
+    const tip = TipEntity(
       id: tipId,
       position: TipPosition(4),
       title: TipTitle('Title'),
@@ -67,13 +67,13 @@ void main() {
       'should reflect the tip observed from the repository',
       build: buildBloc,
       act: (bloc) async {
-        bloc.add(const TipDetailEvent.onSetup());
+        bloc.add(const .onSetup());
         // Let the emit.forEach subscription in _onSetup actually attach
         // before pushing through the repository stream.
         await Future<void>.delayed(Duration.zero);
         repository.emit(tip);
       },
-      expect: () => [TipDetailState(tip: tip, isLoading: false)],
+      expect: () => [const TipDetailState(tip: tip, isLoading: false)],
       verify: (_) => expect(repository.observedTipIds, equals([tipId])),
     );
 
@@ -81,7 +81,7 @@ void main() {
       'should stop loading when the tip does not exist',
       build: buildBloc,
       act: (bloc) async {
-        bloc.add(const TipDetailEvent.onSetup());
+        bloc.add(const .onSetup());
         await Future<void>.delayed(Duration.zero);
         repository.emit(null);
       },
@@ -92,9 +92,9 @@ void main() {
       'should store every user note change in order',
       build: buildBloc,
       act: (bloc) => bloc
-        ..add(const TipDetailEvent.onUserNoteChanged(TipUserNote('J')))
-        ..add(const TipDetailEvent.onUserNoteChanged(TipUserNote('Jo')))
-        ..add(const TipDetailEvent.onUserNoteChanged(TipUserNote('Jog'))),
+        ..add(const .onUserNoteChanged(TipUserNote('J')))
+        ..add(const .onUserNoteChanged(TipUserNote('Jo')))
+        ..add(const .onUserNoteChanged(TipUserNote('Jog'))),
       expect: () => [],
       verify: (_) => expect(
         repository.updateCalls,

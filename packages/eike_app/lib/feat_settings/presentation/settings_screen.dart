@@ -14,9 +14,7 @@ import 'package:eike_app/service_design/components/eike_app_bar.dart';
 import 'package:eike_app/service_design/theming/eike_theme.dart';
 import 'package:eike_app/service_design/components/eike_titled_card.dart';
 
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
-
+class const SettingsScreen({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -27,7 +25,7 @@ class SettingsScreen extends StatelessWidget {
           ),
           RepositoryProvider.of(context),
           RepositoryProvider.of<AppInfoRepository>(context),
-        )..add(const SettingsEvent.onSetup());
+        )..add(const .onSetup());
       },
       child: BlocBuilder<SettingsBloc, SettingsState>(
         builder: (context, state) {
@@ -38,15 +36,13 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
-class _Scaffold extends StatelessWidget {
-  const _Scaffold({required this.state});
-
-  final SettingsState state;
-
+class const _Scaffold({
+  required final SettingsState state,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: EikeAppBar(title: 'Settings'),
+      appBar: const EikeAppBar(title: 'Settings'),
       body: ListView(
         padding: EikeTheme.pagePadding,
         children: [
@@ -62,7 +58,7 @@ class _Scaffold extends StatelessWidget {
                 Card(
                   color: context.colors.surfaceContainerLowest,
                   elevation: 2.0,
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(EikeTheme.cornerRadius),
                       topRight: Radius.circular(EikeTheme.cornerRadius),
@@ -81,16 +77,16 @@ class _Scaffold extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: .start,
                         children: [
                           Text(
                             'Daten löschen',
                             style: context.textTheme.titleMedium?.copyWith(
                               color: context.colors.primary,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: .bold,
                             ),
                           ),
-                          Text("Daten unwiderruflich vom Gerät löschen"),
+                          const Text("Daten unwiderruflich vom Gerät löschen"),
                         ],
                       ),
                     ),
@@ -100,7 +96,7 @@ class _Scaffold extends StatelessWidget {
                           _onShowCleanupStorageConfirmationDialog(context),
                         );
                       },
-                      icon: Icon(Icons.delete_rounded),
+                      icon: const Icon(Icons.delete_rounded),
                     ),
                   ],
                 ),
@@ -110,18 +106,18 @@ class _Scaffold extends StatelessWidget {
           const SizedBox(height: EikeTheme.verticalComponentSpacingMedium),
           EikeTitledCard(
             title: 'Rechtliches',
-            leading: Icon(Icons.security_outlined),
+            leading: const Icon(Icons.security_outlined),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: .start,
               spacing: EikeTheme.verticalComponentSpacingMedium,
               children: [
-                Text("Informationen zum Umgang mit deinen Daten"),
+                const Text("Informationen zum Umgang mit deinen Daten"),
                 TextButton.icon(
                   onPressed: () {
                     context.pushNamed(EikeRoute.privacyPolicy.name);
                   },
-                  icon: Icon(Icons.privacy_tip_outlined),
-                  label: Row(
+                  icon: const Icon(Icons.privacy_tip_outlined),
+                  label: const Row(
                     spacing: EikeTheme.horizontalComponentSpacingMedium,
                     children: [
                       Expanded(child: Text('Datenschutz')),
@@ -129,13 +125,15 @@ class _Scaffold extends StatelessWidget {
                     ],
                   ),
                 ),
-                Text("Open-Source-Bibliotheken, die diese App ermöglichen"),
+                const Text(
+                  "Open-Source-Bibliotheken, die diese App ermöglichen",
+                ),
                 TextButton.icon(
                   onPressed: () {
                     context.pushNamed(EikeRoute.licenses.name);
                   },
-                  icon: Icon(Icons.description_outlined),
-                  label: Row(
+                  icon: const Icon(Icons.description_outlined),
+                  label: const Row(
                     spacing: EikeTheme.horizontalComponentSpacingMedium,
                     children: [
                       Expanded(child: Text('Lizenzen')),
@@ -143,13 +141,13 @@ class _Scaffold extends StatelessWidget {
                     ],
                   ),
                 ),
-                Text("Angaben zum Anbieter und Kontaktmöglichkeiten"),
+                const Text("Angaben zum Anbieter und Kontaktmöglichkeiten"),
                 TextButton.icon(
                   onPressed: () {
                     context.pushNamed(EikeRoute.imprint.name);
                   },
-                  icon: Icon(Icons.article_outlined),
-                  label: Row(
+                  icon: const Icon(Icons.article_outlined),
+                  label: const Row(
                     spacing: EikeTheme.horizontalComponentSpacingMedium,
                     children: [
                       Expanded(child: Text('Impressum')),
@@ -171,11 +169,9 @@ class _Scaffold extends StatelessWidget {
   }
 }
 
-class _VersionInfo extends StatelessWidget {
-  const _VersionInfo({required this.displayVersion});
-
-  final String displayVersion;
-
+class const _VersionInfo({
+  required final String displayVersion,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -185,7 +181,7 @@ class _VersionInfo extends StatelessWidget {
 
           EikeSnackBar.show(context, 'Version kopiert');
         },
-        icon: Icon(Icons.copy_outlined, size: 16),
+        icon: const Icon(Icons.copy_outlined, size: 16),
         label: Text(
           'Version $displayVersion',
           style: context.textTheme.bodySmall,
@@ -208,27 +204,25 @@ Future<void> _onShowCleanupStorageConfirmationDialog(
   );
 }
 
-class _CleanupStorageConfirmationDialog extends StatelessWidget {
-  const _CleanupStorageConfirmationDialog();
-
+class const _CleanupStorageConfirmationDialog() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Daten löschen"),
-      content: Text("Möchtest du wirklich alle Daten löschen?"),
-      icon: Icon(Icons.delete_rounded),
+      title: const Text("Daten löschen"),
+      content: const Text("Möchtest du wirklich alle Daten löschen?"),
+      icon: const Icon(Icons.delete_rounded),
       iconColor: context.colors.error,
       actions: [
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text("Abbrechen"),
+          child: const Text("Abbrechen"),
         ),
         FilledButton.tonal(
           onPressed: () {
             BlocProvider.of<SettingsBloc>(context).add(
-              const SettingsEvent.onCleanupLocalStorage(),
+              const .onCleanupLocalStorage(),
             );
 
             Navigator.of(context).pop();
@@ -237,7 +231,7 @@ class _CleanupStorageConfirmationDialog extends StatelessWidget {
             backgroundColor: context.colors.error,
             foregroundColor: context.colors.onError,
           ),
-          child: Text("Löschen"),
+          child: const Text("Löschen"),
         ),
       ],
     );

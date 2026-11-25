@@ -8,11 +8,8 @@ import 'package:eike_app/feat_home/domain/models/tip.dart';
 import 'package:eike_app/feat_home/domain/repositories/home_repository.dart';
 import 'package:test/test.dart';
 
-class _FakeHomeDatasource implements HomeDatasource {
-  const _FakeHomeDatasource({required this.tipCount});
-
-  final int tipCount;
-
+class const _FakeHomeDatasource({required final int tipCount})
+    implements HomeDatasource {
   @override
   Future<List<Tip>> fetchTips() async {
     return [
@@ -39,7 +36,7 @@ void main() {
       database = EikeDatabase(NativeDatabase.memory());
       repository = HomeRepositoryImpl(
         HomeDao(database),
-        _FakeHomeDatasource(tipCount: tipCount),
+        const _FakeHomeDatasource(tipCount: tipCount),
       );
     });
 

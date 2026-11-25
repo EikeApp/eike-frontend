@@ -1,12 +1,12 @@
 import 'package:drift/drift.dart';
 
-extension type const TeamContactId(int value) implements int {}
+extension type const TeamContactId(int value) implements int;
 
-extension type const TeamContactTeamName(String value) implements String {}
+extension type const TeamContactTeamName(String value) implements String;
 
-extension type const TeamContactPhone(String value) implements String {}
+extension type const TeamContactPhone(String value) implements String;
 
-extension type const TeamContactEmail(String value) implements String {}
+extension type const TeamContactEmail(String value) implements String;
 
 @DataClassName('TeamContactEntity')
 class TeamContactTable extends Table {
@@ -19,9 +19,8 @@ class TeamContactTable extends Table {
   Set<Column> get primaryKey => {id};
 }
 
-class TeamContactIdConverter implements TypeConverter<TeamContactId, int> {
-  const TeamContactIdConverter();
-
+class const TeamContactIdConverter()
+    implements TypeConverter<TeamContactId, int> {
   @override
   TeamContactId fromSql(int fromDb) => TeamContactId(fromDb);
 
@@ -29,10 +28,8 @@ class TeamContactIdConverter implements TypeConverter<TeamContactId, int> {
   int toSql(TeamContactId value) => value;
 }
 
-class TeamContactTeamNameConverter
+class const TeamContactTeamNameConverter()
     implements TypeConverter<TeamContactTeamName, String> {
-  const TeamContactTeamNameConverter();
-
   @override
   TeamContactTeamName fromSql(String fromDb) => TeamContactTeamName(fromDb);
 
@@ -40,10 +37,8 @@ class TeamContactTeamNameConverter
   String toSql(TeamContactTeamName value) => value;
 }
 
-class TeamContactPhoneConverter
+class const TeamContactPhoneConverter()
     implements TypeConverter<TeamContactPhone, String> {
-  const TeamContactPhoneConverter();
-
   @override
   TeamContactPhone fromSql(String fromDb) => TeamContactPhone(fromDb);
 
@@ -51,10 +46,8 @@ class TeamContactPhoneConverter
   String toSql(TeamContactPhone value) => value;
 }
 
-class TeamContactEmailConverter
+class const TeamContactEmailConverter()
     implements TypeConverter<TeamContactEmail, String> {
-  const TeamContactEmailConverter();
-
   @override
   TeamContactEmail fromSql(String fromDb) => TeamContactEmail(fromDb);
 

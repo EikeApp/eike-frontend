@@ -3,11 +3,8 @@ import 'package:eike_app/data_entities/tables/team_contacts_table.dart';
 import 'package:eike_app/feat_contact/data/daos/contact_dao.dart';
 import 'package:eike_app/feat_contact/domain/repositories/contact_repository.dart';
 
-class ContactRepositoryImpl implements ContactRepository {
-  const ContactRepositoryImpl(this.dao);
-
-  final ContactDao dao;
-
+class const ContactRepositoryImpl(final ContactDao dao)
+    implements ContactRepository {
   @override
   Stream<TeamContactEntity?> observeTeamContact() {
     return dao.observeTeamContact();

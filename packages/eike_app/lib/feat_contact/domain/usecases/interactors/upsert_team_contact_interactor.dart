@@ -10,11 +10,8 @@ typedef UpsertTeamContactInteractorInput = ({
   TeamContactEmail email,
 });
 
-class UpsertTeamContactInteractor
+class const UpsertTeamContactInteractor(final ContactRepository repository)
     implements ParameterizedInteractor<UpsertTeamContactInteractorInput> {
-  final ContactRepository repository;
-  const UpsertTeamContactInteractor(this.repository);
-
   @override
   FutureOr<void> getOrThrow(UpsertTeamContactInteractorInput input) {
     return repository.upsertTeamContact(

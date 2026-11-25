@@ -13,17 +13,13 @@ part 'url_launcher_bloc.freezed.dart';
 part 'url_launcher_event.dart';
 part 'url_launcher_state.dart';
 
-class UrlLauncherBloc extends EikeBloc<UrlLauncherEvent, UrlLauncherState> {
-  final LaunchUrlInteractor launchUrl;
+class UrlLauncherBloc(
+  UrlLauncherRepository repository,
+  NotificationRepository notificationRepository,
+) extends EikeBloc<UrlLauncherEvent, UrlLauncherState> {
+  final launchUrl = LaunchUrlInteractor(repository);
 
-  UrlLauncherBloc(
-    UrlLauncherRepository repository,
-    NotificationRepository notificationRepository,
-  ) : launchUrl = LaunchUrlInteractor(repository),
-      super(
-        UrlLauncherState.initial(),
-        notificationRepository,
-      ) {
+  this : super(.initial(), notificationRepository) {
     on<_OnSetup>(_onSetup);
     on<_OnLaunchUrl>(_onLaunchUrl);
   }

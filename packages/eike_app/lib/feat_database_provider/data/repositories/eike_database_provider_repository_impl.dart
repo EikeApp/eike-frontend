@@ -31,14 +31,11 @@ extension type _DatabaseEncryptionKey(String value) implements String {
   }
 }
 
-class EikeDatabaseProviderRepositoryImpl
-    implements EikeDatabaseProviderRepository {
-  static final _databaseKeyId = 'db_sqlcipher_key_v1';
-
-  const EikeDatabaseProviderRepositoryImpl(this.storage, this.logger);
-
-  final EikeLogger logger;
-  final FlutterSecureStorage storage;
+class const EikeDatabaseProviderRepositoryImpl(
+  final FlutterSecureStorage storage,
+  final EikeLogger logger,
+) implements EikeDatabaseProviderRepository {
+  static const _databaseKeyId = 'db_sqlcipher_key_v1';
 
   @override
   Future<EikeDatabase> getDatabaseInstance() async {

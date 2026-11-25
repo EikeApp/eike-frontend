@@ -6,10 +6,10 @@ import 'bloc/eike_database_provider_bloc.dart';
 
 import '../data/repositories/eike_database_provider_repository_impl.dart';
 
-class EikeDatabaseProvider extends StatelessWidget {
-  final Widget child;
-  const EikeDatabaseProvider({super.key, required this.child});
-
+class const EikeDatabaseProvider({
+  super.key,
+  required final Widget child,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -20,7 +20,7 @@ class EikeDatabaseProvider extends StatelessWidget {
             RepositoryProvider.of(context),
           ),
           RepositoryProvider.of(context),
-        )..add(const EikeDatabaseProviderEvent.onSetup());
+        )..add(const .onSetup());
       },
       child: BlocBuilder<EikeDatabaseProviderBloc, EikeDatabaseProviderState>(
         builder: (context, state) {
@@ -34,15 +34,10 @@ class EikeDatabaseProvider extends StatelessWidget {
   }
 }
 
-class _Wrapper extends StatelessWidget {
-  const _Wrapper({
-    required this.state,
-    required this.child,
-  });
-
-  final EikeDatabaseProviderState state;
-  final Widget child;
-
+class const _Wrapper({
+  required final EikeDatabaseProviderState state,
+  required final Widget child,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (state.database case EikeDatabase database) {
@@ -51,14 +46,14 @@ class _Wrapper extends StatelessWidget {
         child: child,
       );
     } else if (state.isLoading) {
-      return Scaffold(
-        body: const Center(
+      return const Scaffold(
+        body: Center(
           child: CircularProgressIndicator(),
         ),
       );
     } else {
-      return Scaffold(
-        body: const Center(
+      return const Scaffold(
+        body: Center(
           child: Text(
             'Es ist ein Fehler beim öffnen der Datenbank aufgetreten.',
           ),

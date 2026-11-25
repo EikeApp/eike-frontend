@@ -62,8 +62,8 @@ void main() {
 
     ContactBloc buildBloc() => ContactBloc(repository, notificationRepo);
 
-    final teamContact = TeamContactEntity(
-      id: const TeamContactId(1),
+    const teamContact = TeamContactEntity(
+      id: TeamContactId(1),
       teamName: TeamContactTeamName('Blauer Engel'),
       phone: TeamContactPhone('0170123456'),
       email: TeamContactEmail('team@example.com'),
@@ -73,20 +73,20 @@ void main() {
       'should reflect team contact updates observed from the repository',
       build: buildBloc,
       act: (bloc) async {
-        bloc.add(const ContactEvent.onSetup());
+        bloc.add(const .onSetup());
         // Let the emit.forEach subscription in _onSetup actually attach
         // before pushing through the repository stream.
         await Future<void>.delayed(Duration.zero);
         repository.emit(teamContact);
       },
-      expect: () => [ContactState(teamContact: teamContact)],
+      expect: () => [const ContactState(teamContact: teamContact)],
     );
 
     blocTest<ContactBloc, ContactState>(
       'should upsert the entered team contact data',
       build: buildBloc,
       act: (bloc) => bloc.add(
-        ContactEvent.onSetTeamContactData(
+        const .onSetTeamContactData(
           teamName: TeamContactTeamName('Blauer Engel'),
           phoneNumber: TeamContactPhone('0170123456'),
           email: TeamContactEmail('team@example.com'),

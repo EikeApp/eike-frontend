@@ -3,17 +3,15 @@ import 'package:logger/logger.dart';
 import 'eike_log_level.dart';
 
 class EikeLogger {
-  factory EikeLogger.pretty() {
+  factory pretty() {
     return EikeLogger._(Logger(printer: PrettyPrinter()));
   }
 
-  factory EikeLogger.fmt() {
-    return EikeLogger._(
-      Logger(printer: LogfmtPrinter()),
-    );
+  factory fmt() {
+    return EikeLogger._(Logger(printer: LogfmtPrinter()));
   }
 
-  const EikeLogger._(this.logger);
+  const new _(this.logger);
 
   final Logger logger;
 
@@ -39,7 +37,7 @@ class EikeLogger {
     Object? error,
     StackTrace? stackTrace,
   }) => log(
-    EikeLogLevel.trace,
+    .trace,
     message,
     time: time,
     error: error,
@@ -52,7 +50,7 @@ class EikeLogger {
     Object? error,
     StackTrace? stackTrace,
   }) => log(
-    EikeLogLevel.debug,
+    .debug,
     message,
     time: time,
     error: error,
@@ -65,7 +63,7 @@ class EikeLogger {
     Object? error,
     StackTrace? stackTrace,
   }) => log(
-    EikeLogLevel.info,
+    .info,
     message,
     time: time,
     error: error,
@@ -78,7 +76,7 @@ class EikeLogger {
     Object? error,
     StackTrace? stackTrace,
   }) => log(
-    EikeLogLevel.warning,
+    .warning,
     message,
     time: time,
     error: error,
@@ -91,7 +89,7 @@ class EikeLogger {
     Object? error,
     StackTrace? stackTrace,
   }) => log(
-    EikeLogLevel.error,
+    .error,
     message,
     time: time,
     error: error,
@@ -102,11 +100,11 @@ class EikeLogger {
 extension on EikeLogLevel {
   Level asLevel() {
     return switch (this) {
-      EikeLogLevel.trace => Level.trace,
-      EikeLogLevel.debug => Level.debug,
-      EikeLogLevel.info => Level.info,
-      EikeLogLevel.warning => Level.warning,
-      EikeLogLevel.error => Level.error,
+      .trace => .trace,
+      .debug => .debug,
+      .info => .info,
+      .warning => .warning,
+      .error => .error,
     };
   }
 }

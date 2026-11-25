@@ -19,16 +19,16 @@ void main() {
       final stream = repository.observeNotification();
 
       repository.emitNotification(
-        EikeNotification(
-          type: EikeNotificationType.info,
+        const EikeNotification(
+          type: .info,
           title: 'Test Notification (Info)',
           message: 'This is a info notification.',
         ),
       );
 
       repository.emitNotification(
-        EikeNotification(
-          type: EikeNotificationType.error,
+        const EikeNotification(
+          type: .error,
           title: 'Test Notification (Error)',
           message: 'This is a error notification.',
         ),
