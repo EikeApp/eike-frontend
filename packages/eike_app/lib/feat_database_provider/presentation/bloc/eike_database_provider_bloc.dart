@@ -16,18 +16,13 @@ part 'eike_database_provider_bloc.freezed.dart';
 part 'eike_database_provider_event.dart';
 part 'eike_database_provider_state.dart';
 
-class EikeDatabaseProviderBloc
-    extends EikeBloc<EikeDatabaseProviderEvent, EikeDatabaseProviderState> {
-  final GetEikeDatabaseInteractor getEikeDatabase;
+class EikeDatabaseProviderBloc(
+  EikeDatabaseProviderRepository repository,
+  NotificationRepository notificationRepository,
+) extends EikeBloc<EikeDatabaseProviderEvent, EikeDatabaseProviderState> {
+  final getEikeDatabase = GetEikeDatabaseInteractor(repository);
 
-  EikeDatabaseProviderBloc(
-    EikeDatabaseProviderRepository repository,
-    NotificationRepository notificationRepository,
-  ) : getEikeDatabase = GetEikeDatabaseInteractor(repository),
-      super(
-        EikeDatabaseProviderState.initial(),
-        notificationRepository,
-      ) {
+  this : super(.initial(), notificationRepository) {
     on<_OnSetup>(_onSetup);
   }
 

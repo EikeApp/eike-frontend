@@ -3,11 +3,10 @@ import 'package:eike_app/feat_home/data/daos/home_dao.dart';
 import 'package:eike_app/feat_home/data/datasources/home_datasource.dart';
 import 'package:eike_app/feat_home/domain/repositories/home_repository.dart';
 
-class HomeRepositoryImpl implements HomeRepository {
-  final HomeDao dao;
-  final HomeDatasource datasource;
-  const HomeRepositoryImpl(this.dao, this.datasource);
-
+class const HomeRepositoryImpl(
+  final HomeDao dao,
+  final HomeDatasource datasource,
+) implements HomeRepository {
   @override
   Future<void> syncTips() async {
     final tipDtos = await datasource.fetchTips();

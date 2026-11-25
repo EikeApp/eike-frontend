@@ -20,12 +20,12 @@ void main() {
       await database.tipTable.insertOne(
         TipTableCompanion.insert(
           id: const Value(tipId),
-          position: TipPosition(4),
-          title: TipTitle('Title'),
-          description: TipDescription('Description'),
-          imagePath: TipImagePath('ImgPath'),
-          imageDescription: TipImageDescription('Alt'),
-          userNote: TipUserNote(''),
+          position: const TipPosition(4),
+          title: const TipTitle('Title'),
+          description: const TipDescription('Description'),
+          imagePath: const TipImagePath('ImgPath'),
+          imageDescription: const TipImageDescription('Alt'),
+          userNote: const TipUserNote(''),
         ),
       );
     });

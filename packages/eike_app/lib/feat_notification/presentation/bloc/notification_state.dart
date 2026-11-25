@@ -2,12 +2,12 @@ part of 'notification_bloc.dart';
 
 @freezed
 sealed class NotificationState with _$NotificationState {
-  const factory NotificationState({
+  const factory({
     required List<EikeNotification> notifications,
     required int currentNotificationIndex,
   }) = _NotificationState;
 
-  factory NotificationState.initial() {
+  factory initial() {
     return const NotificationState(
       notifications: [],
       currentNotificationIndex: 0,

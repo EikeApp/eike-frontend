@@ -1,20 +1,13 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:eike_app/service_design/theming/eike_theme.dart';
 
-class EikeTitledCard extends StatelessWidget {
-  const EikeTitledCard({
-    super.key,
-    required this.title,
-    this.leading,
-    this.trailing,
-    this.child,
-  });
-
-  final String title;
-  final Widget? leading;
-  final Widget? trailing;
-  final Widget? child;
-
+class const EikeTitledCard({
+  super.key,
+  required final String title,
+  final Widget? leading,
+  final Widget? trailing,
+  final Widget? child,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -44,7 +37,7 @@ class EikeTitledCard extends StatelessWidget {
                               title,
                               style: context.textTheme.titleMedium?.copyWith(
                                 color: context.colors.primary,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: .bold,
                               ),
                             ),
                           ),

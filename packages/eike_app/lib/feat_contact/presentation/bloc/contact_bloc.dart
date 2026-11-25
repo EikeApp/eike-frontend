@@ -16,14 +16,14 @@ part 'contact_bloc.freezed.dart';
 part 'contact_event.dart';
 part 'contact_state.dart';
 
-class ContactBloc extends EikeBloc<ContactEvent, ContactState> {
-  final TeamContactObserver teamContactObserver;
-  final UpsertTeamContactInteractor upsertTeamContact;
+class ContactBloc(
+  ContactRepository repository,
+  NotificationRepository notificationRepository,
+) extends EikeBloc<ContactEvent, ContactState> {
+  final teamContactObserver = TeamContactObserver(repository);
+  final upsertTeamContact = UpsertTeamContactInteractor(repository);
 
-  ContactBloc(ContactRepository repository, NotificationRepository notificationRepository)
-    : teamContactObserver = TeamContactObserver(repository),
-      upsertTeamContact = UpsertTeamContactInteractor(repository),
-      super(ContactState.initial(), notificationRepository) {
+  this : super(.initial(), notificationRepository) {
     on<_OnSetup>(_onSetup);
     on<_OnSetTeamContactData>(_onSetTeamContactData);
   }

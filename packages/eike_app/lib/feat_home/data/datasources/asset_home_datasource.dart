@@ -3,9 +3,7 @@ import 'package:eike_app/feat_home/domain/models/tip.dart';
 import 'package:flutter/services.dart';
 import 'package:yaml/yaml.dart';
 
-class AssetHomeDatasource implements HomeDatasource {
-  const AssetHomeDatasource();
-
+class const AssetHomeDatasource() implements HomeDatasource {
   @override
   Future<List<Tip>> fetchTips() async {
     final contents = await rootBundle.loadString('assets/content/data.yaml');

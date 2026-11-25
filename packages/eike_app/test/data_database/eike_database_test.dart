@@ -9,9 +9,7 @@ import 'package:eike_app/feat_home/domain/models/tip.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:test/test.dart';
 
-class _FakeHomeDatasource implements HomeDatasource {
-  const _FakeHomeDatasource();
-
+class const _FakeHomeDatasource() implements HomeDatasource {
   @override
   Future<List<Tip>> fetchTips() async {
     return const [
@@ -65,7 +63,7 @@ void main() {
         await repository.syncTips();
 
         final tips = await database.tipTable.select().get();
-        expect(tips.single.position, equals(TipPosition(1)));
+        expect(tips.single.position, equals(const TipPosition(1)));
       },
     );
   });

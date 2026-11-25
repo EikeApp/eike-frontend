@@ -5,13 +5,11 @@ import 'package:eike_app/service_design/components/eike_app_bar.dart';
 import 'package:eike_app/service_design/theming/eike_theme.dart';
 import 'package:eike_app/service_url_launcher/presentation/bloc/url_launcher_bloc.dart';
 
-class ImprintScreen extends StatelessWidget {
-  const ImprintScreen({super.key});
-
+class const ImprintScreen({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: EikeAppBar(
+      appBar: const EikeAppBar(
         title: 'Impressum',
       ),
       body: ListView(
@@ -34,7 +32,7 @@ class ImprintScreen extends StatelessWidget {
                       final uri = Uri.tryParse(href);
                       if (uri != null) {
                         BlocProvider.of<UrlLauncherBloc>(context).add(
-                          UrlLauncherEvent.onLaunchUrl(uri),
+                          .onLaunchUrl(uri),
                         );
                       }
                     },

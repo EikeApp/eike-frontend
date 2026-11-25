@@ -9,11 +9,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/tip_detail_bloc.dart';
 
-class TipDetailScreen extends StatelessWidget {
-  const TipDetailScreen({required this.tipId, super.key});
-
-  final TipId tipId;
-
+class const TipDetailScreen({
+  required final TipId tipId,
+  super.key,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -24,7 +23,7 @@ class TipDetailScreen extends StatelessWidget {
             TipDetailDao(RepositoryProvider.of(context)),
           ),
           RepositoryProvider.of(context),
-        )..add(const TipDetailEvent.onSetup());
+        )..add(const .onSetup());
       },
       child: BlocBuilder<TipDetailBloc, TipDetailState>(
         builder: (context, state) {
@@ -37,7 +36,7 @@ class TipDetailScreen extends StatelessWidget {
             ),
             body: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
-              behavior: HitTestBehavior.opaque,
+              behavior: .opaque,
               child: Builder(
                 builder: (context) {
                   if (state.isLoading) {
@@ -51,7 +50,7 @@ class TipDetailScreen extends StatelessWidget {
                         child: Text(
                           'Dieser Tipp konnte nicht geladen werden.',
                           style: TextTheme.of(context).bodyMedium,
-                          textAlign: TextAlign.center,
+                          textAlign: .center,
                         ),
                       ),
                     );
@@ -75,11 +74,10 @@ class TipDetailScreen extends StatelessWidget {
   }
 }
 
-class _TipDetailContent extends StatefulWidget {
-  const _TipDetailContent({required this.tip, super.key});
-
-  final TipEntity tip;
-
+class const _TipDetailContent({
+  required final TipEntity tip,
+  super.key,
+}) extends StatefulWidget {
   @override
   State<_TipDetailContent> createState() => _TipDetailContentState();
 }
@@ -98,7 +96,7 @@ class _TipDetailContentState extends State<_TipDetailContent> {
 
   void _onChangeListener() {
     BlocProvider.of<TipDetailBloc>(context).add(
-      TipDetailEvent.onUserNoteChanged(TipUserNote(textController.text)),
+      .onUserNoteChanged(TipUserNote(textController.text)),
     );
   }
 
@@ -116,14 +114,14 @@ class _TipDetailContentState extends State<_TipDetailContent> {
               height: 36,
               decoration: BoxDecoration(
                 color: context.colors.secondaryContainer,
-                shape: BoxShape.circle,
+                shape: .circle,
               ),
               alignment: Alignment.center,
               child: Text(
                 '${tip.position}',
                 style: context.textTheme.titleMedium?.copyWith(
                   color: context.colors.onSecondaryContainer,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: .bold,
                 ),
               ),
             ),
@@ -132,7 +130,7 @@ class _TipDetailContentState extends State<_TipDetailContent> {
                 tip.title,
                 style: context.textTheme.titleMedium?.copyWith(
                   color: context.colors.primary,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: .bold,
                 ),
               ),
             ),
@@ -147,7 +145,7 @@ class _TipDetailContentState extends State<_TipDetailContent> {
                 Positioned.fill(
                   child: Image.asset(
                     'assets/images/tip-icon-bg-x2.png',
-                    fit: BoxFit.cover,
+                    fit: .cover,
                   ),
                 ),
                 Positioned.fill(
@@ -155,7 +153,7 @@ class _TipDetailContentState extends State<_TipDetailContent> {
                     padding: const EdgeInsets.all(16),
                     child: Image.asset(
                       'assets/content/${tip.imagePath}',
-                      fit: BoxFit.contain,
+                      fit: .contain,
                       semanticLabel: tip.imageDescription,
                     ),
                   ),
@@ -168,7 +166,7 @@ class _TipDetailContentState extends State<_TipDetailContent> {
         if (tip.question case TipQuestion question)
           Column(
             spacing: EikeTheme.verticalComponentSpacingSmall,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: .start,
             children: [
               Text(
                 question,

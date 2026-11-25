@@ -5,10 +5,9 @@ import 'package:eike_app/data_entities/tables/tip_table.dart';
 part 'tip_detail_dao.g.dart';
 
 @DriftAccessor(tables: [TipTable])
-class TipDetailDao extends DatabaseAccessor<EikeDatabase>
+class TipDetailDao(super.attachedDatabase)
+    extends DatabaseAccessor<EikeDatabase>
     with _$TipDetailDaoMixin {
-  TipDetailDao(super.attachedDatabase);
-
   Stream<TipEntity?> observeTip(TipId tipId) {
     final query = select(tipTable)
       ..where((table) => table.id.equalsValue(tipId));

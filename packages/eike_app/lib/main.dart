@@ -13,7 +13,8 @@ import 'package:eike_app/service_app_info/domain/repositories/app_info_repositor
 import 'package:eike_app/service_design/theming/eike_theme.dart';
 import 'package:eike_app/service_logging/eike_logger.dart';
 import 'package:eike_app/service_url_launcher/presentation/url_launcher_provider.dart';
-import 'package:cupertino_ui/cupertino_ui.dart' show GlobalCupertinoLocalizations;
+import 'package:cupertino_ui/cupertino_ui.dart'
+    show GlobalCupertinoLocalizations;
 import 'package:material_ui/material_ui.dart';
 
 Future<void> main() async {
@@ -26,7 +27,7 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  final secureStorage = FlutterSecureStorage();
+  const secureStorage = FlutterSecureStorage();
 
   runApp(
     MultiRepositoryProvider(
@@ -37,25 +38,23 @@ Future<void> main() async {
           value: AppInfoRepositoryImpl(),
         ),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const new({super.key});
-
+class const MyApp({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Eike',
       theme: EikeTheme.lightTheme(context),
       darkTheme: EikeTheme.darkTheme(context),
-      themeMode: ThemeMode.system,
+      themeMode: .system,
       debugShowCheckedModeBanner: false,
       routerConfig: eikeRouter,
       supportedLocales: const <Locale>[Locale('de')],
-      locale: Locale('de'),
+      locale: const Locale('de'),
       localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

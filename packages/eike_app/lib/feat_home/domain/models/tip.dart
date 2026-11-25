@@ -5,18 +5,17 @@ part 'tip.g.dart';
 
 @freezed
 sealed class TipImage with _$TipImage {
-  const factory TipImage({
+  const factory({
     @JsonKey(name: 'src') required String imagePath,
     @JsonKey(name: 'alt') required String alt,
   }) = _TipImage;
 
-  factory TipImage.fromJson(Map<String, dynamic> json) =>
-      _$TipImageFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$TipImageFromJson(json);
 }
 
 @freezed
 sealed class Tip with _$Tip {
-  const factory Tip({
+  const factory({
     @JsonKey(name: 'id') required int id,
     @JsonKey(name: 'position') required int position,
     @JsonKey(name: 'title') required String title,
@@ -25,5 +24,5 @@ sealed class Tip with _$Tip {
     @JsonKey(name: 'icon') required TipImage image,
   }) = _Tip;
 
-  factory Tip.fromJson(Map<String, dynamic> json) => _$TipFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$TipFromJson(json);
 }

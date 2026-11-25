@@ -5,10 +5,9 @@ import 'package:use_in_case/use_in_case.dart';
 
 import '../../repositories/notification_repository.dart';
 
-class CloseNotificationStreamInteractor implements Interactor {
-  final NotificationRepository repository;
-  const CloseNotificationStreamInteractor(this.repository);
-
+class const CloseNotificationStreamInteractor(
+  final NotificationRepository repository,
+) implements Interactor {
   @override
   FutureOr<void> getOrThrow(Unit input) {
     return repository.closeStream();

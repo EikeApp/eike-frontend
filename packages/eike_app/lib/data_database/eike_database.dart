@@ -5,9 +5,7 @@ import 'package:drift/drift.dart';
 part 'eike_database.g.dart';
 
 @DriftDatabase(tables: [TeamContactTable, TipTable])
-class EikeDatabase extends _$EikeDatabase {
-  EikeDatabase(super.e);
-
+class EikeDatabase(super.e) extends _$EikeDatabase {
   @override
   int get schemaVersion => 3;
 

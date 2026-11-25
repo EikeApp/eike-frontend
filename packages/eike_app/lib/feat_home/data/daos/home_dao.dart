@@ -6,9 +6,9 @@ import 'package:eike_app/feat_home/domain/models/tip.dart';
 part 'home_dao.g.dart';
 
 @DriftAccessor(tables: [TipTable])
-class HomeDao extends DatabaseAccessor<EikeDatabase> with _$HomeDaoMixin {
-  HomeDao(super.attachedDatabase);
-
+class HomeDao(super.attachedDatabase)
+    extends DatabaseAccessor<EikeDatabase>
+    with _$HomeDaoMixin {
   Future<void> insert(Iterable<Tip> dtos) async {
     final existingTips = await select(tipTable).get();
     final existingTipById = {
@@ -63,7 +63,7 @@ Insertable<TipEntity> _createInsertEntity(Tip dto) {
     question: Value.absentIfNull(dto.question?.asQuestion()),
     imagePath: Value(TipImagePath(dto.image.imagePath)),
     imageDescription: Value(TipImageDescription(dto.image.alt)),
-    userNote: Value(TipUserNote('')),
+    userNote: const Value(TipUserNote('')),
   );
 }
 

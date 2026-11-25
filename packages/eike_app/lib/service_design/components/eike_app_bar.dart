@@ -1,11 +1,10 @@
 import 'package:material_ui/material_ui.dart';
 
-class EikeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const EikeAppBar({required this.title, this.leading, super.key});
-
-  final String title;
-  final Widget? leading;
-
+class const EikeAppBar({
+  required final String title,
+  final Widget? leading,
+  super.key,
+}) extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight + 1);
 
@@ -21,7 +20,7 @@ class EikeAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title,
         style: theme.textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.w700,
+          fontWeight: .w700,
         ),
       ),
       bottom: PreferredSize(

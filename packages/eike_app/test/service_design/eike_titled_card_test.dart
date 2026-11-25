@@ -8,15 +8,15 @@ void main() {
       'should not overflow when a large text scale makes the title wrap',
       (tester) async {
         await tester.pumpWidget(
-          MediaQuery(
-            data: const MediaQueryData(textScaler: TextScaler.linear(3.0)),
+          const MediaQuery(
+            data: MediaQueryData(textScaler: TextScaler.linear(3.0)),
             child: MaterialApp(
               home: Scaffold(
                 body: EikeTitledCard(
-                  leading: const Icon(Icons.info_outline),
+                  leading: Icon(Icons.info_outline),
                   title: 'Ein Titel, der bei großer Schrift umbrechen muss',
-                  trailing: const Icon(Icons.edit),
-                  child: const Text('Inhalt'),
+                  trailing: Icon(Icons.edit),
+                  child: Text('Inhalt'),
                 ),
               ),
             ),

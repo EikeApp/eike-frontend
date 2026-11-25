@@ -27,7 +27,7 @@ class _FakeNotificationRepository implements NotificationRepository {
   Stream<EikeNotification> observeNotification() => const Stream.empty();
 }
 
-class _FakeAppInfoRepository implements AppInfoRepository {
+class const _FakeAppInfoRepository() implements AppInfoRepository {
   @override
   Future<AppInfo> getAppInfo() async {
     return const AppInfo(version: '1.2.3', buildNumber: '42');
@@ -53,7 +53,7 @@ void main() {
               create: (_) => _FakeNotificationRepository(),
             ),
             RepositoryProvider<AppInfoRepository>(
-              create: (_) => _FakeAppInfoRepository(),
+              create: (_) => const _FakeAppInfoRepository(),
             ),
           ],
           child: const MaterialApp(home: SettingsScreen()),
@@ -76,9 +76,9 @@ void main() {
             .into(database.teamContactTable)
             .insert(
               TeamContactTableCompanion.insert(
-                teamName: TeamContactTeamName('Blauer Engel'),
-                phone: TeamContactPhone(''),
-                email: TeamContactEmail(''),
+                teamName: const TeamContactTeamName('Blauer Engel'),
+                phone: const TeamContactPhone(''),
+                email: const TeamContactEmail(''),
               ),
             );
 
@@ -105,9 +105,9 @@ void main() {
             .into(database.teamContactTable)
             .insert(
               TeamContactTableCompanion.insert(
-                teamName: TeamContactTeamName('Blauer Engel'),
-                phone: TeamContactPhone(''),
-                email: TeamContactEmail(''),
+                teamName: const TeamContactTeamName('Blauer Engel'),
+                phone: const TeamContactPhone(''),
+                email: const TeamContactEmail(''),
               ),
             );
 

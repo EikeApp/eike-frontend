@@ -10,9 +10,7 @@ import 'package:eike_app/service_design/theming/eike_theme.dart';
 
 import 'bloc/home_bloc.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
+class const HomeScreen({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -23,12 +21,12 @@ class HomeScreen extends StatelessWidget {
             const AssetHomeDatasource(),
           ),
           RepositoryProvider.of(context),
-        )..add(const HomeEvent.onSetup());
+        )..add(const .onSetup());
       },
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
           return Scaffold(
-            appBar: EikeAppBar(title: 'Meine 7 Sachen'),
+            appBar: const EikeAppBar(title: 'Meine 7 Sachen'),
             body: Builder(
               builder: (context) {
                 if (state.isLoading) {
@@ -42,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                       child: Text(
                         'Die Inhalte konnten nicht geladen werden. Bitte versuche es später erneut.',
                         style: TextTheme.of(context).bodyMedium,
-                        textAlign: TextAlign.center,
+                        textAlign: .center,
                       ),
                     ),
                   );
@@ -63,7 +61,7 @@ class HomeScreen extends StatelessWidget {
                     );
                   },
                   separatorBuilder: (_, _) {
-                    return SizedBox(
+                    return const SizedBox(
                       height: EikeTheme.verticalComponentSpacingMedium,
                     );
                   },
@@ -77,9 +75,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class const _TipCard({
-  required final TipEntity tip,
-}) extends StatelessWidget {
+class const _TipCard({required final TipEntity tip}) extends StatelessWidget {
   void _openTip(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
@@ -119,14 +115,14 @@ class const _TipCard({
                         height: 36,
                         decoration: BoxDecoration(
                           color: context.colors.secondaryContainer,
-                          shape: BoxShape.circle,
+                          shape: .circle,
                         ),
                         alignment: Alignment.center,
                         child: Text(
                           '${tip.position}',
                           style: context.textTheme.titleMedium?.copyWith(
                             color: context.colors.onSecondaryContainer,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: .bold,
                           ),
                         ),
                       ),

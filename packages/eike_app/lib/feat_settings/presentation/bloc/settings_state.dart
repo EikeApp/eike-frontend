@@ -2,11 +2,11 @@ part of 'settings_bloc.dart';
 
 @freezed
 sealed class SettingsState with _$SettingsState {
-  const factory SettingsState({
+  const factory({
     AppInfo? appInfo,
   }) = _SettingsState;
 
-  factory SettingsState.initial() {
+  factory initial() {
     return const SettingsState();
   }
 }

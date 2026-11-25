@@ -33,10 +33,12 @@ void main() {
                   id: Value(TipId(i)),
                   position: TipPosition(i + 1),
                   title: TipTitle('Test Tip $i'),
-                  description: TipDescription('This is a test tip.'),
-                  imagePath: TipImagePath('path/to/image.png'),
-                  imageDescription: TipImageDescription('Image description'),
-                  userNote: TipUserNote('User note for the tip.'),
+                  description: const TipDescription('This is a test tip.'),
+                  imagePath: const TipImagePath('path/to/image.png'),
+                  imageDescription: const TipImageDescription(
+                    'Image description',
+                  ),
+                  userNote: const TipUserNote('User note for the tip.'),
                 ),
               );
         }
@@ -45,10 +47,10 @@ void main() {
             .into(database.teamContactTable)
             .insert(
               TeamContactTableCompanion.insert(
-                id: Value(TeamContactId(1)),
-                teamName: TeamContactTeamName('John Doe'),
-                email: TeamContactEmail(''),
-                phone: TeamContactPhone(''),
+                id: const Value(TeamContactId(1)),
+                teamName: const TeamContactTeamName('John Doe'),
+                email: const TeamContactEmail(''),
+                phone: const TeamContactPhone(''),
               ),
             );
 

@@ -74,7 +74,7 @@ extension on ThemeData {
           color: colorScheme.onSecondaryContainer,
         ),
         actionTextColor: colorScheme.onSecondaryContainer,
-        behavior: SnackBarBehavior.floating,
+        behavior: .floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(EikeTheme.cornerRadius),
         ),

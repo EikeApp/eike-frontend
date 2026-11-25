@@ -4,13 +4,11 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:eike_app/service_design/components/eike_app_bar.dart';
 import 'package:eike_app/service_design/theming/eike_theme.dart';
 
-class PrivacyPolicyScreen extends StatelessWidget {
-  const PrivacyPolicyScreen({super.key});
-
+class const PrivacyPolicyScreen({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: EikeAppBar(title: 'Datenschutzerklärung'),
+      appBar: const EikeAppBar(title: 'Datenschutzerklärung'),
       body: ListView(
         padding: EikeTheme.pagePadding,
         children: [

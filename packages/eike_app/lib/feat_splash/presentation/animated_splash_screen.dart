@@ -5,16 +5,15 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
-class AnimatedSplashScreen extends StatelessWidget {
-  const AnimatedSplashScreen({super.key, required this.app});
-
-  final Widget app;
-
+class const AnimatedSplashScreen({
+  super.key,
+  required final Widget app,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        return SplashScreenBloc()..add(const SplashScreenEvent.onSetup());
+        return SplashScreenBloc()..add(const .onSetup());
       },
       child: BlocBuilder<SplashScreenBloc, SplashScreenState>(
         builder: (context, state) {
@@ -53,9 +52,7 @@ class AnimatedSplashScreen extends StatelessWidget {
   }
 }
 
-class _SplashContent extends StatelessWidget {
-  const _SplashContent();
-
+class const _SplashContent() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MediaQuery.withNoTextScaling(
@@ -67,7 +64,7 @@ class _SplashContent extends StatelessWidget {
               backgroundColor: context.colors.primary,
               body: SafeArea(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: .spaceBetween,
                   children: [
                     Padding(
                       padding: EikeTheme.pagePadding,
@@ -100,7 +97,7 @@ class _SplashContent extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.bottomRight,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: .center,
                           children: [
                             const _PSNVLogo().animate().fadeIn(
                               delay: const Duration(milliseconds: 1200),
@@ -122,9 +119,7 @@ class _SplashContent extends StatelessWidget {
   }
 }
 
-class _PSNVLogo extends StatelessWidget {
-  const new();
-
+class const _PSNVLogo() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -139,20 +134,20 @@ class _PSNVLogo extends StatelessWidget {
               height: 60,
             ),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: .start,
               children: [
                 Text(
                   "PSNV",
                   style: context.textTheme.titleMedium?.copyWith(
                     color: context.colors.onSurface,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: .bold,
                   ),
                 ),
                 Text(
                   "Deutscher Fachverband",
                   style: context.textTheme.labelSmall?.copyWith(
                     color: context.colors.onSurface,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: .bold,
                   ),
                 ),
               ],

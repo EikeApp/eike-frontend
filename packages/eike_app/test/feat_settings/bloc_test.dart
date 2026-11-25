@@ -16,7 +16,7 @@ class _FakeSettingsRepository implements SettingsRepository {
   }
 }
 
-class _FakeAppInfoRepository implements AppInfoRepository {
+class const _FakeAppInfoRepository() implements AppInfoRepository {
   static const appInfo = AppInfo(version: '1.0.0', buildNumber: '1');
 
   @override
@@ -51,13 +51,13 @@ void main() {
     SettingsBloc buildBloc() => SettingsBloc(
       settingsRepository,
       notificationRepo,
-      _FakeAppInfoRepository(),
+      const _FakeAppInfoRepository(),
     );
 
     blocTest<SettingsBloc, SettingsState>(
       'should load the app info on setup',
       build: buildBloc,
-      act: (bloc) => bloc.add(const SettingsEvent.onSetup()),
+      act: (bloc) => bloc.add(const .onSetup()),
       expect: () => [
         const SettingsState(appInfo: _FakeAppInfoRepository.appInfo),
       ],
@@ -66,7 +66,7 @@ void main() {
     blocTest<SettingsBloc, SettingsState>(
       'should delegate to the repository on cleanupLocalStorage',
       build: buildBloc,
-      act: (bloc) => bloc.add(const SettingsEvent.onCleanupLocalStorage()),
+      act: (bloc) => bloc.add(const .onCleanupLocalStorage()),
       expect: () => [],
       verify: (_) => expect(settingsRepository.cleanupCallCount, 1),
     );

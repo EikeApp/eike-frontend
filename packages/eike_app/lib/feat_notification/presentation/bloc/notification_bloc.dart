@@ -18,19 +18,17 @@ part 'notification_bloc.freezed.dart';
 part 'notification_event.dart';
 part 'notification_state.dart';
 
-class NotificationBloc extends Bloc<NotificationEvent, NotificationState>
+class NotificationBloc(NotificationRepository repository)
+    extends Bloc<NotificationEvent, NotificationState>
     with
         BlocPresentationMixin<
           NotificationState,
           NotificationPresentationEvent
         > {
-  final NotificationsObserver observer;
-  final CloseNotificationStreamInteractor closeStream;
+  final observer = NotificationsObserver(repository);
+  final closeStream = CloseNotificationStreamInteractor(repository);
 
-  NotificationBloc(NotificationRepository repository)
-    : observer = NotificationsObserver(repository),
-      closeStream = CloseNotificationStreamInteractor(repository),
-      super(NotificationState.initial()) {
+  this : super(.initial()) {
     on<_OnSetup>(_onSetup);
     on<_OnCloseNotifications>(_onCloseNotifications, transformer: droppable());
     on<_OnShowPreviousNotification>(
@@ -62,7 +60,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState>
         );
 
         if (isFirstNotification) {
-          emitPresentation(NotificationPresentationEvent.onShowNotification());
+          emitPresentation(const .onShowNotification());
         }
       },
     );

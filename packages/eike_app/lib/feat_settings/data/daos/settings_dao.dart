@@ -6,17 +6,16 @@ import 'package:drift/drift.dart';
 part 'settings_dao.g.dart';
 
 @DriftAccessor(tables: [TeamContactTable])
-class SettingsDao extends DatabaseAccessor<EikeDatabase>
+class SettingsDao(super.attachedDatabase)
+    extends DatabaseAccessor<EikeDatabase>
     with _$SettingsDaoMixin {
-  SettingsDao(super.attachedDatabase);
-
   Future<void> clearAllTables() {
     // NOTE(Felix): Future-Proove implementation would be to deactivate foreign-key constraints and drop each table in reverse order.
     return batch((batch) {
       batch
         ..update(
           db.tipTable,
-          TipTableCompanion(userNote: Value(TipUserNote(''))),
+          const TipTableCompanion(userNote: Value(TipUserNote(''))),
         )
         ..deleteAll(db.teamContactTable);
     });

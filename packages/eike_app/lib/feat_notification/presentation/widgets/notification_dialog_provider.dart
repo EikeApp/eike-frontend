@@ -9,11 +9,10 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eike_app/service_design/theming/eike_theme.dart';
 
-class NotificationDialogProvider extends StatelessWidget {
-  const NotificationDialogProvider({super.key, required this.child});
-
-  final Widget child;
-
+class const NotificationDialogProvider({
+  super.key,
+  required final Widget child,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider<NotificationRepository>(
@@ -21,7 +20,7 @@ class NotificationDialogProvider extends StatelessWidget {
       child: BlocProvider(
         create: (context) {
           return NotificationBloc(RepositoryProvider.of(context))
-            ..add(const NotificationEvent.onSetup());
+            ..add(const .onSetup());
         },
         lazy: false,
         child: BlocBuilder<NotificationBloc, NotificationState>(
@@ -37,7 +36,7 @@ class NotificationDialogProvider extends StatelessWidget {
                       _onShowNotificationDialog(context).whenComplete(() {
                         if (context.mounted) {
                           BlocProvider.of<NotificationBloc>(context).add(
-                            const NotificationEvent.onCloseNotifications(),
+                            const .onCloseNotifications(),
                           );
                         }
                       }),
@@ -78,24 +77,18 @@ Future<void> _onShowNotificationDialog(BuildContext context) {
   );
 }
 
-class _Dialog extends StatelessWidget {
-  const _Dialog({
-    required this.currentNotification,
-    required this.canScrollBackward,
-    required this.canScrollForward,
-  });
-
-  final EikeNotification currentNotification;
-  final bool canScrollBackward;
-  final bool canScrollForward;
-
+class const _Dialog({
+  required final EikeNotification currentNotification,
+  required final bool canScrollBackward,
+  required final bool canScrollForward,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
       child: Padding(
         padding: EikeTheme.cardPadding,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: .min,
           spacing: EikeTheme.verticalComponentSpacingMedium,
           children: [
             Stack(
@@ -114,7 +107,7 @@ class _Dialog extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).pop();
                       BlocProvider.of<NotificationBloc>(context).add(
-                        NotificationEvent.onCloseNotifications(),
+                        const .onCloseNotifications(),
                       );
                     },
                   ),
@@ -122,35 +115,35 @@ class _Dialog extends StatelessWidget {
                 Text(
                   currentNotification.title,
                   style: context.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: .bold,
                   ),
                 ),
               ],
             ),
             Text(currentNotification.message),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: .end,
               spacing: EikeTheme.horizontalComponentSpacingMedium,
               children: [
                 IconButton(
                   onPressed: canScrollBackward
                       ? () {
                           BlocProvider.of<NotificationBloc>(context).add(
-                            const NotificationEvent.onShowPreviousNotification(),
+                            const .onShowPreviousNotification(),
                           );
                         }
                       : null,
-                  icon: Icon(Icons.keyboard_arrow_left),
+                  icon: const Icon(Icons.keyboard_arrow_left),
                 ),
                 IconButton(
                   onPressed: canScrollForward
                       ? () {
                           BlocProvider.of<NotificationBloc>(context).add(
-                            const NotificationEvent.onShowNextNotification(),
+                            const .onShowNextNotification(),
                           );
                         }
                       : null,
-                  icon: Icon(Icons.keyboard_arrow_right),
+                  icon: const Icon(Icons.keyboard_arrow_right),
                 ),
               ],
             ),
@@ -164,15 +157,15 @@ class _Dialog extends StatelessWidget {
 extension on EikeNotification {
   Color getDisplayColor(BuildContext context) {
     return switch (type) {
-      EikeNotificationType.error => context.colors.error,
-      EikeNotificationType.info => context.colors.primary,
+      .error => context.colors.error,
+      .info => context.colors.primary,
     };
   }
 
   IconData getIconData() {
     return switch (type) {
-      EikeNotificationType.error => Icons.error,
-      EikeNotificationType.info => Icons.info,
+      .error => Icons.error,
+      .info => Icons.info,
     };
   }
 }

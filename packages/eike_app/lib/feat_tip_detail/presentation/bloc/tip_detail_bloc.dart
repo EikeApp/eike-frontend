@@ -17,18 +17,15 @@ part 'tip_detail_bloc.freezed.dart';
 part 'tip_detail_event.dart';
 part 'tip_detail_state.dart';
 
-class TipDetailBloc extends EikeBloc<TipDetailEvent, TipDetailState> {
-  final TipId tipId;
-  final TipObserver tipObserver;
-  final UpdateUserNoteInteractor updateUserNote;
+class TipDetailBloc(
+  final TipId tipId,
+  TipDetailRepository repository,
+  NotificationRepository notificationRepository,
+) extends EikeBloc<TipDetailEvent, TipDetailState> {
+  final tipObserver = TipObserver(repository);
+  final updateUserNote = UpdateUserNoteInteractor(repository);
 
-  TipDetailBloc(
-    this.tipId,
-    TipDetailRepository repository,
-    NotificationRepository notificationRepository,
-  ) : tipObserver = TipObserver(repository),
-      updateUserNote = UpdateUserNoteInteractor(repository),
-      super(TipDetailState.initial(), notificationRepository) {
+  this : super(.initial(), notificationRepository) {
     on<_OnSetup>(_onSetup);
     on<_OnUserNoteChanged>(_onUserNoteChanged, transformer: sequential());
   }

@@ -17,18 +17,15 @@ part 'home_bloc.freezed.dart';
 part 'home_state.dart';
 part 'home_event.dart';
 
-class HomeBloc extends EikeBloc<HomeEvent, HomeState> {
-  final TipsObserver tipsObserver;
-  final SyncTipsInteractor syncTipsInteractor;
-  final EmitNotificationInteractor emitNotification;
+class HomeBloc(
+  HomeRepository repository,
+  NotificationRepository notificationRepository,
+) extends EikeBloc<HomeEvent, HomeState> {
+  final tipsObserver = TipsObserver(repository);
+  final syncTipsInteractor = SyncTipsInteractor(repository);
+  final emitNotification = EmitNotificationInteractor(notificationRepository);
 
-  HomeBloc(
-    HomeRepository repository,
-    NotificationRepository notificationRepository,
-  ) : tipsObserver = TipsObserver(repository),
-      syncTipsInteractor = SyncTipsInteractor(repository),
-      emitNotification = EmitNotificationInteractor(notificationRepository),
-      super(HomeState.initial(), notificationRepository) {
+  this : super(.initial(), notificationRepository) {
     on<_OnSetup>(_onSetup);
   }
 

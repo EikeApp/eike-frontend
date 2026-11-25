@@ -6,11 +6,11 @@ import 'package:meta/meta.dart';
 part 'contact_dao.g.dart';
 
 @DriftAccessor(tables: [TeamContactTable])
-class ContactDao extends DatabaseAccessor<EikeDatabase> with _$ContactDaoMixin {
+class ContactDao(super.attachedDatabase)
+    extends DatabaseAccessor<EikeDatabase>
+    with _$ContactDaoMixin {
   @visibleForTesting
   static const teamContactEntryId = TeamContactId(1);
-
-  ContactDao(super.attachedDatabase);
 
   Stream<TeamContactEntity?> observeTeamContact() {
     return select(teamContactTable).watchSingleOrNull();
@@ -22,7 +22,7 @@ class ContactDao extends DatabaseAccessor<EikeDatabase> with _$ContactDaoMixin {
     TeamContactEmail email,
   ) {
     final entity = TeamContactTableCompanion.insert(
-      id: Value(teamContactEntryId),
+      id: const Value(teamContactEntryId),
       teamName: TeamContactTeamName(teamName.trim()),
       phone: TeamContactPhone(phone.trim()),
       email: TeamContactEmail(email.trim()),
