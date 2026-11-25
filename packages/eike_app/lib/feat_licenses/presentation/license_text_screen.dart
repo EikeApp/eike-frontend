@@ -76,6 +76,17 @@ class _LicenseTextScreenState extends State<LicenseTextScreen> {
                                   color: context.colors.onSurface,
                                 ),
                                 'a': Style(color: context.colors.primary),
+                                // flutter_html does not apply HTML's ol type
+                                // attribute; preserve the legal section labels.
+                                'ol[type="a"]': Style(
+                                  listStyleType: ListStyleType.lowerAlpha,
+                                ),
+                                'ol[type="A"]': Style(
+                                  listStyleType: ListStyleType.upperAlpha,
+                                ),
+                                'ol[type="i"]': Style(
+                                  listStyleType: ListStyleType.lowerRoman,
+                                ),
                               },
                               onLinkTap: (url, _, _) {
                                 if (url == null) return;

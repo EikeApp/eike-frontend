@@ -249,6 +249,16 @@ void main() {
           expect(license, isNot(contains('This website is not sponsored')));
         } else {
           expect(find.text('eike-content © 2025 by DF-PSNV'), findsOneWidget);
+          // Check rendered labels, not just the unchanged HTML source.
+          for (final marker in ['a.', 'A.', 'ii.']) {
+            expect(
+              find.textContaining(
+                RegExp('^${RegExp.escape(marker)}\\s*\$'),
+                findRichText: true,
+              ),
+              findsWidgets,
+            );
+          }
           for (var section = 1; section <= 8; section++) {
             expect(
               find.textContaining('Abschnitt $section –', findRichText: true),

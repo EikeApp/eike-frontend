@@ -1,0 +1,85 @@
+appId: app.eike
+name: Lizenzen – Übersicht, lokale Texte und Drittanbieter
+tags:
+  - smoke
+  - licenses
+---
+- launchApp:
+    stopApp: true
+- extendedWaitUntil:
+    visible: "Meine 7 Sachen"
+    timeout: 30000
+- tapOn:
+    point: "85%,92%"
+- assertVisible: "Settings"
+- scrollUntilVisible:
+    element: "Lizenzen"
+    centerElement: true
+- tapOn: "Lizenzen"
+- assertVisible: "(?s).*Quellcode.*"
+- assertVisible: "(?s).*Lizenz: EUPL 1.2.*"
+- takeScreenshot: "licenses/overview"
+- tapOn:
+    text: "Vollständigen Lizenztext anzeigen"
+    index: 0
+- assertVisible: "EUPL 1.2"
+- assertVisible: "(?s).*OPEN-SOURCE-LIZENZ FÜR DIE EUROPÄISCHE UNION.*"
+- takeScreenshot: "licenses/eupl"
+# flutter_html exposes each document as one accessibility node. Scroll with
+# real gestures; the screenshots provide a visual check of the document ends.
+- repeat:
+    times: 20
+    commands:
+      - swipe:
+          start: "50%,80%"
+          end: "50%,25%"
+          duration: 250
+- takeScreenshot: "licenses/eupl_end"
+- tapOn: "Zurück"
+- scrollUntilVisible:
+    element: "Drittanbieter-Lizenzen anzeigen"
+    centerElement: true
+- assertVisible: "(?s).*Lizenz: CC BY-NC-ND 4.0.*"
+- assertVisible: "(?s).*Rechteinhaber: Deutscher Fachverband.*"
+- scrollUntilVisible:
+    element:
+      text: "Vollständigen Lizenztext anzeigen"
+      index: 0
+    centerElement: true
+- tapOn:
+    text: "Vollständigen Lizenztext anzeigen"
+    index: 0
+- assertVisible: "CC BY-NC-ND 4.0"
+- assertVisible: "eike-content © 2025 by DF-PSNV"
+- takeScreenshot: "licenses/cc"
+- repeat:
+    times: 20
+    commands:
+      - swipe:
+          start: "50%,80%"
+          end: "50%,25%"
+          duration: 250
+- takeScreenshot: "licenses/cc_end"
+- tapOn: "Zurück"
+- scrollUntilVisible:
+    element: "Drittanbieter-Lizenzen anzeigen"
+    centerElement: true
+- tapOn: "Drittanbieter-Lizenzen anzeigen"
+- scrollUntilVisible:
+    element: "(?s)^Roboto.*"
+    timeout: 60000
+    speed: 80
+- tapOn: "(?s)^Roboto.*"
+- assertVisible: "(?s).*SIL OPEN FONT LICENSE.*"
+- takeScreenshot: "licenses/roboto"
+- tapOn: "Zurück"
+# Wide screens show license details alongside the library list. Narrow screens
+# have an additional detail route and therefore need one extra back action.
+- runFlow:
+    when:
+      notVisible: "Drittanbieter-Lizenzen anzeigen"
+    commands:
+      - tapOn: "Zurück"
+- assertVisible: "(?s).*Open-Source-Bibliotheken.*"
+- tapOn: "Zurück"
+- assertVisible: "Settings"
