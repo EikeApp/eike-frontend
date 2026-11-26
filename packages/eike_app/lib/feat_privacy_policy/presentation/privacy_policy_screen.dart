@@ -74,8 +74,7 @@ const String _privacyHtml = '''
   <p><strong>Technische Umsetzung (Packages)</strong></p>
   <ul>
     <li>Drift: https://pub.dev/packages/drift</li>
-    <li>SQLCipher: https://pub.dev/packages/sqlcipher_flutter_libs</li>
-    <li>SQLite3 (FFI): https://pub.dev/packages/sqlite3</li>
+    <li>SQLite3 (FFI, inkl. SQLCipher-Verschlüsselung): https://pub.dev/packages/sqlite3</li>
   </ul>
   <p><strong>Schutz und Zugriff</strong></p>
   <ul>

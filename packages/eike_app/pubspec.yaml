@@ -17,11 +17,6 @@ dependencies:
   go_router: ^18.0.0
   drift: ^2.34.0
   sqlite3: ^3.3.3
-  sqlcipher_flutter_libs: ^0.7.0+eol
-  encrypted_drift:
-    git:
-      url: https://github.com/simolus3/drift.git
-      path: extras/encryption
   flutter_secure_storage: ^11.0.0
   path: ^1.9.0
   path_provider: ^2.1.6
@@ -66,6 +61,18 @@ dev_dependencies:
 # flutter_html is updated to no longer depend on that internal API.
 dependency_overrides:
   html: 0.15.6
+
+# Make package:sqlite3's build hook bundle the SQLite3MultipleCiphers build
+# instead of vanilla SQLite, so that the encryption pragmas used in
+# EikeDatabaseProviderRepositoryImpl actually exist. Without this, `PRAGMA key`
+# is a silent no-op and the database would be written in plaintext — the
+# repository checks `PRAGMA cipher` at open time and throws to catch that.
+# This replaces the former sqflite_sqlcipher/CocoaPods route; see
+# test/feat_database_provider/ for the encryption tests.
+hooks:
+  user_defines:
+    sqlite3:
+      source: sqlite3mc
 
 flutter:
   uses-material-design: true
