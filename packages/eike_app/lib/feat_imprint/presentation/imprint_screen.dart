@@ -53,8 +53,8 @@ class const ImprintScreen({super.key}) extends StatelessWidget {
 const String impressumHtml = '''
 <h2>Anbieter</h2>
 <p>Deutscher Fachverband für Psychosoziale Notfallversorgung (DF-PSNV) e.V.<br>
-P.-H.-Eggers-Straße 22<br>
-24768 Rendsburg<br>
+Postfach 1254<br>
+22934 Bargteheide<br>
 Deutschland</p>
 
 <h2>Vertreten durch</h2>
